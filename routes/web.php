@@ -43,6 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/records', [\App\Http\Controllers\RecordController::class, 'store'])->name('records.store');
     Route::put('/records/{id}', [\App\Http\Controllers\RecordController::class, 'update'])->name('records.update');
     Route::delete('/records/{id}', [\App\Http\Controllers\RecordController::class, 'destroy'])->name('records.destroy');
+
+    // Report routes
+    Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'showReportsView'])->name('reports.view');
+    Route::post('/reports/pdf', [\App\Http\Controllers\ReportController::class, 'downloadPDF'])->name('reports.pdf');
+    Route::post('/reports/excel', [\App\Http\Controllers\ReportController::class, 'downloadExcel'])->name('reports.excel');
 });
 
 require __DIR__ . '/auth.php';

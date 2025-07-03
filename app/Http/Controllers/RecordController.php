@@ -30,6 +30,8 @@ class RecordController extends Controller
                     'confirmed_cubic_meters' => $record->confirmed_cubic_meters,
                     'extra_cubic' => $record->extra_cubic,
                     'less_cubic' => $record->less_cubic,
+                    'created_at' => $record->created_at->format('j F Y'),
+                    'deleted' => $record->deleted,
                 ];
             })
             ->toArray();

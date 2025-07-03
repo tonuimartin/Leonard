@@ -47,18 +47,6 @@
                                 <div class="flex bg-gray-200 rounded p-1">
                                     <button
                                         type="button"
-                                        @click="lorryCalculationType = 'units'"
-                                        :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
-                                            lorryCalculationType === 'units'
-                                                ? 'bg-blue-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
-                                        ]"
-                                    >
-                                        By Units
-                                    </button>
-                                    <button
-                                        type="button"
                                         @click="lorryCalculationType = 'money'"
                                         :class="[
                                             'px-3 py-1 text-xs rounded transition-colors',
@@ -68,6 +56,18 @@
                                         ]"
                                     >
                                         By Money
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="lorryCalculationType = 'units'"
+                                        :class="[
+                                            'px-3 py-1 text-xs rounded transition-colors',
+                                            lorryCalculationType === 'units'
+                                                ? 'bg-blue-500 text-white'
+                                                : 'text-gray-700 hover:bg-gray-300',
+                                        ]"
+                                    >
+                                        By Units
                                     </button>
                                 </div>
                             </div>
@@ -108,7 +108,8 @@
                                     placeholder="0.00"
                                 />
                                 <p class="text-xs text-gray-500 mt-1">
-                                    Cost per m³: KSh 2,000 | Units:
+                                    B.P: KSh 2,000, S.P: KSh 2,200, Profit per
+                                    m³: KSh 200
                                     {{
                                         (formData.lorry_money / 2000).toFixed(2)
                                     }}
@@ -129,20 +130,6 @@
                                     <button
                                         type="button"
                                         @click="
-                                            tractorCalculationType = 'units'
-                                        "
-                                        :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
-                                            tractorCalculationType === 'units'
-                                                ? 'bg-green-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
-                                        ]"
-                                    >
-                                        By Units
-                                    </button>
-                                    <button
-                                        type="button"
-                                        @click="
                                             tractorCalculationType = 'money'
                                         "
                                         :class="[
@@ -153,6 +140,20 @@
                                         ]"
                                     >
                                         By Money
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="
+                                            tractorCalculationType = 'units'
+                                        "
+                                        :class="[
+                                            'px-3 py-1 text-xs rounded transition-colors',
+                                            tractorCalculationType === 'units'
+                                                ? 'bg-green-500 text-white'
+                                                : 'text-gray-700 hover:bg-gray-300',
+                                        ]"
+                                    >
+                                        By Units
                                     </button>
                                 </div>
                             </div>
@@ -193,7 +194,8 @@
                                     placeholder="0.00"
                                 />
                                 <p class="text-xs text-gray-500 mt-1">
-                                    Cost per m³: KSh 2,200 | Units:
+                                    B.P: KSh 2,200, S.P: KSh 2,400, Profit per
+                                    m³: KSh 200
                                     {{
                                         (formData.tractor_money / 2200).toFixed(
                                             2
@@ -349,8 +351,8 @@ const formData = ref({
     less_cubic: 0,
 });
 
-const lorryCalculationType = ref("units");
-const tractorCalculationType = ref("units");
+const lorryCalculationType = ref("money");
+const tractorCalculationType = ref("money");
 
 // Pricing constants
 const LORRY_BUYING_PRICE = 2000;
@@ -432,8 +434,8 @@ const resetForm = () => {
         extra_cubic: 0,
         less_cubic: 0,
     };
-    lorryCalculationType.value = "units";
-    tractorCalculationType.value = "units";
+    lorryCalculationType.value = "money";
+    tractorCalculationType.value = "money";
 };
 
 const handleSubmit = async () => {
