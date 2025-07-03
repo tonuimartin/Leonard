@@ -10,35 +10,103 @@
                         <!-- Filters Section -->
                         <div class="mb-6 p-4 bg-gray-50 rounded-lg">
                             <h3 class="text-lg font-semibold mb-4">Filters</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 gap-4">
                                 <!-- Supplier Filter -->
-                                <div>
+                                <div class="col-span-full">
                                     <label
                                         class="block text-sm font-medium text-gray-700 mb-2"
                                     >
                                         Suppliers (Multiple Selection)
                                     </label>
-                                    <div
-                                        class="max-h-32 overflow-y-auto border border-gray-300 rounded-md p-2"
-                                    >
-                                        <div
-                                            v-for="supplier in suppliers"
-                                            :key="supplier.id"
-                                            class="flex items-center mb-1"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                :id="`supplier-${supplier.id}`"
-                                                :value="supplier.id"
-                                                v-model="filters.supplierIds"
-                                                class="mr-2"
-                                            />
-                                            <label
-                                                :for="`supplier-${supplier.id}`"
-                                                class="text-sm"
+                                    <div class="relative">
+                                        <!-- Search input with tags inside -->
+                                        <div class="relative">
+                                            <div
+                                                class="w-full min-h-[42px] border border-gray-300 rounded-md px-3 py-2 pr-8 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 flex flex-wrap items-center gap-1"
                                             >
-                                                {{ supplier.name }}
-                                            </label>
+                                                <!-- Selected suppliers tags inside input -->
+                                                <span
+                                                    v-for="supplier in selectedSuppliers"
+                                                    :key="supplier.id"
+                                                    class="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
+                                                >
+                                                    {{ supplier.name }}
+                                                    <button
+                                                        @click="
+                                                            removeSupplier(
+                                                                supplier.id
+                                                            )
+                                                        "
+                                                        class="ml-1 text-blue-600 hover:text-blue-800 text-sm"
+                                                        type="button"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </span>
+
+                                                <!-- Search input -->
+                                                <input
+                                                    v-model="supplierSearch"
+                                                    @focus="
+                                                        showSupplierDropdown = true
+                                                    "
+                                                    @blur="hideDropdownDelayed"
+                                                    type="text"
+                                                    :placeholder="
+                                                        selectedSuppliers.length ===
+                                                        0
+                                                            ? 'Search and select suppliers...'
+                                                            : ''
+                                                    "
+                                                    class="flex-1 min-w-0 border-0 outline-none focus:ring-0 p-0 bg-transparent"
+                                                    style="box-shadow: none"
+                                                />
+                                            </div>
+
+                                            <!-- Clear all button -->
+                                            <button
+                                                v-if="
+                                                    selectedSuppliers.length > 0
+                                                "
+                                                @click="clearAllSuppliers"
+                                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                type="button"
+                                            >
+                                                ×
+                                            </button>
+
+                                            <!-- Dropdown menu -->
+                                            <div
+                                                v-if="
+                                                    showSupplierDropdown &&
+                                                    filteredSuppliers.length > 0
+                                                "
+                                                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto"
+                                                style="top: 100%"
+                                            >
+                                                <div
+                                                    v-for="supplier in filteredSuppliers"
+                                                    :key="supplier.id"
+                                                    @mousedown="
+                                                        selectSupplier(supplier)
+                                                    "
+                                                    class="px-3 py-2 cursor-pointer hover:bg-blue-50 flex items-center justify-between"
+                                                >
+                                                    <span>{{
+                                                        supplier.name
+                                                    }}</span>
+                                                    <span
+                                                        v-if="
+                                                            isSupplierSelected(
+                                                                supplier.id
+                                                            )
+                                                        "
+                                                        class="text-blue-600"
+                                                    >
+                                                        ✓
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -46,7 +114,7 @@
 
                             <!-- Time Period Filters -->
                             <div
-                                class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"
+                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4"
                             >
                                 <!-- Year Filter -->
                                 <div>
@@ -122,7 +190,7 @@
 
                             <!-- Date Range Filters -->
                             <div
-                                class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+                                class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4"
                             >
                                 <!-- Date From Filter -->
                                 <div>
@@ -164,23 +232,23 @@
                             </div>
 
                             <!-- Filter Actions -->
-                            <div class="mt-4 flex gap-4">
+                            <div class="mt-4 flex flex-wrap gap-2 sm:gap-4">
                                 <button
                                     @click="applyFilters"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex-shrink-0"
                                 >
                                     Apply Filters
                                 </button>
                                 <button
                                     @click="clearFilters"
-                                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded flex-shrink-0"
                                 >
                                     Clear Filters
                                 </button>
                                 <button
                                     @click="downloadPDF"
                                     :disabled="isDownloading"
-                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 flex-shrink-0"
                                 >
                                     {{
                                         isDownloading
@@ -191,7 +259,7 @@
                                 <button
                                     @click="downloadExcel"
                                     :disabled="isDownloading"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 flex-shrink-0"
                                 >
                                     {{
                                         isDownloading
@@ -205,43 +273,46 @@
                         <!-- Summary Section -->
                         <div class="mb-6 p-4 bg-blue-50 rounded-lg">
                             <h3 class="text-lg font-semibold mb-2">Summary</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
+                            <div
+                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                            >
+                                <div class="text-center sm:text-left">
                                     <span class="text-sm text-gray-600"
                                         >Total Records:</span
                                     >
-                                    <span class="text-xl font-bold ml-2">{{
-                                        filteredRecords.length
-                                    }}</span>
+                                    <span
+                                        class="text-xl font-bold ml-2 block sm:inline"
+                                        >{{ filteredRecords.length }}</span
+                                    >
                                 </div>
-                                <div>
+                                <div class="text-center sm:text-left">
                                     <span class="text-sm text-gray-600"
                                         >Total Expected Profit:</span
                                     >
-                                    <span class="text-xl font-bold ml-2">{{
-                                        formatCurrency(totalProfit)
-                                    }}</span>
+                                    <span
+                                        class="text-xl font-bold ml-2 block sm:inline"
+                                        >{{ formatCurrency(totalProfit) }}</span
+                                    >
                                 </div>
-                                <div>
+                                <div class="text-center sm:text-left">
                                     <span class="text-sm text-gray-600"
                                         >Average Profit per Record:</span
                                     >
-                                    <span class="text-xl font-bold ml-2">{{
-                                        formatCurrency(averageProfit)
-                                    }}</span>
+                                    <span
+                                        class="text-xl font-bold ml-2 block sm:inline"
+                                        >{{
+                                            formatCurrency(averageProfit)
+                                        }}</span
+                                    >
                                 </div>
                             </div>
                         </div>
 
                         <!-- Records Table -->
-                        <div class="overflow-x-auto">
+                        <div class="w-full">
                             <ag-grid-vue
-                                class="ag-theme-alpine"
-                                style="
-                                    width: 100%;
-                                    min-width: 1200px;
-                                    height: 500px;
-                                "
+                                class="ag-theme-alpine w-full"
+                                style="width: 100%; height: 500px"
                                 :columnDefs="columnDefs"
                                 :rowData="filteredRecords"
                                 :defaultColDef="defaultColDef"
@@ -266,6 +337,7 @@ import { Head, router } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { AgGridVue } from "ag-grid-vue3";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
+import Swal from "sweetalert2";
 ModuleRegistry.registerModules([AllCommunityModule]);
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -294,25 +366,40 @@ const isDownloading = ref(false);
 const allRecords = ref(props.records);
 const filteredRecords = ref(props.records);
 
+// Multiselect dropdown variables
+const supplierSearch = ref("");
+const showSupplierDropdown = ref(false);
+const selectedSuppliers = ref([]);
+let hideDropdownTimeout = null;
+
 // Pagination options
 const paginationPageSizeSelector = ref([10, 20, 50, 100]);
 
 // AG Grid column definitions
 const columnDefs = ref([
-    { headerName: "ID", field: "id", sortable: true, filter: true, width: 80 },
+    {
+        headerName: "ID",
+        field: "id",
+        sortable: true,
+        filter: true,
+        flex: 0.5,
+        minWidth: 70,
+    },
     {
         headerName: "Supplier",
         field: "supplier_name",
         sortable: true,
         filter: true,
-        width: 200,
+        flex: 1.5,
+        minWidth: 150,
     },
     {
         headerName: "Date Created",
         field: "created_at",
         sortable: true,
         filter: true,
-        width: 130,
+        flex: 1,
+        minWidth: 120,
         valueFormatter: (params) => formatDate(params.value),
     },
     {
@@ -320,7 +407,8 @@ const columnDefs = ref([
         field: "lorry_units",
         sortable: true,
         filter: true,
-        width: 130,
+        flex: 0.8,
+        minWidth: 100,
         valueFormatter: (params) => `${params.value} m³`,
     },
     {
@@ -328,7 +416,8 @@ const columnDefs = ref([
         field: "tractor_units",
         sortable: true,
         filter: true,
-        width: 130,
+        flex: 0.8,
+        minWidth: 100,
         valueFormatter: (params) => `${params.value} m³`,
     },
     {
@@ -336,7 +425,8 @@ const columnDefs = ref([
         field: "expected_profit_lorry",
         sortable: true,
         filter: true,
-        width: 150,
+        flex: 1,
+        minWidth: 120,
         valueFormatter: (params) => formatCurrency(params.value),
     },
     {
@@ -344,7 +434,8 @@ const columnDefs = ref([
         field: "expected_profit_tractor",
         sortable: true,
         filter: true,
-        width: 150,
+        flex: 1,
+        minWidth: 120,
         valueFormatter: (params) => formatCurrency(params.value),
     },
     {
@@ -352,7 +443,8 @@ const columnDefs = ref([
         field: "total_expected_profit",
         sortable: true,
         filter: true,
-        width: 150,
+        flex: 1,
+        minWidth: 120,
         valueFormatter: (params) => formatCurrency(params.value),
     },
     {
@@ -360,7 +452,8 @@ const columnDefs = ref([
         field: "confirmed_cubic_meters",
         sortable: true,
         filter: true,
-        width: 130,
+        flex: 0.8,
+        minWidth: 100,
         valueFormatter: (params) => `${params.value} m³`,
     },
 ]);
@@ -411,6 +504,69 @@ const availableYears = computed(() => {
     }
     return years;
 });
+
+// Multiselect dropdown computed properties
+const filteredSuppliers = computed(() => {
+    if (!supplierSearch.value) {
+        return props.suppliers.filter(
+            (supplier) =>
+                !selectedSuppliers.value.some(
+                    (selected) => selected.id === supplier.id
+                )
+        );
+    }
+    return props.suppliers.filter(
+        (supplier) =>
+            supplier.name
+                .toLowerCase()
+                .includes(supplierSearch.value.toLowerCase()) &&
+            !selectedSuppliers.value.some(
+                (selected) => selected.id === supplier.id
+            )
+    );
+});
+
+// Multiselect dropdown methods
+const selectSupplier = (supplier) => {
+    if (!isSupplierSelected(supplier.id)) {
+        selectedSuppliers.value.push(supplier);
+        filters.value.supplierIds.push(supplier.id);
+    }
+    supplierSearch.value = "";
+    showSupplierDropdown.value = false;
+};
+
+const removeSupplier = (supplierId) => {
+    selectedSuppliers.value = selectedSuppliers.value.filter(
+        (s) => s.id !== supplierId
+    );
+    filters.value.supplierIds = filters.value.supplierIds.filter(
+        (id) => id !== supplierId
+    );
+};
+
+const clearAllSuppliers = () => {
+    selectedSuppliers.value = [];
+    filters.value.supplierIds = [];
+    supplierSearch.value = "";
+};
+
+const isSupplierSelected = (supplierId) => {
+    return selectedSuppliers.value.some((s) => s.id === supplierId);
+};
+
+const hideDropdownDelayed = () => {
+    hideDropdownTimeout = setTimeout(() => {
+        showSupplierDropdown.value = false;
+    }, 200);
+};
+
+const clearHideTimeout = () => {
+    if (hideDropdownTimeout) {
+        clearTimeout(hideDropdownTimeout);
+        hideDropdownTimeout = null;
+    }
+};
 
 // Available months for the month filter (only when year is selected)
 const availableMonths = computed(() => {
@@ -621,6 +777,16 @@ const applyFilters = () => {
     filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     filteredRecords.value = filtered;
+
+    // Show alert if no records found
+    if (filtered.length === 0) {
+        Swal.fire({
+            icon: "info",
+            title: "No Records Found",
+            text: "No records match your current filter criteria. Please adjust your filters and try again.",
+            confirmButtonColor: "#3b82f6",
+        });
+    }
 };
 
 // Clear filters function
@@ -633,6 +799,8 @@ const clearFilters = () => {
         selectedMonth: "",
         selectedYear: "",
     };
+    selectedSuppliers.value = [];
+    supplierSearch.value = "";
     filteredRecords.value = [...allRecords.value];
 };
 
@@ -641,13 +809,69 @@ const downloadPDF = async () => {
     isDownloading.value = true;
 
     try {
-        const response = await fetch("/reports/pdf", {
+        // Create a form and submit it to avoid CSRF issues with file downloads
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/reports/pdf";
+        form.style.display = "none";
+
+        // Add CSRF token
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute("content");
+
+        if (!csrfToken) {
+            await Swal.fire({
+                icon: "error",
+                title: "CSRF Token Missing",
+                text: "CSRF token not found. Please refresh the page and try again.",
+                confirmButtonColor: "#3b82f6",
+            });
+            return;
+        }
+
+        const csrfInput = document.createElement("input");
+        csrfInput.type = "hidden";
+        csrfInput.name = "_token";
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+
+        // Add supplier_ids
+        if (filters.value.supplierIds && filters.value.supplierIds.length > 0) {
+            filters.value.supplierIds.forEach((id) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "supplier_ids[]";
+                input.value = id;
+                form.appendChild(input);
+            });
+        }
+
+        // Add date_from
+        if (filters.value.dateFrom) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "date_from";
+            input.value = filters.value.dateFrom;
+            form.appendChild(input);
+        }
+
+        // Add date_to
+        if (filters.value.dateTo) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "date_to";
+            input.value = filters.value.dateTo;
+            form.appendChild(input);
+        }
+
+        // First check if there are any records before attempting download
+        const checkResponse = await fetch("/reports/check", {
             method: "POST",
             headers: {
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
+                "X-CSRF-TOKEN": csrfToken,
                 "Content-Type": "application/json",
+                Accept: "application/json",
             },
             body: JSON.stringify({
                 supplier_ids: filters.value.supplierIds,
@@ -656,25 +880,41 @@ const downloadPDF = async () => {
             }),
         });
 
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.style.display = "none";
-            a.href = url;
-            a.download = `records_report_${
-                new Date().toISOString().split("T")[0]
-            }.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        } else {
-            alert("Error generating PDF report");
+        if (checkResponse.status === 422) {
+            const errorData = await checkResponse.json();
+            await Swal.fire({
+                icon: "warning",
+                title: "No Records Found",
+                text:
+                    errorData.message ||
+                    "No records match your current filter criteria. Please adjust your filters and try again.",
+                confirmButtonColor: "#3b82f6",
+            });
+            return;
         }
+
+        if (!checkResponse.ok) {
+            await Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Error checking records. Please try again.",
+                confirmButtonColor: "#3b82f6",
+            });
+            return;
+        }
+
+        // If check passes, submit the form for download
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
     } catch (error) {
         console.error("Error:", error);
-        alert("Error generating PDF report");
+        await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error generating PDF report. Please try again.",
+            confirmButtonColor: "#3b82f6",
+        });
     } finally {
         isDownloading.value = false;
     }
@@ -685,13 +925,69 @@ const downloadExcel = async () => {
     isDownloading.value = true;
 
     try {
-        const response = await fetch("/reports/excel", {
+        // Create a form and submit it to avoid CSRF issues with file downloads
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/reports/excel";
+        form.style.display = "none";
+
+        // Add CSRF token
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute("content");
+
+        if (!csrfToken) {
+            await Swal.fire({
+                icon: "error",
+                title: "CSRF Token Missing",
+                text: "CSRF token not found. Please refresh the page and try again.",
+                confirmButtonColor: "#3b82f6",
+            });
+            return;
+        }
+
+        const csrfInput = document.createElement("input");
+        csrfInput.type = "hidden";
+        csrfInput.name = "_token";
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+
+        // Add supplier_ids
+        if (filters.value.supplierIds && filters.value.supplierIds.length > 0) {
+            filters.value.supplierIds.forEach((id) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "supplier_ids[]";
+                input.value = id;
+                form.appendChild(input);
+            });
+        }
+
+        // Add date_from
+        if (filters.value.dateFrom) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "date_from";
+            input.value = filters.value.dateFrom;
+            form.appendChild(input);
+        }
+
+        // Add date_to
+        if (filters.value.dateTo) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "date_to";
+            input.value = filters.value.dateTo;
+            form.appendChild(input);
+        }
+
+        // First check if there are any records before attempting download
+        const checkResponse = await fetch("/reports/check", {
             method: "POST",
             headers: {
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
+                "X-CSRF-TOKEN": csrfToken,
                 "Content-Type": "application/json",
+                Accept: "application/json",
             },
             body: JSON.stringify({
                 supplier_ids: filters.value.supplierIds,
@@ -700,25 +996,41 @@ const downloadExcel = async () => {
             }),
         });
 
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.style.display = "none";
-            a.href = url;
-            a.download = `records_report_${
-                new Date().toISOString().split("T")[0]
-            }.xlsx`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        } else {
-            alert("Error generating Excel report");
+        if (checkResponse.status === 422) {
+            const errorData = await checkResponse.json();
+            await Swal.fire({
+                icon: "warning",
+                title: "No Records Found",
+                text:
+                    errorData.message ||
+                    "No records match your current filter criteria. Please adjust your filters and try again.",
+                confirmButtonColor: "#3b82f6",
+            });
+            return;
         }
+
+        if (!checkResponse.ok) {
+            await Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Error checking records. Please try again.",
+                confirmButtonColor: "#3b82f6",
+            });
+            return;
+        }
+
+        // If check passes, submit the form for download
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
     } catch (error) {
         console.error("Error:", error);
-        alert("Error generating Excel report");
+        await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error generating Excel report. Please try again.",
+            confirmButtonColor: "#3b82f6",
+        });
     } finally {
         isDownloading.value = false;
     }
@@ -736,3 +1048,19 @@ watch(
 // Initialize with all records
 applyFilters();
 </script>
+
+<style scoped>
+/* Custom styles for the multiselect dropdown */
+.relative input:focus + .absolute {
+    display: block;
+}
+
+.cursor-pointer:hover {
+    background-color: #eff6ff;
+}
+
+/* Ensure dropdown appears above other elements */
+.z-10 {
+    z-index: 10;
+}
+</style>

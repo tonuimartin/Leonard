@@ -42,12 +42,28 @@ class ReportController extends Controller
 
     public function downloadPDF(Request $request)
     {
+        // Add some logging to debug CSRF issues
+        \Log::info('PDF Download Request', [
+            'headers' => $request->headers->all(),
+            'input' => $request->all(),
+            'session_token' => $request->session()->token(),
+            'csrf_token' => $request->header('X-CSRF-TOKEN')
+        ]);
+
         $supplierIds = $request->input('supplier_ids', []);
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
 
         // Get filtered records
         $records = $this->getFilteredRecords($supplierIds, $dateFrom, $dateTo);
+
+        // Check if records exist
+        if (empty($records)) {
+            return response()->json([
+                'error' => 'No records found',
+                'message' => 'No records match your current filter criteria. Please adjust your filters and try again.'
+            ], 422);
+        }
 
         // Get supplier names for the report header
         $supplierNames = [];
@@ -66,12 +82,23 @@ class ReportController extends Controller
             ],
             'generated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'total_profit' => collect($records)->sum('total_expected_profit'),
-            'total_records' => count($records)
+            'total_records' => count($records),
+            // Add other totals for PDF
+            'total_lorry_amount' => collect($records)->sum('lorry_amount'),
+            'total_lorry_units' => collect($records)->sum('lorry_units'),
+            'total_tractor_amount' => collect($records)->sum('tractor_amount'),
+            'total_tractor_units' => collect($records)->sum('tractor_units'),
+            'total_profit_lorry' => collect($records)->sum('expected_profit_lorry'),
+            'total_profit_tractor' => collect($records)->sum('expected_profit_tractor'),
+            'total_confirmed_cubic' => collect($records)->sum('confirmed_cubic_meters'),
+            'total_extra_cubic' => collect($records)->sum('extra_cubic'),
+            'total_less_cubic' => collect($records)->sum('less_cubic'),
         ];
 
         $pdf = PDF::loadView('reports.records', $data);
 
-        $filename = 'records_report_' . Carbon::now()->format('Y_m_d_H_i_s') . '.pdf';
+        $timestamp = Carbon::now();
+        $filename = 'REPORT_' . $timestamp->format('YmdHis') . '_records_report_' . $timestamp->format('Y-m-d') . '.pdf';
 
         return $pdf->download($filename);
     }
@@ -84,6 +111,14 @@ class ReportController extends Controller
 
         // Get filtered records
         $records = $this->getFilteredRecords($supplierIds, $dateFrom, $dateTo);
+
+        // Check if records exist
+        if (empty($records)) {
+            return response()->json([
+                'error' => 'No records found',
+                'message' => 'No records match your current filter criteria. Please adjust your filters and try again.'
+            ], 422);
+        }
 
         // Create a new spreadsheet
         $spreadsheet = new Spreadsheet();
@@ -103,8 +138,7 @@ class ReportController extends Controller
             ->setCellValue('K1', 'Confirmed Cubic Meters')
             ->setCellValue('L1', 'Extra Cubic')
             ->setCellValue('M1', 'Less Cubic')
-            ->setCellValue('N1', 'Created At')
-            ->setCellValue('O1', 'Deleted');
+            ->setCellValue('N1', 'Created At');
 
         // Apply header styling
         $headerStyle = [
@@ -123,7 +157,7 @@ class ReportController extends Controller
                 'startColor' => ['rgb' => 'CCCCCC'],
             ],
         ];
-        $sheet->getStyle('A1:O1')->applyFromArray($headerStyle);
+        $sheet->getStyle('A1:N1')->applyFromArray($headerStyle);
 
         // Populate the data rows
         $row = 2;
@@ -141,10 +175,45 @@ class ReportController extends Controller
                 ->setCellValue('K' . $row, $record['confirmed_cubic_meters'])
                 ->setCellValue('L' . $row, $record['extra_cubic'])
                 ->setCellValue('M' . $row, $record['less_cubic'])
-                ->setCellValue('N' . $row, $record['created_at'])
-                ->setCellValue('O' . $row, $record['deleted'] ? 'Yes' : 'No');
+                ->setCellValue('N' . $row, $record['created_at']);
             $row++;
         }
+
+        // Add grand totals row
+        $totalRow = $row + 1;
+        $sheet->setCellValue('A' . $totalRow, '')
+            ->setCellValue('B' . $totalRow, '')
+            ->setCellValue('C' . $totalRow, 'GRAND TOTALS')
+            ->setCellValue('D' . $totalRow, collect($records)->sum('lorry_amount'))
+            ->setCellValue('E' . $totalRow, collect($records)->sum('lorry_units'))
+            ->setCellValue('F' . $totalRow, collect($records)->sum('tractor_amount'))
+            ->setCellValue('G' . $totalRow, collect($records)->sum('tractor_units'))
+            ->setCellValue('H' . $totalRow, collect($records)->sum('expected_profit_lorry'))
+            ->setCellValue('I' . $totalRow, collect($records)->sum('expected_profit_tractor'))
+            ->setCellValue('J' . $totalRow, collect($records)->sum('total_expected_profit'))
+            ->setCellValue('K' . $totalRow, collect($records)->sum('confirmed_cubic_meters'))
+            ->setCellValue('L' . $totalRow, collect($records)->sum('extra_cubic'))
+            ->setCellValue('M' . $totalRow, collect($records)->sum('less_cubic'))
+            ->setCellValue('N' . $totalRow, '');
+
+        // Apply grand totals styling
+        $totalStyle = [
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THICK,
+                ],
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '87CEEB'], // Sky blue color
+            ],
+        ];
+        $sheet->getStyle('A' . $totalRow . ':N' . $totalRow)->applyFromArray($totalStyle);
 
         // Apply data styling
         $dataStyle = [
@@ -158,15 +227,16 @@ class ReportController extends Controller
                 ],
             ],
         ];
-        $sheet->getStyle('A2:O' . ($row - 1))->applyFromArray($dataStyle);
+        $sheet->getStyle('A2:N' . ($row - 1))->applyFromArray($dataStyle);
 
         // Auto-size columns
-        foreach (range('A', 'O') as $column) {
+        foreach (range('A', 'N') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
 
         // Set filename and download
-        $filename = 'records_report_' . Carbon::now()->format('Y_m_d_H_i_s') . '.xlsx';
+        $timestamp = Carbon::now();
+        $filename = 'REPORT_' . $timestamp->format('YmdHis') . '_records_report_' . $timestamp->format('Y-m-d') . '.xlsx';
         $writer = new Xlsx($spreadsheet);
 
         return response()->stream(
@@ -180,6 +250,26 @@ class ReportController extends Controller
                 'Cache-Control' => 'max-age=0',
             ]
         );
+    }
+
+    public function checkRecords(Request $request)
+    {
+        $supplierIds = $request->input('supplier_ids', []);
+        $dateFrom = $request->input('date_from');
+        $dateTo = $request->input('date_to');
+
+        // Get filtered records
+        $records = $this->getFilteredRecords($supplierIds, $dateFrom, $dateTo);
+
+        // Check if records exist
+        if (empty($records)) {
+            return response()->json([
+                'error' => 'No records found',
+                'message' => 'No records match your current filter criteria. Please adjust your filters and try again.'
+            ], 422);
+        }
+
+        return response()->json(['success' => true, 'count' => count($records)]);
     }
 
     private function getFilteredRecords($supplierIds = [], $dateFrom = null, $dateTo = null)

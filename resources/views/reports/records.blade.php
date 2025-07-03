@@ -110,12 +110,16 @@
                     <th>ID</th>
                     <th>Supplier</th>
                     <th>Date Created</th>
-                    <th>Lorry Units</th>
-                    <th>Tractor Units</th>
-                    <th>Lorry Profit</th>
-                    <th>Tractor Profit</th>
-                    <th>Total Profit</th>
-                    <th>Confirmed m³</th>
+                    <th>Total Lorry Amount</th>
+                    <th>Total Lorry Units</th>
+                    <th>Total Tractor Amount</th>
+                    <th>Total Tractor Units</th>
+                    <th>Total Expected Profit (Lorry)</th>
+                    <th>Total Expected Profit (Tractor)</th>
+                    <th>Total Expected Profit</th>
+                    <th>Total Confirmed m³</th>
+                    <th>Total Extra Cubic</th>
+                    <th>Total Less Cubic</th>
                 </tr>
             </thead>
             <tbody>
@@ -124,20 +128,32 @@
                     <td>{{ $record['id'] }}</td>
                     <td>{{ $record['supplier_name'] }}</td>
                     <td>{{ $record['created_at'] }}</td>
+                    <td class="text-right currency">KSh {{ number_format($record['lorry_amount'], 2) }}</td>
                     <td class="text-right">{{ number_format($record['lorry_units'], 2) }} m³</td>
+                    <td class="text-right currency">KSh {{ number_format($record['tractor_amount'], 2) }}</td>
                     <td class="text-right">{{ number_format($record['tractor_units'], 2) }} m³</td>
                     <td class="text-right currency">KSh {{ number_format($record['expected_profit_lorry'], 2) }}</td>
                     <td class="text-right currency">KSh {{ number_format($record['expected_profit_tractor'], 2) }}</td>
                     <td class="text-right currency">KSh {{ number_format($record['total_expected_profit'], 2) }}</td>
                     <td class="text-right">{{ number_format($record['confirmed_cubic_meters'], 2) }} m³</td>
+                    <td class="text-right">{{ number_format($record['extra_cubic'], 2) }} m³</td>
+                    <td class="text-right">{{ number_format($record['less_cubic'], 2) }} m³</td>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot>
-                <tr style="background-color: #f8f9fa; font-weight: bold;">
-                    <td colspan="7" class="text-right">Total Expected Profit:</td>
+                <tr style="background-color: #87CEEB; font-weight: bold; border: 2px solid #333;">
+                    <td colspan="3" class="text-right" style="font-size: 14px;">GRAND TOTALS:</td>
+                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('lorry_amount'), 2) }}</td>
+                    <td class="text-right">{{ number_format(collect($records)->sum('lorry_units'), 2) }} m³</td>
+                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('tractor_amount'), 2) }}</td>
+                    <td class="text-right">{{ number_format(collect($records)->sum('tractor_units'), 2) }} m³</td>
+                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('expected_profit_lorry'), 2) }}</td>
+                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('expected_profit_tractor'), 2) }}</td>
                     <td class="text-right currency">KSh {{ number_format($total_profit, 2) }}</td>
-                    <td></td>
+                    <td class="text-right">{{ number_format(collect($records)->sum('confirmed_cubic_meters'), 2) }} m³</td>
+                    <td class="text-right">{{ number_format(collect($records)->sum('extra_cubic'), 2) }} m³</td>
+                    <td class="text-right">{{ number_format(collect($records)->sum('less_cubic'), 2) }} m³</td>
                 </tr>
             </tfoot>
         </table>

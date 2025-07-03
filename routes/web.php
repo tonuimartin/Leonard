@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
 
     // Report routes
     Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'showReportsView'])->name('reports.view');
+    Route::post('/reports/check', [\App\Http\Controllers\ReportController::class, 'checkRecords'])->name('reports.check');
     Route::post('/reports/pdf', [\App\Http\Controllers\ReportController::class, 'downloadPDF'])->name('reports.pdf');
     Route::post('/reports/excel', [\App\Http\Controllers\ReportController::class, 'downloadExcel'])->name('reports.excel');
 });
