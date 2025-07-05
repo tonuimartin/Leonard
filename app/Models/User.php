@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -24,6 +25,10 @@ class User extends Authenticatable
         'role_id',
         'phone_number',
         'deleted',
+        'admin_approved',
+        'admin_approval_token',
+        'admin_approved_at',
+        'approved_by',
     ];
 
     /**
@@ -47,6 +52,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'deleted' => 'integer',
+            'admin_approved' => 'boolean',
+            'admin_approved_at' => 'datetime',
         ];
     }
 
@@ -80,5 +87,79 @@ class User extends Authenticatable
     public function restore()
     {
         $this->update(['deleted' => 0]);
+    }
+
+    /**
+     * Check if the user is an admin (role_id = 1)
+     */
+    public function isAdmin()
+    {
+        return $this->role_id === 1;
+    }
+
+    /**
+     * Check if the user can access admin features
+     */
+    public function canAccessAdmin()
+    {
+        return $this->isAdmin();
+    }
+
+    /**
+     * Check if the user is fully verified (email verified AND admin approved)
+     */
+    public function isFullyVerified()
+    {
+        return $this->hasVerifiedEmail() && $this->admin_approved;
+    }
+
+    /**
+     * Generate admin approval token
+     */
+    public function generateAdminApprovalToken()
+    {
+        $this->admin_approval_token = Str::random(64);
+        $this->save();
+        return $this->admin_approval_token;
+    }
+
+    /**
+     * Approve user by admin
+     */
+    public function approveByAdmin($adminId)
+    {
+        $this->admin_approved = true;
+        $this->admin_approved_at = now();
+        $this->approved_by = $adminId;
+        $this->admin_approval_token = null; // Clear the token
+        $this->save();
+    }
+
+    /**
+     * Get the admin who approved this user
+     */
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
+     * Scope to get users pending admin approval (email verified but not admin approved)
+     */
+    public function scopePendingApproval($query)
+    {
+        return $query->whereNotNull('email_verified_at')
+            ->where('admin_approved', false)
+            ->where('deleted', 0);
+    }
+
+    /**
+     * Scope to get fully verified users (email verified AND admin approved)
+     */
+    public function scopeFullyVerified($query)
+    {
+        return $query->whereNotNull('email_verified_at')
+            ->where('admin_approved', true)
+            ->where('deleted', 0);
     }
 }

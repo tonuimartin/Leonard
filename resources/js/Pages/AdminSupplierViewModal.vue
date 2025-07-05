@@ -53,7 +53,7 @@
 
 <script setup>
 import { ref, watch, computed } from "vue";
-import { Head, router } from "@inertiajs/vue3";
+import { Head, router, usePage } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import AdminCreateSupplierModal from "./Components/AdminCreateSupplierModal.vue";
 import AdminEditSupplierModal from "./Components/AdminEditSupplierModal.vue";
@@ -62,6 +62,8 @@ import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 ModuleRegistry.registerModules([AllCommunityModule]);
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
+
+const page = usePage();
 
 const props = defineProps({
     suppliers: {
@@ -74,10 +76,15 @@ const showCreateModal = ref(false);
 const showEditModal = ref(false);
 const selectedSupplier = ref({});
 
+// Check if user is admin
+const isAdmin = computed(() => {
+    return page.props.auth?.user?.is_admin || false;
+});
+
 // Pagination page size options
 const paginationPageSizeSelector = ref([5, 10, 15, 20, 50]);
 
-const columnDefs = ref([
+const columnDefs = computed(() => [
     { headerName: "ID", field: "id", sortable: true, filter: true, width: 80 },
     { headerName: "Name", field: "name", sortable: true, filter: true },
     {
@@ -90,14 +97,17 @@ const columnDefs = ref([
         headerName: "Actions",
         field: "actions",
         cellRenderer: (params) => {
-            return `
-                <button onclick="editSupplier(${params.data.id})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs mr-2">
-                    Edit
-                </button>
-                <button onclick="deleteSupplier(${params.data.id})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs">
+            const editButton = `<button onclick="editSupplier(${params.data.id})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs mr-2">
+                Edit
+            </button>`;
+
+            const deleteButton = isAdmin.value
+                ? `<button onclick="deleteSupplier(${params.data.id})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs">
                     Delete
-                </button>
-            `;
+                </button>`
+                : "";
+
+            return editButton + deleteButton;
         },
         width: 150,
         sortable: false,
@@ -134,6 +144,11 @@ window.editSupplier = (id) => {
 };
 
 window.deleteSupplier = async (id) => {
+    if (!isAdmin.value) {
+        alert("You don't have permission to delete suppliers.");
+        return;
+    }
+
     if (confirm("Are you sure you want to delete this supplier?")) {
         try {
             const response = await fetch(`/supplier/${id}`, {

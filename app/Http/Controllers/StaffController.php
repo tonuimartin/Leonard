@@ -54,6 +54,12 @@ class StaffController extends Controller
     // Create a new staff member
     public function store(Request $request)
     {
+        \Log::info('=== STAFF REGISTRATION STARTED ===', [
+            'request_data' => $request->all(),
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email ?? 'unknown'
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -61,16 +67,61 @@ class StaffController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'password' => bcrypt($request->password),
-            'role_id' => 2, // Staff role
-            'deleted' => 0, // Default to active
-        ]);
+        \Log::info('Validation passed, creating user...');
 
-        return redirect()->route('staff.view')->with('success', 'Staff member created successfully.');
+        try {
+            // Create the user
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'password' => bcrypt($request->password),
+                'role_id' => 2, // Staff role (automatically assigned)
+                'deleted' => 0, // Default to active
+                'admin_approved' => true, // Auto-approve since admin is creating them
+                'admin_approved_at' => now(),
+                'approved_by' => auth()->id(), // Current admin
+            ]);
+
+            \Log::info('User created successfully by admin', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'created_by_admin' => auth()->id()
+            ]);
+
+            // Send email verification notification (user still needs to verify email)
+            $user->sendEmailVerificationNotification();
+            \Log::info('Email verification sent to user');
+
+            // No need to notify admins since an admin is creating this user
+
+            return redirect()->route('staff.view')->with(
+                'success',
+                'Staff member created successfully. They will receive an email verification link and can login once they verify their email.'
+            );
+        } catch (\Exception $e) {
+            \Log::error('Error creating staff member', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return redirect()->back()->with('error', 'Failed to create staff member: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Notify all admins about new user registration
+     */
+    private function notifyAdminsAboutNewRegistration($user, $approvalToken)
+    {
+        try {
+            $admins = User::where('role_id', 1)->active()->get();
+            \Log::info('Found admin users for notification', ['count' => $admins->count()]);
+
+            foreach ($admins as $admin) {
+                \Log::info('Sending admin approval notification', ['admin_email' => $admin->email]);
+                $admin->notify(new \App\Notifications\AdminApprovalRequired($user, $approvalToken));
+                \Log::info('Admin approval notification sent successfully', ['admin_email' => $admin->email]);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error sending admin notifications', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+        }
     }
 
     // Soft delete a staff member

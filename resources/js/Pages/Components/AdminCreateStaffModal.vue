@@ -130,30 +130,27 @@ const handleSubmit = async () => {
         password: formData.value.password,
     };
 
-    try {
-        const response = await fetch("/staff", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(submitData),
-        });
+    console.log("Submitting staff data:", submitData);
 
-        if (response.ok) {
-            emit("created");
-            emit("close");
-            // Refresh the page to show updated data
-            router.reload();
-        } else {
-            const errorData = await response.json();
-            alert(
-                "Error creating staff member: " +
-                    (errorData.message || "Unknown error")
-            );
-        }
+    try {
+        // Use Inertia.js router instead of fetch
+        router.post("/staff", submitData, {
+            onSuccess: () => {
+                console.log("Staff created successfully");
+                emit("created");
+                emit("close");
+                resetForm();
+            },
+            onError: (errors) => {
+                console.error("Error creating staff member:", errors);
+                alert(
+                    "Error creating staff member: " +
+                        (errors.message ||
+                            Object.values(errors)[0] ||
+                            "Unknown error")
+                );
+            },
+        });
     } catch (error) {
         console.error("Error:", error);
         alert("Error creating staff member");

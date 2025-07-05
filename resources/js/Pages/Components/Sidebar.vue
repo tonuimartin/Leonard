@@ -10,6 +10,7 @@
         <div class="text-lg font-semibold mb-4 text-gray-800">Menu</div>
         <nav class="flex flex-col gap-3 mt-8">
             <span
+                v-if="isAdmin"
                 class="text-gray-700 hover:text-blue-600 cursor-pointer transition"
                 @click="goToStaff"
                 >Staff</span
@@ -25,6 +26,7 @@
                 >Records</span
             >
             <span
+                v-if="isAdmin"
                 class="text-gray-700 hover:text-blue-600 cursor-pointer transition"
                 @click="goToReports"
                 >Reports</span
@@ -34,7 +36,15 @@
 </template>
 
 <script setup>
-import { router } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+
+const page = usePage();
+
+const isAdmin = computed(() => {
+    return page.props.auth?.user?.is_admin || false;
+});
+
 function goToStaff() {
     router.visit("/staff");
 }
