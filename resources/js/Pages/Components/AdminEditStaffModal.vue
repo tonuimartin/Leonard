@@ -2,62 +2,68 @@
     <!-- Edit Staff Modal -->
     <div
         v-if="showModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50 backdrop-blur-sm"
     >
         <div
-            class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+            class="relative top-20 mx-auto p-8 border w-full max-w-md shadow-2xl rounded-3xl bg-white/95 backdrop-blur-lg border-red-200"
         >
             <div class="mt-3">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">
-                    Edit Staff Member
-                </h3>
-                <form @submit.prevent="handleSubmit">
-                    <div class="mb-4">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-red-900 mb-2">
+                        Edit Staff Member
+                    </h3>
+                    <p class="text-red-600">Update team member information</p>
+                </div>
+                <form @submit.prevent="handleSubmit" class="space-y-6">
+                    <div>
                         <label
-                            class="block text-gray-700 text-sm font-bold mb-2"
+                            class="block text-red-900 text-sm font-semibold mb-3"
                             >Name</label
                         >
                         <input
                             v-model="formData.name"
                             type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                            placeholder="Enter full name"
                             required
                         />
                     </div>
-                    <div class="mb-4">
+                    <div>
                         <label
-                            class="block text-gray-700 text-sm font-bold mb-2"
+                            class="block text-red-900 text-sm font-semibold mb-3"
                             >Email</label
                         >
                         <input
                             v-model="formData.email"
                             type="email"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                            placeholder="Enter email address"
                             required
                         />
                     </div>
-                    <div class="mb-4">
+                    <div>
                         <label
-                            class="block text-gray-700 text-sm font-bold mb-2"
+                            class="block text-red-900 text-sm font-semibold mb-3"
                             >Phone Number</label
                         >
                         <input
                             v-model="formData.phone_number"
                             type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                            placeholder="Enter phone number"
                         />
                     </div>
-                    <div class="flex items-center justify-between">
+                    <div class="flex gap-4 pt-4">
                         <button
                             type="submit"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                         >
                             Update Staff
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
-                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         >
                             Cancel
                         </button>

@@ -1,23 +1,80 @@
 <template>
     <Head title="Staff" />
     <AuthenticatedLayout>
-        <div class="p-4 sm:p-6 lg:p-8 bg-gray-100 min-h-screen">
+        <div
+            class="p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-red-50 via-white to-red-50 min-h-screen"
+        >
             <div class="mx-auto max-w-7xl">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        <!-- Create Staff Button -->
-                        <div class="mb-4">
-                            <button
-                                @click="showCreateModal = true"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                                Create Staff
-                            </button>
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <div
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                    >
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h1
+                                    class="text-3xl font-bold text-red-900 mb-2"
+                                >
+                                    Staff Management
+                                </h1>
+                                <p class="text-red-600 font-medium">
+                                    Manage your team members and their access
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <!-- Create Staff Button -->
+                                <button
+                                    @click="showCreateModal = true"
+                                    class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                                >
+                                    <svg
+                                        class="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        />
+                                    </svg>
+                                    Create Staff
+                                </button>
+                            </div>
                         </div>
-                        <!-- AG Grid -->
+                    </div>
+                </div>
+
+                <!-- Staff Grid Container -->
+                <div
+                    class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                >
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-red-900 mb-2">
+                            Team Members
+                        </h2>
+                        <p class="text-red-600">
+                            View and manage all staff members
+                        </p>
+                    </div>
+
+                    <!-- AG Grid with Modern Styling -->
+                    <div
+                        class="rounded-xl overflow-hidden border border-red-200/50 shadow-sm"
+                    >
                         <ag-grid-vue
-                            class="ag-theme-alpine"
-                            style="width: 100%"
+                            class="ag-theme-alpine modern-grid"
+                            style="
+                                width: 100%;
+                                --ag-grid-size: 8px;
+                                --ag-border-color: rgb(254 202 202);
+                                --ag-header-background-color: rgb(254 242 242);
+                                --ag-header-foreground-color: rgb(127 29 29);
+                                --ag-odd-row-background-color: rgb(255 255 255);
+                                --ag-row-hover-color: rgb(254 242 242);
+                            "
                             :domLayout="'autoHeight'"
                             :columnDefs="columnDefs"
                             :rowData="rowData"
@@ -33,6 +90,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Create Staff Modal Component -->
         <AdminCreateStaffModal
             :showModal="showCreateModal"
@@ -49,6 +107,35 @@
         />
     </AuthenticatedLayout>
 </template>
+
+<style>
+.modern-grid .ag-header {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.modern-grid .ag-cell {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+}
+
+.modern-grid .ag-row {
+    border: none;
+    border-bottom: 1px solid rgb(254 202 202);
+}
+
+.modern-grid .ag-root-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.modern-grid .ag-paging-panel {
+    border-top: 1px solid rgb(254 202 202);
+    background-color: rgb(254 242 242);
+    padding: 16px;
+}
+</style>
 
 <script setup>
 import { ref, watch, computed } from "vue";
@@ -91,15 +178,17 @@ const columnDefs = ref([
         field: "actions",
         cellRenderer: (params) => {
             return `
-                <button onclick="editStaff(${params.data.id})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-xs mr-2">
-                    Edit
-                </button>
-                <button onclick="deleteStaff(${params.data.id})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs">
-                    Delete
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="editStaff(${params.data.id})" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg">
+                        Edit
+                    </button>
+                    <button onclick="deleteStaff(${params.data.id})" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg">
+                        Delete
+                    </button>
+                </div>
             `;
         },
-        width: 150,
+        width: 200,
         sortable: false,
         filter: false,
     },

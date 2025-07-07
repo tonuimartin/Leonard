@@ -95,7 +95,16 @@ class ReportController extends Controller
             'total_less_cubic' => collect($records)->sum('less_cubic'),
         ];
 
-        $pdf = PDF::loadView('reports.records', $data);
+        $pdf = PDF::loadView('reports.records', $data)
+            ->setPaper('a4', 'landscape')
+            ->setOptions([
+                'dpi' => 150,
+                'defaultFont' => 'sans-serif',
+                'isRemoteEnabled' => true,
+                'isHtml5ParserEnabled' => true,
+                'debugKeepTemp' => false,
+                'chroot' => realpath(base_path()),
+            ]);
 
         $timestamp = Carbon::now();
         $filename = 'REPORT_' . $timestamp->format('YmdHis') . '_records_report_' . $timestamp->format('Y-m-d') . '.pdf';
@@ -126,8 +135,8 @@ class ReportController extends Controller
 
         // Set the header row
         $sheet->setCellValue('A1', 'ID')
-            ->setCellValue('B1', 'Supplier ID')
-            ->setCellValue('C1', 'Supplier Name')
+            ->setCellValue('B1', 'Supplier Name')
+            ->setCellValue('C1', 'Created At')
             ->setCellValue('D1', 'Lorry Amount')
             ->setCellValue('E1', 'Lorry Units')
             ->setCellValue('F1', 'Tractor Amount')
@@ -137,8 +146,7 @@ class ReportController extends Controller
             ->setCellValue('J1', 'Total Expected Profit')
             ->setCellValue('K1', 'Confirmed Cubic Meters')
             ->setCellValue('L1', 'Extra Cubic')
-            ->setCellValue('M1', 'Less Cubic')
-            ->setCellValue('N1', 'Created At');
+            ->setCellValue('M1', 'Less Cubic');
 
         // Apply header styling
         $headerStyle = [
@@ -157,14 +165,14 @@ class ReportController extends Controller
                 'startColor' => ['rgb' => 'CCCCCC'],
             ],
         ];
-        $sheet->getStyle('A1:N1')->applyFromArray($headerStyle);
+        $sheet->getStyle('A1:M1')->applyFromArray($headerStyle);
 
         // Populate the data rows
         $row = 2;
         foreach ($records as $record) {
             $sheet->setCellValue('A' . $row, $record['id'])
-                ->setCellValue('B' . $row, $record['supplier_id'])
-                ->setCellValue('C' . $row, $record['supplier_name'])
+                ->setCellValue('B' . $row, $record['supplier_name'])
+                ->setCellValue('C' . $row, $record['created_at'])
                 ->setCellValue('D' . $row, $record['lorry_amount'])
                 ->setCellValue('E' . $row, $record['lorry_units'])
                 ->setCellValue('F' . $row, $record['tractor_amount'])
@@ -174,16 +182,15 @@ class ReportController extends Controller
                 ->setCellValue('J' . $row, $record['total_expected_profit'])
                 ->setCellValue('K' . $row, $record['confirmed_cubic_meters'])
                 ->setCellValue('L' . $row, $record['extra_cubic'])
-                ->setCellValue('M' . $row, $record['less_cubic'])
-                ->setCellValue('N' . $row, $record['created_at']);
+                ->setCellValue('M' . $row, $record['less_cubic']);
             $row++;
         }
 
         // Add grand totals row
         $totalRow = $row + 1;
         $sheet->setCellValue('A' . $totalRow, '')
-            ->setCellValue('B' . $totalRow, '')
-            ->setCellValue('C' . $totalRow, 'GRAND TOTALS')
+            ->setCellValue('B' . $totalRow, 'GRAND TOTALS')
+            ->setCellValue('C' . $totalRow, '')
             ->setCellValue('D' . $totalRow, collect($records)->sum('lorry_amount'))
             ->setCellValue('E' . $totalRow, collect($records)->sum('lorry_units'))
             ->setCellValue('F' . $totalRow, collect($records)->sum('tractor_amount'))
@@ -193,8 +200,7 @@ class ReportController extends Controller
             ->setCellValue('J' . $totalRow, collect($records)->sum('total_expected_profit'))
             ->setCellValue('K' . $totalRow, collect($records)->sum('confirmed_cubic_meters'))
             ->setCellValue('L' . $totalRow, collect($records)->sum('extra_cubic'))
-            ->setCellValue('M' . $totalRow, collect($records)->sum('less_cubic'))
-            ->setCellValue('N' . $totalRow, '');
+            ->setCellValue('M' . $totalRow, collect($records)->sum('less_cubic'));
 
         // Apply grand totals styling
         $totalStyle = [
@@ -213,7 +219,7 @@ class ReportController extends Controller
                 'startColor' => ['rgb' => '87CEEB'], // Sky blue color
             ],
         ];
-        $sheet->getStyle('A' . $totalRow . ':N' . $totalRow)->applyFromArray($totalStyle);
+        $sheet->getStyle('A' . $totalRow . ':M' . $totalRow)->applyFromArray($totalStyle);
 
         // Apply data styling
         $dataStyle = [
@@ -227,10 +233,10 @@ class ReportController extends Controller
                 ],
             ],
         ];
-        $sheet->getStyle('A2:N' . ($row - 1))->applyFromArray($dataStyle);
+        $sheet->getStyle('A2:M' . ($row - 1))->applyFromArray($dataStyle);
 
         // Auto-size columns
-        foreach (range('A', 'N') as $column) {
+        foreach (range('A', 'M') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
 

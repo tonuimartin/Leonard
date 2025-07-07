@@ -14,7 +14,7 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div>
         <div
-            class="min-h-screen bg-gray-100 flex"
+            class="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 flex"
             style="display: flex !important; min-height: 100vh !important"
         >
             <!-- Sidebar -->
@@ -22,7 +22,9 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Main Content Area -->
             <div class="flex-1" style="flex: 1 !important">
-                <nav class="border-b border-gray-100 bg-white">
+                <nav
+                    class="border-b border-red-200/50 bg-white/80 backdrop-blur-sm shadow-sm"
+                >
                     <!-- Primary Navigation Menu -->
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div class="flex h-16 justify-between">
@@ -31,7 +33,7 @@ const showingNavigationDropdown = ref(false);
                                 <div class="flex shrink-0 items-center">
                                     <Link :href="route('dashboard')">
                                         <ApplicationLogo
-                                            class="block h-9 w-auto fill-current text-gray-800"
+                                            class="block h-9 w-auto fill-current text-red-800"
                                         />
                                     </Link>
                                 </div>
@@ -43,6 +45,12 @@ const showingNavigationDropdown = ref(false);
                                     <NavLink
                                         :href="route('dashboard')"
                                         :active="route().current('dashboard')"
+                                        class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none"
+                                        :class="
+                                            route().current('dashboard')
+                                                ? 'border-red-500 text-red-800 focus:border-red-700'
+                                                : 'border-transparent text-red-600 hover:text-red-800 hover:border-red-300 focus:text-red-800 focus:border-red-300'
+                                        "
                                     >
                                         Dashboard
                                     </NavLink>
@@ -55,11 +63,11 @@ const showingNavigationDropdown = ref(false);
                                     <Dropdown align="right" width="48">
                                         <template #trigger>
                                             <span
-                                                class="inline-flex rounded-md"
+                                                class="inline-flex rounded-xl"
                                             >
                                                 <button
                                                     type="button"
-                                                    class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                    class="inline-flex items-center rounded-xl border border-red-200 bg-white/90 px-4 py-2 text-sm font-medium leading-4 text-red-700 transition duration-150 ease-in-out hover:text-red-800 hover:bg-red-50 focus:outline-none shadow-sm backdrop-blur-sm"
                                                 >
                                                     {{
                                                         $page.props.auth?.user
@@ -85,6 +93,7 @@ const showingNavigationDropdown = ref(false);
                                         <template #content>
                                             <DropdownLink
                                                 :href="route('profile.edit')"
+                                                class="rounded-lg mx-1 my-1 text-red-700 hover:bg-red-50"
                                             >
                                                 Profile
                                             </DropdownLink>
@@ -92,6 +101,7 @@ const showingNavigationDropdown = ref(false);
                                                 :href="route('logout')"
                                                 method="post"
                                                 as="button"
+                                                class="rounded-lg mx-1 my-1 text-red-700 hover:bg-red-50"
                                             >
                                                 Log Out
                                             </DropdownLink>

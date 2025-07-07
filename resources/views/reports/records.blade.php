@@ -4,67 +4,90 @@
     <meta charset="utf-8">
     <title>Records Report</title>
     <style>
+        @page {
+            size: A4 landscape;
+            margin: 15mm;
+        }
         body {
             font-family: DejaVu Sans, sans-serif;
-            font-size: 12px;
+            font-size: 9px;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #333;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
         }
         .title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .filters {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background-color: #f8f9fa;
-            padding: 15px;
+            padding: 10px;
             border-radius: 5px;
+            font-size: 8px;
         }
         .filter-item {
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         .summary {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background-color: #e9ecef;
-            padding: 15px;
+            padding: 10px;
             border-radius: 5px;
+            font-size: 8px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            table-layout: fixed;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 4px 2px;
             text-align: left;
+            font-size: 8px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         th {
             background-color: #f2f2f2;
             font-weight: bold;
+            font-size: 7px;
         }
         .text-right {
             text-align: right;
         }
+        .bold-numbers {
+            font-weight: bold;
+        }
         .footer {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: center;
-            font-size: 10px;
+            font-size: 8px;
             color: #666;
             border-top: 1px solid #ddd;
-            padding-top: 10px;
+            padding-top: 8px;
         }
         .currency {
             font-family: monospace;
+            font-size: 7px;
         }
+        /* Column widths to fit all data */
+        .col-id { width: 4%; }
+        .col-supplier { width: 12%; }
+        .col-date { width: 8%; }
+        .col-amount { width: 8%; }
+        .col-units { width: 6%; }
+        .col-profit { width: 8%; }
+        .col-cubic { width: 6%; }
     </style>
 </head>
 <body>
@@ -99,61 +122,61 @@
 
     <div class="summary">
         <h3>Summary:</h3>
-        <div><strong>Total Records:</strong> {{ $total_records }}</div>
-        <div><strong>Total Expected Profit:</strong> <span class="currency">KSh {{ number_format($total_profit, 2) }}</span></div>
+        <div><strong>Total Records:</strong> <span class="bold-numbers">{{ $total_records }}</span></div>
+        <div><strong>Total Expected Profit:</strong> <span class="currency bold-numbers">KSh {{ number_format($total_profit, 2) }}</span></div>
     </div>
 
     @if(count($records) > 0)
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Supplier</th>
-                    <th>Date Created</th>
-                    <th>Total Lorry Amount</th>
-                    <th>Total Lorry Units</th>
-                    <th>Total Tractor Amount</th>
-                    <th>Total Tractor Units</th>
-                    <th>Total Expected Profit (Lorry)</th>
-                    <th>Total Expected Profit (Tractor)</th>
-                    <th>Total Expected Profit</th>
-                    <th>Total Confirmed m³</th>
-                    <th>Total Extra Cubic</th>
-                    <th>Total Less Cubic</th>
+                    <th class="col-id">ID</th>
+                    <th class="col-supplier">Supplier</th>
+                    <th class="col-date">Date</th>
+                    <th class="col-amount">Lorry Amt</th>
+                    <th class="col-units">Lorry m³</th>
+                    <th class="col-amount">Tractor Amt</th>
+                    <th class="col-units">Tractor m³</th>
+                    <th class="col-profit">Lorry Profit</th>
+                    <th class="col-profit">Tractor Profit</th>
+                    <th class="col-profit">Total Profit</th>
+                    <th class="col-cubic">Confirmed m³</th>
+                    <th class="col-cubic">Extra m³</th>
+                    <th class="col-cubic">Less m³</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($records as $record)
                 <tr>
-                    <td>{{ $record['id'] }}</td>
-                    <td>{{ $record['supplier_name'] }}</td>
-                    <td>{{ $record['created_at'] }}</td>
-                    <td class="text-right currency">KSh {{ number_format($record['lorry_amount'], 2) }}</td>
-                    <td class="text-right">{{ number_format($record['lorry_units'], 2) }} m³</td>
-                    <td class="text-right currency">KSh {{ number_format($record['tractor_amount'], 2) }}</td>
-                    <td class="text-right">{{ number_format($record['tractor_units'], 2) }} m³</td>
-                    <td class="text-right currency">KSh {{ number_format($record['expected_profit_lorry'], 2) }}</td>
-                    <td class="text-right currency">KSh {{ number_format($record['expected_profit_tractor'], 2) }}</td>
-                    <td class="text-right currency">KSh {{ number_format($record['total_expected_profit'], 2) }}</td>
-                    <td class="text-right">{{ number_format($record['confirmed_cubic_meters'], 2) }} m³</td>
-                    <td class="text-right">{{ number_format($record['extra_cubic'], 2) }} m³</td>
-                    <td class="text-right">{{ number_format($record['less_cubic'], 2) }} m³</td>
+                    <td class="col-id bold-numbers">{{ $record['id'] }}</td>
+                    <td class="col-supplier">{{ substr($record['supplier_name'], 0, 15) }}{{ strlen($record['supplier_name']) > 15 ? '...' : '' }}</td>
+                    <td class="col-date">{{ date('m/d/Y', strtotime($record['created_at'])) }}</td>
+                    <td class="text-right currency col-amount bold-numbers">{{ number_format($record['lorry_amount'], 0) }}</td>
+                    <td class="text-right col-units bold-numbers">{{ number_format($record['lorry_units'], 1) }}</td>
+                    <td class="text-right currency col-amount bold-numbers">{{ number_format($record['tractor_amount'], 0) }}</td>
+                    <td class="text-right col-units bold-numbers">{{ number_format($record['tractor_units'], 1) }}</td>
+                    <td class="text-right currency col-profit bold-numbers">{{ number_format($record['expected_profit_lorry'], 0) }}</td>
+                    <td class="text-right currency col-profit bold-numbers">{{ number_format($record['expected_profit_tractor'], 0) }}</td>
+                    <td class="text-right currency col-profit bold-numbers">{{ number_format($record['total_expected_profit'], 0) }}</td>
+                    <td class="text-right col-cubic bold-numbers">{{ number_format($record['confirmed_cubic_meters'], 1) }}</td>
+                    <td class="text-right col-cubic bold-numbers">{{ number_format($record['extra_cubic'], 1) }}</td>
+                    <td class="text-right col-cubic bold-numbers">{{ number_format($record['less_cubic'], 1) }}</td>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr style="background-color: #87CEEB; font-weight: bold; border: 2px solid #333;">
-                    <td colspan="3" class="text-right" style="font-size: 14px;">GRAND TOTALS:</td>
-                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('lorry_amount'), 2) }}</td>
-                    <td class="text-right">{{ number_format(collect($records)->sum('lorry_units'), 2) }} m³</td>
-                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('tractor_amount'), 2) }}</td>
-                    <td class="text-right">{{ number_format(collect($records)->sum('tractor_units'), 2) }} m³</td>
-                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('expected_profit_lorry'), 2) }}</td>
-                    <td class="text-right currency">KSh {{ number_format(collect($records)->sum('expected_profit_tractor'), 2) }}</td>
-                    <td class="text-right currency">KSh {{ number_format($total_profit, 2) }}</td>
-                    <td class="text-right">{{ number_format(collect($records)->sum('confirmed_cubic_meters'), 2) }} m³</td>
-                    <td class="text-right">{{ number_format(collect($records)->sum('extra_cubic'), 2) }} m³</td>
-                    <td class="text-right">{{ number_format(collect($records)->sum('less_cubic'), 2) }} m³</td>
+                    <td colspan="3" class="text-right bold-numbers" style="font-size: 9px; font-weight: bold;">TOTALS:</td>
+                    <td class="text-right currency col-amount bold-numbers">{{ number_format(collect($records)->sum('lorry_amount'), 0) }}</td>
+                    <td class="text-right col-units bold-numbers">{{ number_format(collect($records)->sum('lorry_units'), 1) }}</td>
+                    <td class="text-right currency col-amount bold-numbers">{{ number_format(collect($records)->sum('tractor_amount'), 0) }}</td>
+                    <td class="text-right col-units bold-numbers">{{ number_format(collect($records)->sum('tractor_units'), 1) }}</td>
+                    <td class="text-right currency col-profit bold-numbers">{{ number_format(collect($records)->sum('expected_profit_lorry'), 0) }}</td>
+                    <td class="text-right currency col-profit bold-numbers">{{ number_format(collect($records)->sum('expected_profit_tractor'), 0) }}</td>
+                    <td class="text-right currency col-profit bold-numbers">{{ number_format($total_profit, 0) }}</td>
+                    <td class="text-right col-cubic bold-numbers">{{ number_format(collect($records)->sum('confirmed_cubic_meters'), 1) }}</td>
+                    <td class="text-right col-cubic bold-numbers">{{ number_format(collect($records)->sum('extra_cubic'), 1) }}</td>
+                    <td class="text-right col-cubic bold-numbers">{{ number_format(collect($records)->sum('less_cubic'), 1) }}</td>
                 </tr>
             </tfoot>
         </table>

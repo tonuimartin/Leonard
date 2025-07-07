@@ -1,37 +1,89 @@
 <template>
     <Head title="Records" />
     <AuthenticatedLayout>
-        <div class="p-4 sm:p-6 lg:p-8 bg-gray-100 min-h-screen">
+        <div
+            class="p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-red-50 via-white to-red-50 min-h-screen"
+        >
             <div class="mx-auto max-w-7xl">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <div
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                    >
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h1
+                                    class="text-3xl font-bold text-red-900 mb-2"
+                                >
+                                    Records Management
+                                </h1>
+                                <p class="text-red-600 font-medium">
+                                    Manage all transportation records and
+                                    transactions
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <!-- Create Record Button -->
+                                <button
+                                    @click="showCreateModal = true"
+                                    class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                                >
+                                    <svg
+                                        class="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        />
+                                    </svg>
+                                    Create Record
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                >
+                    <div class="text-gray-900">
                         <!-- Filters Section -->
-                        <div class="mb-6 bg-gray-50 p-4 rounded-lg">
+                        <div
+                            class="mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
+                        >
+                            <h3 class="text-xl font-semibold mb-4 text-red-800">
+                                Filters
+                            </h3>
                             <div
                                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
                             >
                                 <!-- Date Range Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-1"
+                                        class="block text-sm font-medium text-red-900 mb-2"
                                         >Date From</label
                                     >
                                     <input
                                         v-model="filters.dateFrom"
                                         type="date"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
                                         @change="applyFilters"
                                     />
                                 </div>
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-1"
+                                        class="block text-sm font-medium text-red-900 mb-2"
                                         >Date To</label
                                     >
                                     <input
                                         v-model="filters.dateTo"
                                         type="date"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
                                         @change="applyFilters"
                                     />
                                 </div>
@@ -39,20 +91,20 @@
                                 <!-- Supplier Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-1"
+                                        class="block text-sm font-medium text-red-900 mb-2"
                                         >Suppliers</label
                                     >
                                     <div class="relative">
                                         <!-- Search input with tags inside -->
                                         <div class="relative">
                                             <div
-                                                class="w-full min-h-[42px] border border-gray-300 rounded-md px-3 py-2 pr-8 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 flex flex-wrap items-center gap-1"
+                                                class="w-full min-h-[48px] border border-red-200 rounded-xl px-4 py-2 pr-8 focus-within:ring-2 focus-within:ring-red-500 focus-within:border-red-500 flex flex-wrap items-center gap-1 bg-white shadow-lg"
                                             >
                                                 <!-- Selected suppliers tags inside input -->
                                                 <span
                                                     v-for="supplier in selectedSuppliers"
                                                     :key="supplier.id"
-                                                    class="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
+                                                    class="inline-flex items-center px-3 py-1 text-sm bg-red-100 text-red-800 rounded-full shadow-sm"
                                                 >
                                                     {{ supplier.name }}
                                                     <button
@@ -61,7 +113,7 @@
                                                                 supplier.id
                                                             )
                                                         "
-                                                        class="ml-1 text-blue-600 hover:text-blue-800 text-sm"
+                                                        class="ml-2 text-red-600 hover:text-red-800 text-lg font-bold"
                                                         type="button"
                                                     >
                                                         ×
@@ -93,7 +145,7 @@
                                                     selectedSuppliers.length > 0
                                                 "
                                                 @click="clearAllSuppliers"
-                                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 text-xl"
                                                 type="button"
                                             >
                                                 ×
@@ -105,7 +157,7 @@
                                                     showSupplierDropdown &&
                                                     filteredSuppliers.length > 0
                                                 "
-                                                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto"
+                                                class="absolute z-10 w-full mt-1 bg-white border border-red-200 rounded-xl shadow-2xl max-h-40 overflow-y-auto backdrop-blur-lg"
                                                 style="top: 100%"
                                             >
                                                 <div
@@ -114,18 +166,21 @@
                                                     @mousedown="
                                                         selectSupplier(supplier)
                                                     "
-                                                    class="px-3 py-2 cursor-pointer hover:bg-blue-50 flex items-center justify-between"
+                                                    class="px-4 py-3 cursor-pointer hover:bg-red-50 flex items-center justify-between transition-colors duration-200"
                                                 >
-                                                    <span>{{
-                                                        supplier.name
-                                                    }}</span>
+                                                    <span
+                                                        class="text-gray-900"
+                                                        >{{
+                                                            supplier.name
+                                                        }}</span
+                                                    >
                                                     <span
                                                         v-if="
                                                             isSupplierSelected(
                                                                 supplier.id
                                                             )
                                                         "
-                                                        class="text-blue-600"
+                                                        class="text-red-600 font-bold"
                                                     >
                                                         ✓
                                                     </span>
@@ -139,7 +194,7 @@
                                 <div class="flex items-end">
                                     <button
                                         @click="clearFilters"
-                                        class="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                                        class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                                     >
                                         Clear Filters
                                     </button>
@@ -152,27 +207,27 @@
                             >
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-1"
+                                        class="block text-sm font-medium text-red-900 mb-2"
                                         >Min Amount (KES)</label
                                     >
                                     <input
                                         v-model.number="filters.minAmount"
                                         type="number"
                                         placeholder="0"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
                                         @input="applyFilters"
                                     />
                                 </div>
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-1"
+                                        class="block text-sm font-medium text-red-900 mb-2"
                                         >Max Amount (KES)</label
                                     >
                                     <input
                                         v-model.number="filters.maxAmount"
                                         type="number"
                                         placeholder="1000000"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
                                         @input="applyFilters"
                                     />
                                 </div>
@@ -186,30 +241,49 @@
                         </div>
 
                         <!-- Create Record Button -->
-                        <div class="mb-4">
+                        <div class="mb-6">
                             <button
                                 @click="showCreateModal = true"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                             >
                                 Create Record
                             </button>
                         </div>
-                        <!-- AG Grid -->
-                        <ag-grid-vue
-                            class="ag-theme-alpine"
-                            style="width: 100%"
-                            :domLayout="'autoHeight'"
-                            :columnDefs="columnDefs"
-                            :rowData="filteredRecords"
-                            :defaultColDef="defaultColDef"
-                            :pagination="true"
-                            :paginationPageSize="10"
-                            :paginationPageSizeSelector="
-                                paginationPageSizeSelector
-                            "
-                            :gridOptions="gridOptions"
-                            theme="legacy"
-                        />
+
+                        <!-- AG Grid with Modern Styling -->
+                        <div
+                            class="rounded-xl overflow-hidden border border-red-200/50 shadow-sm"
+                        >
+                            <ag-grid-vue
+                                class="ag-theme-alpine modern-grid"
+                                style="
+                                    width: 100%;
+                                    --ag-grid-size: 8px;
+                                    --ag-border-color: rgb(254 202 202);
+                                    --ag-header-background-color: rgb(
+                                        254 242 242
+                                    );
+                                    --ag-header-foreground-color: rgb(
+                                        127 29 29
+                                    );
+                                    --ag-odd-row-background-color: rgb(
+                                        255 255 255
+                                    );
+                                    --ag-row-hover-color: rgb(254 242 242);
+                                "
+                                :domLayout="'autoHeight'"
+                                :columnDefs="columnDefs"
+                                :rowData="filteredRecords"
+                                :defaultColDef="defaultColDef"
+                                :pagination="true"
+                                :paginationPageSize="10"
+                                :paginationPageSizeSelector="
+                                    paginationPageSizeSelector
+                                "
+                                :gridOptions="gridOptions"
+                                theme="legacy"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -235,20 +309,25 @@
         <!-- View Record Modal -->
         <div
             v-if="showViewModal"
-            class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+            class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50 backdrop-blur-sm"
         >
             <div
-                class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white"
+                class="relative top-20 mx-auto p-8 border w-11/12 md:w-3/4 lg:w-1/2 shadow-2xl rounded-3xl bg-white/95 backdrop-blur-lg border-red-200"
             >
                 <div class="mt-3">
                     <!-- Modal Header -->
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">
-                            Record Details
-                        </h3>
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-red-900 mb-2">
+                                Record Details
+                            </h3>
+                            <p class="text-red-600">
+                                View complete record information
+                            </p>
+                        </div>
                         <button
                             @click="showViewModal = false"
-                            class="text-gray-400 hover:text-gray-600"
+                            class="text-red-400 hover:text-red-600 text-2xl font-bold"
                         >
                             <svg
                                 class="w-6 h-6"
@@ -555,29 +634,29 @@ const columnDefs = computed(() => [
         cellRenderer: (params) => {
             const isUserAdmin = page.props.auth?.user?.is_admin || false;
 
-            const viewButton = `<button onclick="viewRecord(${params.data.id})" class="bg-green-500 hover:bg-green-600 text-white font-medium py-1 px-2 rounded text-xs transition-colors" style="min-width: 40px; font-size: 10px;">
+            const viewButton = `<button onclick="viewRecord(${params.data.id})" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-2 px-3 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg" style="min-width: 45px; font-size: 10px;">
                 View
             </button>`;
 
-            const editButton = `<button onclick="editRecord(${params.data.id})" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-2 rounded text-xs transition-colors" style="min-width: 35px; font-size: 10px;">
+            const editButton = `<button onclick="editRecord(${params.data.id})" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-3 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg" style="min-width: 40px; font-size: 10px;">
                 Edit
             </button>`;
 
             const deleteButton = isUserAdmin
-                ? `<button onclick="deleteRecord(${params.data.id})" class="bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-2 rounded text-xs transition-colors" style="min-width: 40px; font-size: 10px;">
+                ? `<button onclick="deleteRecord(${params.data.id})" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2 px-3 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg" style="min-width: 45px; font-size: 10px;">
                     Delete
                 </button>`
                 : "";
 
             const buttonCount = isUserAdmin ? 3 : 2;
-            const containerWidth = buttonCount === 3 ? "125px" : "85px";
+            const containerWidth = buttonCount === 3 ? "140px" : "95px";
 
-            return `<div style="display: flex; gap: 2px; justify-content: center; align-items: center; height: 100%; width: ${containerWidth}; flex-wrap: nowrap; overflow: hidden;">${viewButton}${editButton}${deleteButton}</div>`;
+            return `<div style="display: flex; gap: 3px; justify-content: center; align-items: center; height: 100%; width: ${containerWidth}; flex-wrap: nowrap; overflow: hidden;">${viewButton}${editButton}${deleteButton}</div>`;
         },
         flex: 0,
-        width: 130,
-        minWidth: 130,
-        maxWidth: 130,
+        width: 150,
+        minWidth: 150,
+        maxWidth: 150,
         sortable: false,
         filter: false,
         suppressSizeToFit: true,
@@ -855,3 +934,32 @@ const clearHideTimeout = () => {
 console.log("Records data received as prop:", props.records);
 console.log("Suppliers data received as prop:", props.suppliers);
 </script>
+
+<style>
+.modern-grid .ag-header {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.modern-grid .ag-cell {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+}
+
+.modern-grid .ag-row {
+    border: none;
+    border-bottom: 1px solid rgb(254 202 202);
+}
+
+.modern-grid .ag-root-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.modern-grid .ag-paging-panel {
+    border-top: 1px solid rgb(254 202 202);
+    background-color: rgb(254 242 242);
+    padding: 16px;
+}
+</style>

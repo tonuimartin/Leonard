@@ -1,15 +1,27 @@
 <template>
     <Head title="Reports" />
     <AuthenticatedLayout>
-        <div class="p-4 sm:p-6 lg:p-8 bg-gray-100 min-h-screen">
+        <div
+            class="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-red-50 min-h-screen"
+        >
             <div class="mx-auto max-w-7xl">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                <div
+                    class="overflow-hidden bg-white/90 backdrop-blur-lg shadow-2xl sm:rounded-2xl border border-red-100"
+                >
                     <div class="p-6 text-gray-900">
-                        <h2 class="text-2xl font-bold mb-6">Records Reports</h2>
+                        <h2
+                            class="text-3xl font-bold mb-6 text-red-900 bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent"
+                        >
+                            Records Reports
+                        </h2>
 
                         <!-- Filters Section -->
-                        <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                            <h3 class="text-lg font-semibold mb-4">Filters</h3>
+                        <div
+                            class="mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
+                        >
+                            <h3 class="text-xl font-semibold mb-4 text-red-800">
+                                Filters
+                            </h3>
                             <div class="grid grid-cols-1 gap-4">
                                 <!-- Supplier Filter -->
                                 <div class="col-span-full">
@@ -22,13 +34,13 @@
                                         <!-- Search input with tags inside -->
                                         <div class="relative">
                                             <div
-                                                class="w-full min-h-[42px] border border-gray-300 rounded-md px-3 py-2 pr-8 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 flex flex-wrap items-center gap-1"
+                                                class="w-full min-h-[42px] border border-red-200 rounded-xl px-3 py-2 pr-8 focus-within:ring-2 focus-within:ring-red-500 focus-within:border-red-500 flex flex-wrap items-center gap-1 bg-white shadow-lg"
                                             >
                                                 <!-- Selected suppliers tags inside input -->
                                                 <span
                                                     v-for="supplier in selectedSuppliers"
                                                     :key="supplier.id"
-                                                    class="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
+                                                    class="inline-flex items-center px-3 py-1 text-sm bg-red-100 text-red-800 rounded-full shadow-sm"
                                                 >
                                                     {{ supplier.name }}
                                                     <button
@@ -37,7 +49,7 @@
                                                                 supplier.id
                                                             )
                                                         "
-                                                        class="ml-1 text-blue-600 hover:text-blue-800 text-sm"
+                                                        class="ml-2 text-red-600 hover:text-red-800 text-lg font-bold"
                                                         type="button"
                                                     >
                                                         ×
@@ -69,7 +81,7 @@
                                                     selectedSuppliers.length > 0
                                                 "
                                                 @click="clearAllSuppliers"
-                                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 text-xl"
                                                 type="button"
                                             >
                                                 ×
@@ -81,7 +93,7 @@
                                                     showSupplierDropdown &&
                                                     filteredSuppliers.length > 0
                                                 "
-                                                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto"
+                                                class="absolute z-10 w-full mt-1 bg-white border border-red-200 rounded-xl shadow-2xl max-h-40 overflow-y-auto backdrop-blur-lg"
                                                 style="top: 100%"
                                             >
                                                 <div
@@ -90,7 +102,7 @@
                                                     @mousedown="
                                                         selectSupplier(supplier)
                                                     "
-                                                    class="px-3 py-2 cursor-pointer hover:bg-blue-50 flex items-center justify-between"
+                                                    class="px-3 py-2 cursor-pointer hover:bg-red-50 flex items-center justify-between rounded-lg mx-1 transition duration-200"
                                                 >
                                                     <span>{{
                                                         supplier.name

@@ -2,33 +2,41 @@
     <!-- Edit Record Modal -->
     <div
         v-if="showModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50 backdrop-blur-sm"
     >
         <div
-            class="relative top-10 mx-auto p-5 border w-[600px] shadow-lg rounded-md bg-white"
+            class="relative top-10 mx-auto p-8 border w-[700px] shadow-2xl rounded-3xl bg-white/95 backdrop-blur-lg border-red-200"
         >
             <div class="mt-3">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">
-                    Edit Record
-                    {{ recordData?.id ? `(ID: ${recordData.id})` : "" }}
-                </h3>
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-red-900 mb-2">
+                        Edit Record
+                        {{ recordData?.id ? `(ID: ${recordData.id})` : "" }}
+                    </h3>
+                    <p class="text-red-600">
+                        Update transportation record information
+                    </p>
+                </div>
                 <!-- Debug info -->
-                <div v-if="true" class="mb-2 text-xs text-gray-500">
+                <div
+                    v-if="true"
+                    class="mb-4 text-xs text-red-600 bg-red-50 p-2 rounded-lg"
+                >
                     Debug: Modal={{ showModal }}, RecordID={{ recordData?.id }},
                     Suppliers={{ suppliers.length }}
                 </div>
-                <form @submit.prevent="handleSubmit">
-                    <div class="grid grid-cols-2 gap-4">
+                <form @submit.prevent="handleSubmit" class="space-y-6">
+                    <div class="grid grid-cols-2 gap-6">
                         <!-- Supplier Selection -->
-                        <div class="col-span-2 mb-4">
+                        <div class="col-span-2">
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Supplier
                             </label>
                             <select
                                 v-model="formData.supplier_id"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                 required
                             >
                                 <option value="">Select Supplier</option>
@@ -43,13 +51,27 @@
                         </div>
 
                         <!-- Lorry Section -->
-                        <div class="mb-4">
-                            <div class="flex items-center mb-2">
+                        <div>
+                            <div class="flex items-center mb-3">
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mr-4"
+                                    class="block text-red-900 text-sm font-semibold mr-4"
                                 >
                                     Lorry Calculation
                                 </label>
+
+                                <button
+                                    type="button"
+                                    @click="lorryCalculationType = 'money'"
+                                    :class="[
+                                        'px-3 py-1 text-xs rounded transition-colors',
+                                        lorryCalculationType === 'money'
+                                            ? 'bg-blue-500 text-white'
+                                            : 'text-gray-700 hover:bg-gray-300',
+                                    ]"
+                                >
+                                    By Money
+                                </button>
+
                                 <div class="flex bg-gray-200 rounded p-1">
                                     <button
                                         type="button"
@@ -63,24 +85,12 @@
                                     >
                                         By Units
                                     </button>
-                                    <button
-                                        type="button"
-                                        @click="lorryCalculationType = 'money'"
-                                        :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
-                                            lorryCalculationType === 'money'
-                                                ? 'bg-blue-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
-                                        ]"
-                                    >
-                                        By Money
-                                    </button>
                                 </div>
                             </div>
 
                             <div v-if="lorryCalculationType === 'units'">
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Lorry Units (m³)
                                 </label>
@@ -89,10 +99,13 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    @input="calculateProfits"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                    @input="calculateFromUnits('lorry')"
+                                    placeholder="Enter units in m³"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     B.P: KSh 2,000, S.P: KSh 2,200, Profit per
                                     m³: KSh 200
                                 </p>
@@ -100,7 +113,7 @@
 
                             <div v-else>
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Money to Spend on Lorry (KSh)
                                 </label>
@@ -109,11 +122,13 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                     @input="calculateFromMoney('lorry')"
-                                    placeholder="0.00"
+                                    placeholder="Enter amount in KSh"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     Cost per m³: KSh 2,000 | Units:
                                     {{
                                         (
@@ -133,6 +148,19 @@
                                 >
                                     Tractor Calculation
                                 </label>
+
+                                <button
+                                    type="button"
+                                    @click="tractorCalculationType = 'money'"
+                                    :class="[
+                                        'px-3 py-1 text-xs rounded transition-colors',
+                                        tractorCalculationType === 'money'
+                                            ? 'bg-green-500 text-white'
+                                            : 'text-gray-700 hover:bg-gray-300',
+                                    ]"
+                                >
+                                    By Money
+                                </button>
                                 <div class="flex bg-gray-200 rounded p-1">
                                     <button
                                         type="button"
@@ -148,26 +176,12 @@
                                     >
                                         By Units
                                     </button>
-                                    <button
-                                        type="button"
-                                        @click="
-                                            tractorCalculationType = 'money'
-                                        "
-                                        :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
-                                            tractorCalculationType === 'money'
-                                                ? 'bg-green-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
-                                        ]"
-                                    >
-                                        By Money
-                                    </button>
                                 </div>
                             </div>
 
                             <div v-if="tractorCalculationType === 'units'">
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Tractor Units (m³)
                                 </label>
@@ -176,10 +190,13 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    @input="calculateProfits"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                    @input="calculateFromUnits('tractor')"
+                                    placeholder="Enter units in m³"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     B.P: KSh 2,200, S.P: KSh 2,400, Profit per
                                     m³: KSh 200
                                 </p>
@@ -187,7 +204,7 @@
 
                             <div v-else>
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Money to Spend on Tractor (KSh)
                                 </label>
@@ -196,11 +213,13 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                     @input="calculateFromMoney('tractor')"
-                                    placeholder="0.00"
+                                    placeholder="Enter amount in KSh"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     Cost per m³: KSh 2,200 | Units:
                                     {{
                                         (
@@ -213,9 +232,9 @@
                         </div>
 
                         <!-- Confirmed Cubic Meters -->
-                        <div class="mb-4">
+                        <div>
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Confirmed Cubic Meters
                             </label>
@@ -224,14 +243,15 @@
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                placeholder="Enter confirmed cubic meters"
                             />
                         </div>
 
                         <!-- Extra Cubic -->
-                        <div class="mb-4">
+                        <div>
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Extra Cubic
                             </label>
@@ -240,14 +260,15 @@
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                placeholder="Enter extra cubic meters"
                             />
                         </div>
 
                         <!-- Less Cubic -->
-                        <div class="mb-4">
+                        <div>
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Less Cubic
                             </label>
@@ -256,7 +277,8 @@
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                placeholder="Enter less cubic meters"
                             />
                         </div>
                     </div>
@@ -285,9 +307,7 @@
                                     }}
                                 </p>
                                 <p class="text-xs text-gray-500">
-                                    {{
-                                        (actualTractorUnits || 0).toFixed(2)
-                                    }}
+                                    {{ (actualTractorUnits || 0).toFixed(2) }}
                                     m³ × KSh 200
                                 </p>
                             </div>
@@ -310,17 +330,17 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex gap-4 pt-6">
                         <button
                             type="submit"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         >
                             Update Record
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
-                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         >
                             Cancel
                         </button>
@@ -363,8 +383,8 @@ const formData = ref({
     less_cubic: 0,
 });
 
-const lorryCalculationType = ref("units");
-const tractorCalculationType = ref("units");
+const lorryCalculationType = ref("money");
+const tractorCalculationType = ref("money");
 
 // Pricing constants
 const LORRY_BUYING_PRICE = 2000;
@@ -427,42 +447,59 @@ const calculateFromMoney = (vehicleType) => {
     }
 };
 
-const calculateProfits = () => {
-    // This method can be used for any additional calculations if needed
-    // The computed properties handle most of the work automatically
+const calculateFromUnits = (vehicleType) => {
+    if (vehicleType === "lorry") {
+        formData.value.lorry_money =
+            formData.value.lorry_units * LORRY_BUYING_PRICE;
+    } else if (vehicleType === "tractor") {
+        formData.value.tractor_money =
+            formData.value.tractor_units * TRACTOR_BUYING_PRICE;
+    }
 };
+
+// Watch for calculation type changes to update corresponding fields
+watch(lorryCalculationType, () => {
+    if (lorryCalculationType.value === "money") {
+        calculateFromUnits("lorry");
+    } else {
+        calculateFromMoney("lorry");
+    }
+});
+
+watch(tractorCalculationType, () => {
+    if (tractorCalculationType.value === "money") {
+        calculateFromUnits("tractor");
+    } else {
+        calculateFromMoney("tractor");
+    }
+});
 
 // Watch for changes in recordData prop and populate form
 watch(
     () => props.recordData,
-    (newData) => {
-        if (newData && Object.keys(newData).length > 0) {
+    (newRecord) => {
+        if (newRecord && newRecord.id) {
+            console.log("Populating form with record data:", newRecord);
+            const lorryUnits = parseFloat(newRecord.lorry_units) || 0;
+            const tractorUnits = parseFloat(newRecord.tractor_units) || 0;
+
             formData.value = {
-                supplier_id: newData.supplier_id || "",
-                lorry_units: newData.lorry_units || 0,
-                tractor_units: newData.tractor_units || 0,
-                lorry_money: newData.lorry_money || 0,
-                tractor_money: newData.tractor_money || 0,
-                confirmed_cubic_meters: newData.confirmed_cubic_meters || 0,
-                extra_cubic: newData.extra_cubic || 0,
-                less_cubic: newData.less_cubic || 0,
+                supplier_id: newRecord.supplier_id || "",
+                lorry_units: lorryUnits,
+                tractor_units: tractorUnits,
+                lorry_money: lorryUnits * LORRY_BUYING_PRICE,
+                tractor_money: tractorUnits * TRACTOR_BUYING_PRICE,
+                confirmed_cubic_meters: newRecord.confirmed_cubic_meters || 0,
+                extra_cubic: newRecord.extra_cubic || 0,
+                less_cubic: newRecord.less_cubic || 0,
             };
 
-            // Set calculation types based on existing data
-            if (newData.lorry_money && newData.lorry_money > 0) {
-                lorryCalculationType.value = "money";
-            } else {
-                lorryCalculationType.value = "units";
-            }
-
-            if (newData.tractor_money && newData.tractor_money > 0) {
-                tractorCalculationType.value = "money";
-            } else {
-                tractorCalculationType.value = "units";
-            }
+            // Default to money calculation view when modal opens
+            lorryCalculationType.value = "money";
+            tractorCalculationType.value = "money";
         }
     },
-    { immediate: true }
+    { immediate: true, deep: true }
 );
 
 // Reset form when modal closes
@@ -473,30 +510,6 @@ watch(
             resetForm();
         }
     }
-);
-
-// Watch for recordData changes to populate form
-watch(
-    () => props.recordData,
-    (newRecord) => {
-        if (newRecord && newRecord.id) {
-            console.log("Populating form with record data:", newRecord);
-            formData.value = {
-                supplier_id: newRecord.supplier_id || "",
-                lorry_units: newRecord.lorry_units || 0,
-                tractor_units: newRecord.tractor_units || 0,
-                lorry_money: 0, // Will be calculated if needed
-                tractor_money: 0, // Will be calculated if needed
-                confirmed_cubic_meters: newRecord.confirmed_cubic_meters || 0,
-                extra_cubic: newRecord.extra_cubic || 0,
-                less_cubic: newRecord.less_cubic || 0,
-            };
-            // Default to units calculation
-            lorryCalculationType.value = "units";
-            tractorCalculationType.value = "units";
-        }
-    },
-    { immediate: true }
 );
 
 const resetForm = () => {
@@ -510,8 +523,8 @@ const resetForm = () => {
         extra_cubic: 0,
         less_cubic: 0,
     };
-    lorryCalculationType.value = "units";
-    tractorCalculationType.value = "units";
+    lorryCalculationType.value = "money";
+    tractorCalculationType.value = "money";
 };
 
 const handleSubmit = async () => {

@@ -2,27 +2,32 @@
     <!-- Create Record Modal -->
     <div
         v-if="showModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50 backdrop-blur-sm"
     >
         <div
-            class="relative top-10 mx-auto p-5 border w-[600px] shadow-lg rounded-md bg-white"
+            class="relative top-10 mx-auto p-8 border w-[700px] shadow-2xl rounded-3xl bg-white/95 backdrop-blur-lg border-red-200"
         >
             <div class="mt-3">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">
-                    Create New Record
-                </h3>
-                <form @submit.prevent="handleSubmit">
-                    <div class="grid grid-cols-2 gap-4">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-red-900 mb-2">
+                        Create New Record
+                    </h3>
+                    <p class="text-red-600">
+                        Add a new transportation record to the system
+                    </p>
+                </div>
+                <form @submit.prevent="handleSubmit" class="space-y-6">
+                    <div class="grid grid-cols-2 gap-6">
                         <!-- Supplier Selection -->
-                        <div class="col-span-2 mb-4">
+                        <div class="col-span-2">
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Supplier
                             </label>
                             <select
                                 v-model="formData.supplier_id"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                 required
                             >
                                 <option value="">Select Supplier</option>
@@ -37,22 +42,24 @@
                         </div>
 
                         <!-- Lorry Section -->
-                        <div class="mb-4">
-                            <div class="flex items-center mb-2">
+                        <div>
+                            <div class="flex items-center mb-3">
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mr-4"
+                                    class="block text-red-900 text-sm font-semibold mr-4"
                                 >
                                     Lorry Calculation
                                 </label>
-                                <div class="flex bg-gray-200 rounded p-1">
+                                <div
+                                    class="flex bg-red-100 rounded-xl p-1 shadow-lg"
+                                >
                                     <button
                                         type="button"
                                         @click="lorryCalculationType = 'money'"
                                         :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
+                                            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                                             lorryCalculationType === 'money'
-                                                ? 'bg-blue-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
+                                                ? 'bg-red-600 text-white shadow-md'
+                                                : 'text-red-700 hover:bg-red-200',
                                         ]"
                                     >
                                         By Money
@@ -61,10 +68,10 @@
                                         type="button"
                                         @click="lorryCalculationType = 'units'"
                                         :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
+                                            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                                             lorryCalculationType === 'units'
-                                                ? 'bg-blue-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
+                                                ? 'bg-red-600 text-white shadow-md'
+                                                : 'text-red-700 hover:bg-red-200',
                                         ]"
                                     >
                                         By Units
@@ -74,7 +81,7 @@
 
                             <div v-if="lorryCalculationType === 'units'">
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Lorry Units (m³)
                                 </label>
@@ -83,10 +90,13 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                     @input="calculateProfits"
+                                    placeholder="Enter units in m³"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     B.P: KSh 2,000, S.P: KSh 2,200, Profit per
                                     m³: KSh 200
                                 </p>
@@ -94,7 +104,7 @@
 
                             <div v-else>
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Money to Spend on Lorry (KSh)
                                 </label>
@@ -103,40 +113,43 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                     @input="calculateFromMoney('lorry')"
-                                    placeholder="0.00"
+                                    placeholder="Enter amount in KSh"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     B.P: KSh 2,000, S.P: KSh 2,200, Profit per
-                                    m³: KSh 200
-                                    {{
+                                    m³: KSh 200 ({{
                                         (formData.lorry_money / 2000).toFixed(2)
                                     }}
-                                    m³
+                                    m³)
                                 </p>
                             </div>
                         </div>
 
                         <!-- Tractor Section -->
-                        <div class="mb-4">
-                            <div class="flex items-center mb-2">
+                        <div>
+                            <div class="flex items-center mb-3">
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mr-4"
+                                    class="block text-red-900 text-sm font-semibold mr-4"
                                 >
                                     Tractor Calculation
                                 </label>
-                                <div class="flex bg-gray-200 rounded p-1">
+                                <div
+                                    class="flex bg-green-100 rounded-xl p-1 shadow-lg"
+                                >
                                     <button
                                         type="button"
                                         @click="
                                             tractorCalculationType = 'money'
                                         "
                                         :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
+                                            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                                             tractorCalculationType === 'money'
-                                                ? 'bg-green-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
+                                                ? 'bg-green-600 text-white shadow-md'
+                                                : 'text-green-700 hover:bg-green-200',
                                         ]"
                                     >
                                         By Money
@@ -147,10 +160,10 @@
                                             tractorCalculationType = 'units'
                                         "
                                         :class="[
-                                            'px-3 py-1 text-xs rounded transition-colors',
+                                            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                                             tractorCalculationType === 'units'
-                                                ? 'bg-green-500 text-white'
-                                                : 'text-gray-700 hover:bg-gray-300',
+                                                ? 'bg-green-600 text-white shadow-md'
+                                                : 'text-green-700 hover:bg-green-200',
                                         ]"
                                     >
                                         By Units
@@ -160,7 +173,7 @@
 
                             <div v-if="tractorCalculationType === 'units'">
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Tractor Units (m³)
                                 </label>
@@ -169,10 +182,13 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                     @input="calculateProfits"
+                                    placeholder="Enter units in m³"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     B.P: KSh 2,200, S.P: KSh 2,400, Profit per
                                     m³: KSh 200
                                 </p>
@@ -180,7 +196,7 @@
 
                             <div v-else>
                                 <label
-                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    class="block text-red-900 text-sm font-semibold mb-3"
                                 >
                                     Money to Spend on Tractor (KSh)
                                 </label>
@@ -189,27 +205,28 @@
                                     type="number"
                                     step="0.01"
                                     min="0"
-                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
                                     @input="calculateFromMoney('tractor')"
-                                    placeholder="0.00"
+                                    placeholder="Enter amount in KSh"
                                 />
-                                <p class="text-xs text-gray-500 mt-1">
+                                <p
+                                    class="text-xs text-red-600 mt-2 bg-red-50 p-2 rounded-lg"
+                                >
                                     B.P: KSh 2,200, S.P: KSh 2,400, Profit per
-                                    m³: KSh 200
-                                    {{
+                                    m³: KSh 200 ({{
                                         (formData.tractor_money / 2200).toFixed(
                                             2
                                         )
                                     }}
-                                    m³
+                                    m³)
                                 </p>
                             </div>
                         </div>
 
                         <!-- Confirmed Cubic Meters -->
-                        <div class="mb-4">
+                        <div>
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Confirmed Cubic Meters
                             </label>
@@ -218,14 +235,15 @@
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                placeholder="Enter confirmed cubic meters"
                             />
                         </div>
 
                         <!-- Extra Cubic -->
-                        <div class="mb-4">
+                        <div>
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Extra Cubic
                             </label>
@@ -234,14 +252,15 @@
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                placeholder="Enter extra cubic meters"
                             />
                         </div>
 
                         <!-- Less Cubic -->
-                        <div class="mb-4">
+                        <div>
                             <label
-                                class="block text-gray-700 text-sm font-bold mb-2"
+                                class="block text-red-900 text-sm font-semibold mb-3"
                             >
                                 Less Cubic
                             </label>
@@ -250,7 +269,8 @@
                                 type="number"
                                 step="0.01"
                                 min="0"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                                placeholder="Enter less cubic meters"
                             />
                         </div>
                     </div>
@@ -302,17 +322,17 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex gap-4 pt-6">
                         <button
                             type="submit"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         >
                             Create Record
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
-                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         >
                             Cancel
                         </button>

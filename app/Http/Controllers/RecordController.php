@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Record;
 use App\Models\Supplier;
+use App\Models\User;
+use App\Notifications\RecordCreated;
+use App\Notifications\RecordUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class RecordController extends Controller
@@ -76,7 +80,7 @@ class RecordController extends Controller
         $lorryAmount = $lorryUnits * Record::LORRY_BUYING_PRICE;
         $tractorAmount = $tractorUnits * Record::TRACTOR_BUYING_PRICE;
 
-        Record::create([
+        $record = Record::create([
             'supplier_id' => $validated['supplier_id'],
             'lorry_amount' => $lorryAmount,
             'lorry_units' => $lorryUnits,
@@ -91,6 +95,10 @@ class RecordController extends Controller
             'deleted' => 0,
         ]);
 
+        // Notify all admins
+        $admins = User::where('role_id', 1)->get();
+        Notification::send($admins, new RecordCreated($record, auth()->user()));
+
         return response()->json(['success' => true, 'message' => 'Record created successfully.']);
     }
 
@@ -98,6 +106,7 @@ class RecordController extends Controller
     public function update(Request $request, $id)
     {
         $record = Record::where('record_id', $id)->firstOrFail();
+        $oldData = $record->getOriginal();
 
         $validated = $request->validate([
             'supplier_id' => 'required|exists:suppliers,supplier_id',
@@ -131,6 +140,10 @@ class RecordController extends Controller
             'extra_cubic' => $validated['extra_cubic'] ?? 0,
             'less_cubic' => $validated['less_cubic'] ?? 0,
         ]);
+
+        // Notify all admins
+        $admins = User::where('role_id', 1)->get();
+        Notification::send($admins, new RecordUpdated($record, auth()->user(), $oldData));
 
         return response()->json(['success' => true, 'message' => 'Record updated successfully.']);
     }

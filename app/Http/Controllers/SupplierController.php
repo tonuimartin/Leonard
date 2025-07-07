@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\User;
+use App\Notifications\SupplierCreated;
+use App\Notifications\SupplierUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class SupplierController extends Controller
@@ -54,12 +58,16 @@ class SupplierController extends Controller
             'phone_number' => 'nullable|string|max:20',
         ]);
 
-        Supplier::create([
+        $supplier = Supplier::create([
             'supplier_name' => $request->name,
             'phone_number' => $request->phone_number,
             'role_id' => 3, // Supplier role
             'deleted' => 0, // Default to active
         ]);
+
+        // Notify all admins
+        $admins = User::where('role_id', 1)->get();
+        Notification::send($admins, new SupplierCreated($supplier, auth()->user()));
 
         return response()->json(['success' => true, 'message' => 'Supplier created successfully.']);
     }    // Soft delete a supplier
@@ -74,6 +82,8 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::where('supplier_id', $id)->firstOrFail();
 
+        $oldData = $supplier->getOriginal();
+
         $validated = $request->validate([
             'supplier_name' => 'required|string|max:255',
             'phone_number' => 'nullable|string|max:20',
@@ -83,6 +93,10 @@ class SupplierController extends Controller
             'supplier_name' => $validated['supplier_name'],
             'phone_number' => $validated['phone_number'],
         ]);
+
+        // Notify all admins
+        $admins = User::where('role_id', 1)->get();
+        Notification::send($admins, new SupplierUpdated($supplier, auth()->user(), $oldData));
 
         return response()->json(['success' => true, 'message' => 'Supplier updated successfully.']);
     }

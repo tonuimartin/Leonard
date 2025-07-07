@@ -67,12 +67,12 @@ const open = ref(false);
         >
             <div
                 v-show="open"
-                class="absolute z-50 mt-2 rounded-md shadow-lg"
+                class="absolute z-50 mt-2 rounded-2xl shadow-2xl border border-gray-200 backdrop-blur-lg"
                 :class="[widthClass, alignmentClasses]"
                 @click="open = false"
             >
                 <div
-                    class="rounded-md ring-1 ring-black ring-opacity-5"
+                    class="rounded-2xl ring-1 ring-red-200 ring-opacity-20"
                     :class="contentClasses"
                 >
                     <slot name="content" />
