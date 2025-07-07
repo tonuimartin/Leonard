@@ -17,7 +17,7 @@
 
                         <!-- Filters Section -->
                         <div
-                            class="mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
+                            class="reports-filters mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
                         >
                             <h3 class="text-xl font-semibold mb-4 text-red-800">
                                 Filters
@@ -26,7 +26,7 @@
                                 <!-- Supplier Filter -->
                                 <div class="col-span-full">
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                     >
                                         Suppliers (Multiple Selection)
                                     </label>
@@ -126,19 +126,19 @@
 
                             <!-- Time Period Filters -->
                             <div
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4"
+                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 mt-4"
                             >
                                 <!-- Year Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                     >
                                         Select Year
                                     </label>
                                     <select
                                         v-model="filters.selectedYear"
                                         @change="updateFromYear"
-                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        class="w-full modern-input"
                                     >
                                         <option value="">Select Year</option>
                                         <option
@@ -154,7 +154,7 @@
                                 <!-- Month Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                     >
                                         Select Month
                                     </label>
@@ -162,7 +162,7 @@
                                         v-model="filters.selectedMonth"
                                         @change="updateFromMonth"
                                         :disabled="!filters.selectedYear"
-                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                                        class="w-full modern-input disabled:bg-gray-100"
                                     >
                                         <option value="">Select Month</option>
                                         <option
@@ -178,7 +178,7 @@
                                 <!-- Week Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                     >
                                         Select Week
                                     </label>
@@ -186,7 +186,7 @@
                                         v-model="filters.selectedWeek"
                                         @change="updateFromWeek"
                                         :disabled="!filters.selectedMonth"
-                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                                        class="w-full modern-input disabled:bg-gray-100"
                                     >
                                         <option value="">Select Week</option>
                                         <option
@@ -207,38 +207,28 @@
                                 <!-- Date From Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                     >
                                         Date From
-                                        {{
-                                            displayDateFrom
-                                                ? `(${displayDateFrom})`
-                                                : "(dd/mm/yyyy)"
-                                        }}
                                     </label>
                                     <input
                                         type="date"
                                         v-model="filters.dateFrom"
-                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        class="w-full modern-input"
                                     />
                                 </div>
 
                                 <!-- Date To Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-gray-700 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                     >
                                         Date To
-                                        {{
-                                            displayDateTo
-                                                ? `(${displayDateTo})`
-                                                : "(dd/mm/yyyy)"
-                                        }}
                                     </label>
                                     <input
                                         type="date"
                                         v-model="filters.dateTo"
-                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        class="w-full modern-input"
                                     />
                                 </div>
                             </div>
@@ -247,20 +237,20 @@
                             <div class="mt-4 flex flex-wrap gap-2 sm:gap-4">
                                 <button
                                     @click="applyFilters"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex-shrink-0"
+                                    class="modern-btn py-2 px-4 flex-shrink-0"
                                 >
                                     Apply Filters
                                 </button>
                                 <button
                                     @click="clearFilters"
-                                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded flex-shrink-0"
+                                    class="modern-btn bg-gray-500 hover:bg-gray-700 py-2 px-4 flex-shrink-0"
                                 >
                                     Clear Filters
                                 </button>
                                 <button
                                     @click="downloadPDF"
                                     :disabled="isDownloading"
-                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 flex-shrink-0"
+                                    class="modern-btn bg-green-500 hover:bg-green-700 py-2 px-4 flex-shrink-0 disabled:opacity-50"
                                 >
                                     {{
                                         isDownloading
@@ -271,7 +261,7 @@
                                 <button
                                     @click="downloadExcel"
                                     :disabled="isDownloading"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 flex-shrink-0"
+                                    class="modern-btn bg-blue-500 hover:bg-blue-700 py-2 px-4 flex-shrink-0 disabled:opacity-50"
                                 >
                                     {{
                                         isDownloading
@@ -321,10 +311,27 @@
                         </div>
 
                         <!-- Records Table -->
-                        <div class="w-full">
+                        <div
+                            class="rounded-xl overflow-hidden border border-red-200/50 shadow-sm"
+                        >
                             <ag-grid-vue
-                                class="ag-theme-alpine w-full"
-                                style="width: 100%; height: 500px"
+                                class="ag-theme-alpine modern-grid"
+                                style="
+                                    width: 100%;
+                                    --ag-grid-size: 8px;
+                                    --ag-border-color: rgb(254 202 202);
+                                    --ag-header-background-color: rgb(
+                                        254 242 242
+                                    );
+                                    --ag-header-foreground-color: rgb(
+                                        127 29 29
+                                    );
+                                    --ag-odd-row-background-color: rgb(
+                                        255 255 255
+                                    );
+                                    --ag-row-hover-color: rgb(254 242 242);
+                                "
+                                :domLayout="'autoHeight'"
                                 :columnDefs="columnDefs"
                                 :rowData="filteredRecords"
                                 :defaultColDef="defaultColDef"
@@ -496,7 +503,7 @@ const formatDate = (dateString) => {
 // Computed properties for summary
 const totalProfit = computed(() => {
     return filteredRecords.value.reduce(
-        (sum, record) => sum + (record.total_expected_profit || 0),
+        (sum, record) => sum + (parseFloat(record.total_expected_profit) || 0),
         0
     );
 });
@@ -1068,11 +1075,113 @@ applyFilters();
 }
 
 .cursor-pointer:hover {
-    background-color: #eff6ff;
+    background-color: #fef2f2;
 }
 
 /* Ensure dropdown appears above other elements */
 .z-10 {
     z-index: 10;
+}
+
+/* Modern AG Grid styles for reports */
+.ag-theme-alpine.modern-grid .ag-header {
+    font-weight: 600;
+    font-size: 14px;
+}
+.ag-theme-alpine.modern-grid .ag-cell {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+}
+.ag-theme-alpine.modern-grid .ag-row {
+    border: none;
+    border-bottom: 1px solid rgb(254 202 202);
+    background: transparent;
+    transition: background 0.2s;
+}
+.ag-theme-alpine.modern-grid .ag-row:hover {
+    background: rgb(254 242 242);
+}
+.ag-theme-alpine.modern-grid .ag-root-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+}
+.ag-theme-alpine.modern-grid .ag-paging-panel {
+    border-top: 1px solid rgb(254 202 202);
+    background-color: rgb(254 242 242);
+    padding: 16px;
+}
+
+/* Modern filter and button styles for reports */
+.reports-filters .ag-input,
+.reports-filters input[type="date"],
+.reports-filters select {
+    border-radius: 0.75rem;
+    border: 1px solid #fecaca;
+    background: #fff;
+    box-shadow: 0 2px 8px 0 #fca5a5, 0 1.5px 4px 0 #fca5a5;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.reports-filters input:focus,
+.reports-filters select:focus {
+    border-color: #b91c1c;
+    box-shadow: 0 0 0 2px #fecaca;
+}
+
+.reports-filters label {
+    color: #7f1d1d;
+    font-weight: 600;
+}
+
+.reports-filters .modern-btn {
+    background: linear-gradient(to right, #dc2626, #b91c1c);
+    color: #fff;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px 0 #fca5a5;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.reports-filters .modern-btn:hover {
+    background: linear-gradient(to right, #b91c1c, #7f1d1d);
+    box-shadow: 0 4px 16px 0 #fca5a5;
+    transform: scale(1.03);
+}
+
+@media (max-width: 1024px) {
+    .ag-theme-alpine .ag-header,
+    .ag-theme-alpine .ag-cell {
+        font-size: 13px;
+        padding: 10px 8px;
+    }
+
+    .reports-filters {
+        padding: 1rem !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .ag-theme-alpine .ag-header,
+    .ag-theme-alpine .ag-cell {
+        font-size: 12px;
+        padding: 8px 4px;
+    }
+
+    .ag-theme-alpine .ag-root-wrapper {
+        border-radius: 10px;
+    }
+
+    .reports-filters {
+        padding: 0.5rem !important;
+        border-radius: 1rem !important;
+    }
+
+    .reports-filters .modern-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+    }
 }
 </style>

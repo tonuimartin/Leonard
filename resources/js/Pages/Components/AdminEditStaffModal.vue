@@ -56,14 +56,22 @@
                     <div class="flex gap-4 pt-4">
                         <button
                             type="submit"
-                            class="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                            class="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center"
+                            :disabled="loading"
                         >
-                            Update Staff
+                            <span
+                                v-if="loading"
+                                class="animate-spin mr-2 h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+                            ></span>
+                            <span>{{
+                                loading ? "Updating..." : "Update Staff"
+                            }}</span>
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
                             class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            :disabled="loading"
                         >
                             Cancel
                         </button>
@@ -89,13 +97,15 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(["close", "updated"]);
+const emit = defineEmits(["close", "updated", "error"]);
 
 const formData = ref({
     name: "",
     email: "",
     phone_number: "",
 });
+
+const loading = ref(false);
 
 // Watch for changes in staffData prop and populate form
 watch(
@@ -120,6 +130,7 @@ watch(
     (newVal) => {
         if (!newVal) {
             resetForm();
+            loading.value = false;
         }
     }
 );
@@ -134,11 +145,10 @@ const resetForm = () => {
 
 const handleSubmit = async () => {
     if (!props.staffData.id) {
-        console.log("Staff Data:", props.staffData); // Debugging line
-        alert("Error: No staff ID provided");
+        emit("error", { message: "No staff ID provided" });
         return;
     }
-
+    loading.value = true;
     // Ensure phone_number is always a string
     const submitData = {
         name: formData.value.name,
@@ -150,9 +160,6 @@ const handleSubmit = async () => {
     };
 
     try {
-        console.log(`Making PUT request to /staff/${props.staffData.id}`); // Debugging line
-        console.log("Submit data:", submitData); // Debugging line
-
         const response = await fetch(`/staff/${props.staffData.id}`, {
             method: "POST", // Use POST with method spoofing
             headers: {
@@ -160,27 +167,34 @@ const handleSubmit = async () => {
                     .querySelector('meta[name="csrf-token"]')
                     .getAttribute("content"),
                 "Content-Type": "application/json",
-                Accept: "application/json", // Add this to ensure JSON response
+                Accept: "application/json",
             },
             body: JSON.stringify(submitData),
         });
 
         if (response.ok) {
-            emit("updated");
+            let updatedStaff = null;
+            try {
+                updatedStaff = await response.json();
+            } catch (e) {
+                // If not JSON, fallback to local data
+                updatedStaff = null;
+            }
+            if (!updatedStaff || !updatedStaff.id) {
+                // Fallback: use local form data and id
+                updatedStaff = { ...formData.value, id: props.staffData.id };
+            }
+            emit("updated", updatedStaff);
             emit("close");
-            // Refresh the page to show updated data
-            router.reload();
+            loading.value = false;
         } else {
             const errorData = await response.json();
-            console.log("Error response:", errorData); // Debugging line
-            alert(
-                "Error updating staff member: " +
-                    (errorData.message || "Unknown error")
-            );
+            emit("error", errorData);
+            loading.value = false;
         }
     } catch (error) {
-        console.error("Error:", error);
-        alert("Error updating staff member");
+        emit("error", error);
+        loading.value = false;
     }
 };
 

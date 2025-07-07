@@ -54,7 +54,7 @@
                     <div class="text-gray-900">
                         <!-- Filters Section -->
                         <div
-                            class="mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
+                            class="records-filters mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
                         >
                             <h3 class="text-xl font-semibold mb-4 text-red-800">
                                 Filters
@@ -65,25 +65,25 @@
                                 <!-- Date Range Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-red-900 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                         >Date From</label
                                     >
                                     <input
                                         v-model="filters.dateFrom"
                                         type="date"
-                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
+                                        class="w-full modern-input"
                                         @change="applyFilters"
                                     />
                                 </div>
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-red-900 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                         >Date To</label
                                     >
                                     <input
                                         v-model="filters.dateTo"
                                         type="date"
-                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
+                                        class="w-full modern-input"
                                         @change="applyFilters"
                                     />
                                 </div>
@@ -91,7 +91,7 @@
                                 <!-- Supplier Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-red-900 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                         >Suppliers</label
                                     >
                                     <div class="relative">
@@ -181,9 +181,8 @@
                                                             )
                                                         "
                                                         class="text-red-600 font-bold"
+                                                        >✓</span
                                                     >
-                                                        ✓
-                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -194,7 +193,7 @@
                                 <div class="flex items-end">
                                     <button
                                         @click="clearFilters"
-                                        class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                                        class="w-full modern-btn py-3 px-6"
                                     >
                                         Clear Filters
                                     </button>
@@ -207,27 +206,27 @@
                             >
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-red-900 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                         >Min Amount (KES)</label
                                     >
                                     <input
                                         v-model.number="filters.minAmount"
                                         type="number"
                                         placeholder="0"
-                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
+                                        class="w-full modern-input"
                                         @input="applyFilters"
                                     />
                                 </div>
                                 <div>
                                     <label
-                                        class="block text-sm font-medium text-red-900 mb-2"
+                                        class="block text-sm font-medium mb-2"
                                         >Max Amount (KES)</label
                                     >
                                     <input
                                         v-model.number="filters.maxAmount"
                                         type="number"
                                         placeholder="1000000"
-                                        class="w-full px-4 py-3 border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200 bg-white"
+                                        class="w-full modern-input"
                                         @input="applyFilters"
                                     />
                                 </div>
@@ -281,6 +280,7 @@
                                     paginationPageSizeSelector
                                 "
                                 :gridOptions="gridOptions"
+                                :loading="false"
                                 theme="legacy"
                             />
                         </div>
@@ -327,7 +327,7 @@
                         </div>
                         <button
                             @click="showViewModal = false"
-                            class="text-red-400 hover:text-red-600 text-2xl font-bold"
+                            class="view-modal-close text-2xl font-bold"
                         >
                             <svg
                                 class="w-6 h-6"
@@ -350,35 +350,24 @@
                         <!-- Basic Info -->
                         <div class="space-y-4">
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Record ID</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{ viewRecord.id }}
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
-                                    >Supplier</label
-                                >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <label class="view-modal-label">Supplier</label>
+                                <div class="view-modal-value">
                                     {{ viewRecord.supplier_name }}
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Date Created</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{ viewRecord.created_at }}
                                 </div>
                             </div>
@@ -387,37 +376,28 @@
                         <!-- Transport Details -->
                         <div class="space-y-4">
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Lorry Amount</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{
                                         formatCurrency(viewRecord.lorry_amount)
                                     }}
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Lorry Units</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{ viewRecord.lorry_units }} m³
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Tractor Amount</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{
                                         formatCurrency(
                                             viewRecord.tractor_amount
@@ -430,35 +410,26 @@
                         <!-- More Details -->
                         <div class="space-y-4">
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Tractor Units</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{ viewRecord.tractor_units }} m³
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Confirmed Cubic Meters</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{ viewRecord.confirmed_cubic_meters }} m³
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Extra Cubic</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{ viewRecord.extra_cubic }} m³
                                 </div>
                             </div>
@@ -467,24 +438,18 @@
                         <!-- Profit Details -->
                         <div class="space-y-4">
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Less Cubic</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{ viewRecord.less_cubic }} m³
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Lorry Profit</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{
                                         formatCurrency(
                                             viewRecord.expected_profit_lorry
@@ -493,17 +458,26 @@
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700"
+                                <label class="view-modal-label"
                                     >Tractor Profit</label
                                 >
-                                <div
-                                    class="mt-1 text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded"
-                                >
+                                <div class="view-modal-value">
                                     {{
                                         formatCurrency(
                                             viewRecord.expected_profit_tractor
                                         )
+                                    }}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="view-modal-label"
+                                    >Total Profit</label
+                                >
+                                <div
+                                    class="view-modal-value view-modal-value-bold"
+                                >
+                                    {{
+                                        formatCurrency(viewRecord.total_profit)
                                     }}
                                 </div>
                             </div>
@@ -528,7 +502,7 @@
                     <div class="flex justify-end mt-6">
                         <button
                             @click="showViewModal = false"
-                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                            class="view-modal-close py-2 px-6"
                         >
                             Close
                         </button>
@@ -547,6 +521,7 @@ import AdminCreateRecordModal from "./Components/AdminCreateRecordModal.vue";
 import AdminEditRecordModal from "./Components/AdminEditRecordModal.vue";
 import { AgGridVue } from "ag-grid-vue3";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
+import Swal from "sweetalert2";
 ModuleRegistry.registerModules([AllCommunityModule]);
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -601,10 +576,16 @@ const columnDefs = computed(() => [
     },
     {
         headerName: "Date",
-        field: "created_at",
+        field: "created_at_iso",
         sortable: true,
-        filter: true,
-        width: 120,
+        filter: true, // changed from 'agDateColumnFilter'
+        width: 160,
+        valueFormatter: (params) => {
+            // Show original human-readable date if available, else fallback
+            return params.data && params.data.created_at
+                ? params.data.created_at
+                : params.value || "-";
+        },
     },
     {
         headerName: "Total Profit",
@@ -676,8 +657,6 @@ const defaultColDef = ref({
     minWidth: 100,
 });
 
-const rowData = ref(props.records);
-
 // Grid reference for auto-sizing
 const gridApi = ref(null);
 const gridOptions = ref({
@@ -705,135 +684,169 @@ const showSupplierDropdown = ref(false);
 const selectedSuppliers = ref([]);
 let hideDropdownTimeout = null;
 
-// Computed filtered records
-const filteredRecords = computed(() => {
-    let filtered = [...props.records];
+// --- Local rowData for AG Grid (reactive, like suppliers page) ---
+const rowData = ref([]);
 
-    // Date range filter
-    if (filters.value.dateFrom) {
-        filtered = filtered.filter((record) => {
-            const recordDate = new Date(record.created_at);
-            const fromDate = new Date(filters.value.dateFrom);
-            return recordDate >= fromDate;
-        });
-    }
-
-    if (filters.value.dateTo) {
-        filtered = filtered.filter((record) => {
-            const recordDate = new Date(record.created_at);
-            const toDate = new Date(filters.value.dateTo);
-            return recordDate <= toDate;
-        });
-    }
-
-    // Supplier filter
-    if (filters.value.supplierIds.length > 0) {
-        filtered = filtered.filter((record) =>
-            filters.value.supplierIds.includes(record.supplier_id)
-        );
-    }
-
-    // Amount range filter
-    if (filters.value.minAmount !== null && filters.value.minAmount !== "") {
-        filtered = filtered.filter(
-            (record) => record.total_expected_profit >= filters.value.minAmount
-        );
-    }
-
-    if (filters.value.maxAmount !== null && filters.value.maxAmount !== "") {
-        filtered = filtered.filter(
-            (record) => record.total_expected_profit <= filters.value.maxAmount
-        );
-    }
-
-    return filtered;
-});
-
-// Apply filters function
-const applyFilters = () => {
-    rowData.value = filteredRecords.value;
-    // Auto-size ID column after filtering
-    setTimeout(() => {
-        if (gridApi.value) {
-            gridApi.value.autoSizeColumns(["id"]);
-        }
-    }, 100);
-};
-
-// Clear filters function
-const clearFilters = () => {
-    filters.value = {
-        dateFrom: "",
-        dateTo: "",
-        supplierIds: [],
-        minAmount: null,
-        maxAmount: null,
+// Helper to map a record to the correct structure (numeric fields, etc.)
+function mapRecord(record) {
+    return {
+        ...record,
+        lorry_amount: Number(record.lorry_amount),
+        lorry_units: Number(record.lorry_units),
+        tractor_amount: Number(record.tractor_amount),
+        tractor_units: Number(record.tractor_units),
+        expected_profit_lorry: Number(record.expected_profit_lorry),
+        expected_profit_tractor: Number(record.expected_profit_tractor),
+        total_expected_profit: Number(record.total_expected_profit),
+        confirmed_cubic_meters: Number(record.confirmed_cubic_meters),
+        extra_cubic: Number(record.extra_cubic),
+        less_cubic: Number(record.less_cubic),
+        created_at_iso: record.created_at_iso || record.created_at, // fallback if needed
     };
-    selectedSuppliers.value = [];
-    supplierSearch.value = "";
-    rowData.value = props.records;
-};
+}
 
-// Currency formatting function
-const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-KE", {
-        style: "currency",
-        currency: "KES",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    }).format(amount || 0);
-};
-
+// Watch for prop changes and keep rowData in sync (initial load or parent update)
 watch(
     () => props.records,
     (newVal) => {
-        // Reset filters when records change (e.g., after create/edit/delete)
-        if (
-            filters.value.dateFrom ||
-            filters.value.dateTo ||
-            filters.value.supplierId ||
-            filters.value.minAmount !== null ||
-            filters.value.maxAmount !== null
-        ) {
-            applyFilters();
-        } else {
-            rowData.value = newVal;
-        }
-        console.log("Updated records data:", newVal);
-    }
+        rowData.value = newVal.map((record) => mapRecord(record));
+    },
+    { immediate: true }
 );
 
-// Make functions globally available for button clicks
-window.viewRecord = (id) => {
-    console.log("View record clicked with ID:", id);
-    const record = props.records.find((record) => record.id === id);
-    if (record) {
-        viewRecord.value = record;
-        showViewModal.value = true;
+// --- CRUD event handlers for real-time updates ---
+const handleRecordCreated = (newRecord) => {
+    console.log("[DEBUG] handleRecordCreated called with:", newRecord);
+    if (newRecord && newRecord.id) {
+        // Add new record and sort by created_at_iso descending (latest first)
+        const filtered = rowData.value.filter((r) => r.id !== newRecord.id);
+        const mapped = mapRecord(newRecord);
+        console.log(
+            "[DEBUG] rowData before add:",
+            JSON.parse(JSON.stringify(rowData.value))
+        );
+        rowData.value = [...filtered, mapped].sort(
+            (a, b) => new Date(b.created_at_iso) - new Date(a.created_at_iso)
+        );
+        console.log(
+            "[DEBUG] rowData after add:",
+            JSON.parse(JSON.stringify(rowData.value))
+        );
     } else {
-        alert("Record not found");
+        console.warn(
+            "[DEBUG] handleRecordCreated: newRecord missing id or is falsy",
+            newRecord
+        );
     }
+    Swal.fire({
+        icon: "success",
+        title: "Record Created!",
+        text: "The record was created successfully.",
+        background: "#fff",
+        color: "#7f1d1d",
+        confirmButtonColor: "#b91c1c",
+        customClass: {
+            popup: "rounded-2xl shadow-2xl border border-red-100",
+            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            confirmButton: "rounded-xl px-6 py-2 font-semibold",
+        },
+        buttonsStyling: false,
+    });
 };
 
-window.editRecord = (id) => {
-    console.log("Edit record clicked with ID:", id);
-    const record = props.records.find((record) => record.id === id);
-    if (record) {
-        selectedRecord.value = record;
-        showEditModal.value = true;
+const handleRecordUpdated = (updatedRecord) => {
+    console.log("[DEBUG] handleRecordUpdated called with:", updatedRecord);
+    if (updatedRecord && updatedRecord.id) {
+        const before = JSON.parse(JSON.stringify(rowData.value));
+        rowData.value = rowData.value
+            .map((r) =>
+                r.id === updatedRecord.id ? mapRecord(updatedRecord) : r
+            )
+            .sort(
+                (a, b) =>
+                    new Date(b.created_at_iso) - new Date(a.created_at_iso)
+            );
+        const after = JSON.parse(JSON.stringify(rowData.value));
+        console.log("[DEBUG] rowData before update:", before);
+        console.log("[DEBUG] rowData after update:", after);
     } else {
-        alert("Record not found");
+        console.warn(
+            "[DEBUG] handleRecordUpdated: updatedRecord missing id or is falsy",
+            updatedRecord
+        );
     }
+    Swal.fire({
+        icon: "success",
+        title: "Record Updated!",
+        text: "The record was updated successfully.",
+        background: "#fff",
+        color: "#7f1d1d",
+        confirmButtonColor: "#b91c1c",
+        customClass: {
+            popup: "rounded-2xl shadow-2xl border border-red-100",
+            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            confirmButton: "rounded-xl px-6 py-2 font-semibold",
+        },
+        buttonsStyling: false,
+    });
+    selectedRecord.value = {}; // Clear selected record
 };
 
 window.deleteRecord = async (id) => {
     if (!isAdmin.value) {
-        alert("You don't have permission to delete records.");
+        Swal.fire({
+            icon: "error",
+            title: "Permission Denied",
+            text: "You don't have permission to delete records.",
+            background: "#fff",
+            color: "#7f1d1d",
+            confirmButtonColor: "#b91c1c",
+            customClass: {
+                popup: "rounded-2xl shadow-2xl border border-red-100",
+                title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                confirmButton: "rounded-xl px-6 py-2 font-semibold",
+            },
+            buttonsStyling: false,
+        });
         return;
     }
-
-    if (confirm("Are you sure you want to delete this record?")) {
+    const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "This will permanently delete the record.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#b91c1c",
+        cancelButtonColor: "#d1d5db",
+        confirmButtonText: "Yes, delete it!",
+        background: "#fff",
+        color: "#7f1d1d",
+        customClass: {
+            popup: "rounded-2xl shadow-2xl border border-red-100",
+            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            confirmButton: "rounded-xl px-6 py-2 font-semibold",
+        },
+        buttonsStyling: false,
+    });
+    if (result.isConfirmed) {
+        let deleteLoadingSwal;
         try {
+            deleteLoadingSwal = Swal.fire({
+                title: "Deleting...",
+                text: "Please wait while the record is being deleted.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                background: "#fff",
+                color: "#7f1d1d",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
             const response = await fetch(`/records/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -843,27 +856,142 @@ window.deleteRecord = async (id) => {
                     "Content-Type": "application/json",
                 },
             });
-
             if (response.ok) {
-                router.reload();
+                // Remove the deleted record from rowData
+                rowData.value = rowData.value.filter((r) => r.id !== id);
+                Swal.fire({
+                    icon: "success",
+                    title: "Record Deleted!",
+                    text: "The record was deleted successfully.",
+                    background: "#fff",
+                    color: "#7f1d1d",
+                    confirmButtonColor: "#b91c1c",
+                    customClass: {
+                        popup: "rounded-2xl shadow-2xl border border-red-100",
+                        title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                        confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                    },
+                    buttonsStyling: false,
+                });
             } else {
-                alert("Error deleting record");
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    text: "Error deleting record.",
+                    background: "#fff",
+                    color: "#7f1d1d",
+                    confirmButtonColor: "#b91c1c",
+                    customClass: {
+                        popup: "rounded-2xl shadow-2xl border border-red-100",
+                        title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                        confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                    },
+                    buttonsStyling: false,
+                });
             }
         } catch (error) {
-            console.error("Error:", error);
-            alert("Error deleting record");
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: "Error deleting record.",
+                background: "#fff",
+                color: "#7f1d1d",
+                confirmButtonColor: "#b91c1c",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
         }
     }
 };
 
-const handleRecordCreated = () => {
-    console.log("Record created successfully!");
+window.editRecord = function (id) {
+    const record = filteredRecords.value.find((r) => r.id === id);
+    if (record) {
+        selectedRecord.value = { ...record };
+        showEditModal.value = true;
+    }
+};
+window.viewRecord = function (id) {
+    const record = filteredRecords.value.find((r) => r.id === id);
+    if (record) {
+        viewRecord.value = { ...record };
+        showViewModal.value = true;
+    }
 };
 
-const handleRecordUpdated = () => {
-    console.log("Record updated successfully!");
-    selectedRecord.value = {};
-};
+// --- Use rowData for AG Grid ---
+const filteredRecords = computed(() => {
+    let mapped = rowData.value.map((record) => {
+        // Ensure numeric fields are numbers
+        return {
+            ...record,
+            lorry_amount: Number(record.lorry_amount),
+            lorry_units: Number(record.lorry_units),
+            tractor_amount: Number(record.tractor_amount),
+            tractor_units: Number(record.tractor_units),
+            expected_profit_lorry: Number(record.expected_profit_lorry),
+            expected_profit_tractor: Number(record.expected_profit_tractor),
+            total_expected_profit: Number(record.total_expected_profit),
+            confirmed_cubic_meters: Number(record.confirmed_cubic_meters),
+            extra_cubic: Number(record.extra_cubic),
+            less_cubic: Number(record.less_cubic),
+        };
+    });
+    let filtered = [...mapped];
+    // Date range filter (robust: only filter if valid date)
+    if (filters.value.dateFrom && !isNaN(Date.parse(filters.value.dateFrom))) {
+        filtered = filtered.filter((record) => {
+            if (!record.created_at_iso) return false;
+            const recordDate = new Date(record.created_at_iso);
+            const fromDate = new Date(filters.value.dateFrom);
+            return recordDate >= fromDate;
+        });
+    }
+    if (filters.value.dateTo && !isNaN(Date.parse(filters.value.dateTo))) {
+        filtered = filtered.filter((record) => {
+            if (!record.created_at_iso) return false;
+            const recordDate = new Date(record.created_at_iso);
+            const toDate = new Date(filters.value.dateTo);
+            toDate.setDate(toDate.getDate() + 1);
+            return recordDate < toDate;
+        });
+    }
+    // Supplier filter
+    if (filters.value.supplierIds.length > 0) {
+        filtered = filtered.filter((record) =>
+            filters.value.supplierIds.includes(record.supplier_id)
+        );
+    }
+    // Amount range filter
+    if (filters.value.minAmount !== null && filters.value.minAmount !== "") {
+        filtered = filtered.filter(
+            (record) =>
+                Number(record.total_expected_profit) >= filters.value.minAmount
+        );
+    }
+    if (filters.value.maxAmount !== null && filters.value.maxAmount !== "") {
+        filtered = filtered.filter(
+            (record) =>
+                Number(record.total_expected_profit) <= filters.value.maxAmount
+        );
+    }
+    // Always sort by full datetime (created_at_iso) descending (latest at top)
+    const sorted = filtered.sort((a, b) => {
+        if (!a.created_at_iso && !b.created_at_iso) return 0;
+        if (!a.created_at_iso) return 1;
+        if (!b.created_at_iso) return -1;
+        return (
+            new Date(b.created_at_iso).getTime() -
+            new Date(a.created_at_iso).getTime()
+        );
+    });
+    // Convert proxies to plain objects for AG Grid
+    return sorted.map((r) => JSON.parse(JSON.stringify(r)));
+});
 
 // Multiselect dropdown computed properties
 const filteredSuppliers = computed(() => {
@@ -931,8 +1059,27 @@ const clearHideTimeout = () => {
     }
 };
 
-console.log("Records data received as prop:", props.records);
-console.log("Suppliers data received as prop:", props.suppliers);
+// Add clearFilters function to reset all filters
+const clearFilters = () => {
+    filters.value.dateFrom = "";
+    filters.value.dateTo = "";
+    filters.value.supplierIds = [];
+    filters.value.minAmount = null;
+    filters.value.maxAmount = null;
+    selectedSuppliers.value = [];
+    supplierSearch.value = "";
+};
+
+function formatCurrency(value) {
+    if (value == null || isNaN(value)) return "-";
+    return (
+        "KES " +
+        Number(value).toLocaleString("en-KE", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        })
+    );
+}
 </script>
 
 <style>
@@ -950,6 +1097,12 @@ console.log("Suppliers data received as prop:", props.suppliers);
 .modern-grid .ag-row {
     border: none;
     border-bottom: 1px solid rgb(254 202 202);
+    background: transparent;
+    transition: background 0.2s;
+}
+
+.modern-grid .ag-row:hover {
+    background: rgb(254 242 242);
 }
 
 .modern-grid .ag-root-wrapper {
@@ -961,5 +1114,104 @@ console.log("Suppliers data received as prop:", props.suppliers);
     border-top: 1px solid rgb(254 202 202);
     background-color: rgb(254 242 242);
     padding: 16px;
+}
+
+/* Modern filter and button styles */
+.records-filters .ag-input,
+.records-filters input[type="date"],
+.records-filters input[type="number"] {
+    border-radius: 0.75rem;
+    border: 1px solid #fecaca;
+    background: #fff;
+    box-shadow: 0 2px 8px 0 #fca5a5, 0 1.5px 4px 0 #fca5a5;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+.records-filters input:focus {
+    border-color: #b91c1c;
+    box-shadow: 0 0 0 2px #fecaca;
+}
+.records-filters label {
+    color: #7f1d1d;
+    font-weight: 600;
+}
+.records-filters .modern-btn {
+    background: linear-gradient(to right, #dc2626, #b91c1c);
+    color: #fff;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px 0 #fca5a5;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.records-filters .modern-btn:hover {
+    background: linear-gradient(to right, #b91c1c, #7f1d1d);
+    box-shadow: 0 4px 16px 0 #fca5a5;
+    transform: scale(1.03);
+}
+
+/* Responsive and modern improvements for records section */
+@media (max-width: 1024px) {
+    .modern-grid .ag-header,
+    .modern-grid .ag-cell {
+        font-size: 13px;
+        padding: 10px 8px;
+    }
+    .records-filters {
+        padding: 1rem !important;
+    }
+}
+@media (max-width: 640px) {
+    .modern-grid .ag-header,
+    .modern-grid .ag-cell {
+        font-size: 12px;
+        padding: 8px 4px;
+    }
+    .modern-grid .ag-root-wrapper {
+        border-radius: 10px;
+    }
+    .records-filters {
+        padding: 0.5rem !important;
+        border-radius: 1rem !important;
+    }
+    .records-filters .modern-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+    }
+}
+
+/* Modern modal button for view modal */
+.view-modal-close {
+    background: linear-gradient(to right, #dc2626, #b91c1c);
+    color: #fff;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px 0 #fca5a5;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.view-modal-close:hover {
+    background: linear-gradient(to right, #b91c1c, #7f1d1d);
+    box-shadow: 0 4px 16px 0 #fca5a5;
+    transform: scale(1.03);
+}
+
+/* Modern modal field styles */
+.view-modal-label {
+    color: #7f1d1d;
+    font-weight: 600;
+}
+.view-modal-value {
+    background: #fef2f2;
+    color: #7f1d1d;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    box-shadow: 0 1px 4px 0 #fca5a5;
+    margin-top: 0.25rem;
+}
+.view-modal-value-bold {
+    background: #fee2e2;
+    color: #991b1b;
+    font-weight: bold;
 }
 </style>

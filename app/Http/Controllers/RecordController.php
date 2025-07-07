@@ -34,7 +34,10 @@ class RecordController extends Controller
                     'confirmed_cubic_meters' => $record->confirmed_cubic_meters,
                     'extra_cubic' => $record->extra_cubic,
                     'less_cubic' => $record->less_cubic,
-                    'created_at' => $record->created_at->format('j F Y'),
+                    // Human-readable date for display
+                    'created_at' => $record->created_at->format('j F Y, H:i:s'),
+                    // ISO datetime string for sorting/filtering (includes time)
+                    'created_at_iso' => $record->created_at->toISOString(),
                     'deleted' => $record->deleted,
                 ];
             })
@@ -99,7 +102,26 @@ class RecordController extends Controller
         $admins = User::where('role_id', 1)->get();
         Notification::send($admins, new RecordCreated($record, auth()->user()));
 
-        return response()->json(['success' => true, 'message' => 'Record created successfully.']);
+        // Return the full record with supplier info for frontend
+        $record = $record->fresh('supplier');
+        return response()->json([
+            'id' => $record->record_id,
+            'supplier_id' => $record->supplier_id,
+            'supplier_name' => $record->supplier->supplier_name ?? 'Unknown Supplier',
+            'lorry_amount' => $record->lorry_amount,
+            'lorry_units' => $record->lorry_units,
+            'tractor_amount' => $record->tractor_amount,
+            'tractor_units' => $record->tractor_units,
+            'expected_profit_lorry' => $record->expected_profit_lorry,
+            'expected_profit_tractor' => $record->expected_profit_tractor,
+            'total_expected_profit' => $record->total_expected_profit,
+            'confirmed_cubic_meters' => $record->confirmed_cubic_meters,
+            'extra_cubic' => $record->extra_cubic,
+            'less_cubic' => $record->less_cubic,
+            'created_at' => $record->created_at->format('j F Y, H:i:s'),
+            'created_at_iso' => $record->created_at->toISOString(),
+            'deleted' => $record->deleted,
+        ]);
     }
 
     // Update a record
@@ -145,7 +167,26 @@ class RecordController extends Controller
         $admins = User::where('role_id', 1)->get();
         Notification::send($admins, new RecordUpdated($record, auth()->user(), $oldData));
 
-        return response()->json(['success' => true, 'message' => 'Record updated successfully.']);
+        // Return the full record with supplier info for frontend
+        $record = $record->fresh('supplier');
+        return response()->json([
+            'id' => $record->record_id,
+            'supplier_id' => $record->supplier_id,
+            'supplier_name' => $record->supplier->supplier_name ?? 'Unknown Supplier',
+            'lorry_amount' => $record->lorry_amount,
+            'lorry_units' => $record->lorry_units,
+            'tractor_amount' => $record->tractor_amount,
+            'tractor_units' => $record->tractor_units,
+            'expected_profit_lorry' => $record->expected_profit_lorry,
+            'expected_profit_tractor' => $record->expected_profit_tractor,
+            'total_expected_profit' => $record->total_expected_profit,
+            'confirmed_cubic_meters' => $record->confirmed_cubic_meters,
+            'extra_cubic' => $record->extra_cubic,
+            'less_cubic' => $record->less_cubic,
+            'created_at' => $record->created_at->format('j F Y, H:i:s'),
+            'created_at_iso' => $record->created_at->toISOString(),
+            'deleted' => $record->deleted,
+        ]);
     }
 
     // Soft delete a record

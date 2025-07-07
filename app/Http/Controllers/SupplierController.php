@@ -69,7 +69,12 @@ class SupplierController extends Controller
         $admins = User::where('role_id', 1)->get();
         Notification::send($admins, new SupplierCreated($supplier, auth()->user()));
 
-        return response()->json(['success' => true, 'message' => 'Supplier created successfully.']);
+        // Return the created supplier object for frontend
+        return response()->json([
+            'id' => $supplier->supplier_id,
+            'name' => $supplier->supplier_name,
+            'phone_number' => $supplier->phone_number,
+        ], 201);
     }    // Soft delete a supplier
     public function destroy($id)
     {

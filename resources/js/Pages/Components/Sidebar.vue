@@ -1,6 +1,9 @@
 <template>
     <aside
-        class="w-72 min-h-screen h-full bg-gradient-to-b from-red-900 via-red-800 to-red-900 border-r border-red-700/30 p-6 flex flex-col gap-6 shadow-2xl sticky top-0 backdrop-blur-sm"
+        :class="[
+            'min-h-screen h-full bg-gradient-to-b from-red-900 via-red-800 to-red-900 border-r border-red-700/30 p-3 flex flex-col gap-3 shadow-2xl sticky top-0 backdrop-blur-sm transition-all duration-300',
+            collapsed ? 'w-16 rounded-r-2xl' : 'w-56 rounded-r-2xl',
+        ]"
         style="
             display: flex !important;
             background: linear-gradient(
@@ -13,24 +16,115 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
         "
     >
+        <!-- Collapse Toggle Button -->
+        <div class="relative flex justify-end mb-1">
+            <button
+                @click="collapsed = !collapsed"
+                class="bg-white/90 hover:bg-red-100 text-red-800 border border-red-200 shadow-lg rounded-full w-7 h-7 flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-400"
+                :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+                style="
+                    position: static;
+                    right: auto;
+                    top: auto;
+                    margin-left: auto;
+                "
+            >
+                <svg
+                    v-if="!collapsed"
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"
+                    />
+                </svg>
+                <svg
+                    v-else
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                    />
+                </svg>
+            </button>
+        </div>
         <!-- Logo/Brand Section -->
-        <div class="text-center py-4 border-b border-red-700/30 mb-6">
-            <div class="text-2xl font-bold text-white mb-2 tracking-wide">
+        <div
+            v-if="!collapsed"
+            class="text-center py-2 border-b border-red-700/30 mb-3"
+        >
+            <div class="text-xl font-bold text-white mb-1 tracking-wide">
                 Leonard
             </div>
-            <div class="text-red-200 text-sm font-medium">
+            <div class="text-red-200 text-xs font-medium">
                 Management System
             </div>
         </div>
-
+        <div
+            v-else
+            class="flex flex-col items-center py-2 border-b border-red-700/30 mb-3"
+        >
+            <!-- App Logo (replace src with your logo path if available) -->
+            <img
+                src="/favicon.ico"
+                alt="App Logo"
+                class="w-8 h-8 rounded-lg shadow-md"
+            />
+        </div>
         <!-- Navigation Menu -->
-        <nav class="flex flex-col gap-3 mt-4">
+        <nav class="flex flex-col gap-2 mt-2">
             <div
-                class="text-red-200 text-xs uppercase tracking-widest font-semibold mb-4 px-3"
+                v-if="!collapsed"
+                class="text-red-200 text-[10px] uppercase tracking-widest font-semibold mb-2 px-2"
             >
                 Main Menu
             </div>
-
+            <!-- Home Menu Item -->
+            <div
+                class="group relative cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02]"
+                @click="goToHome"
+            >
+                <div
+                    :class="[
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        collapsed ? 'justify-center px-2' : 'px-4',
+                    ]"
+                >
+                    <div
+                        class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
+                    >
+                        <svg
+                            class="w-5 h-5 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m5 0a2 2 0 002-2V7a2 2 0 00-2-2h-3.5a2 2 0 00-2 2v1"
+                            />
+                        </svg>
+                    </div>
+                    <span
+                        v-if="!collapsed"
+                        class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
+                        >Home</span
+                    >
+                </div>
+            </div>
             <!-- Staff Menu Item -->
             <div
                 v-if="isAdmin"
@@ -38,7 +132,10 @@
                 @click="goToStaff"
             >
                 <div
-                    class="flex items-center gap-4 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+                    :class="[
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        collapsed ? 'justify-center px-2' : 'px-4',
+                    ]"
                 >
                     <div
                         class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
@@ -58,19 +155,22 @@
                         </svg>
                     </div>
                     <span
+                        v-if="!collapsed"
                         class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
                         >Staff</span
                     >
                 </div>
             </div>
-
             <!-- Suppliers Menu Item -->
             <div
                 class="group relative cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02]"
                 @click="goToSupplier"
             >
                 <div
-                    class="flex items-center gap-4 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+                    :class="[
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        collapsed ? 'justify-center px-2' : 'px-4',
+                    ]"
                 >
                     <div
                         class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
@@ -90,19 +190,22 @@
                         </svg>
                     </div>
                     <span
+                        v-if="!collapsed"
                         class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
                         >Suppliers</span
                     >
                 </div>
             </div>
-
             <!-- Records Menu Item -->
             <div
                 class="group relative cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.02]"
                 @click="goToRecords"
             >
                 <div
-                    class="flex items-center gap-4 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+                    :class="[
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        collapsed ? 'justify-center px-2' : 'px-4',
+                    ]"
                 >
                     <div
                         class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
@@ -122,12 +225,12 @@
                         </svg>
                     </div>
                     <span
+                        v-if="!collapsed"
                         class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
                         >Records</span
                     >
                 </div>
             </div>
-
             <!-- Reports Menu Item -->
             <div
                 v-if="isAdmin"
@@ -135,7 +238,10 @@
                 @click="goToReports"
             >
                 <div
-                    class="flex items-center gap-4 px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+                    :class="[
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        collapsed ? 'justify-center px-2' : 'px-4',
+                    ]"
                 >
                     <div
                         class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
@@ -155,21 +261,21 @@
                         </svg>
                     </div>
                     <span
+                        v-if="!collapsed"
                         class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
                         >Reports</span
                     >
                 </div>
             </div>
         </nav>
-
         <!-- Bottom Decorative Element -->
-        <div class="mt-auto pt-6 border-t border-red-700/30">
+        <div class="mt-auto pt-3 border-t border-red-700/30">
             <div class="text-center">
                 <div
-                    class="w-12 h-12 mx-auto rounded-full bg-gradient-to-tr from-red-600 to-red-500 flex items-center justify-center mb-3 shadow-lg"
+                    class="w-8 h-8 mx-auto rounded-full bg-gradient-to-tr from-red-600 to-red-500 flex items-center justify-center mb-2 shadow-lg"
                 >
                     <svg
-                        class="w-6 h-6 text-white"
+                        class="w-4 h-4 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -182,7 +288,10 @@
                         />
                     </svg>
                 </div>
-                <div class="text-red-200 text-xs font-medium">
+                <div
+                    v-if="!collapsed"
+                    class="text-red-200 text-[10px] font-medium"
+                >
                     Powered by Leonard
                 </div>
             </div>
@@ -192,9 +301,10 @@
 
 <script setup>
 import { router, usePage } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 const page = usePage();
+const collapsed = ref(false);
 
 const isAdmin = computed(() => {
     return page.props.auth?.user?.is_admin || false;
@@ -212,4 +322,68 @@ function goToRecords() {
 function goToReports() {
     router.visit("/reports");
 }
+function goToHome() {
+    router.visit("/");
+}
 </script>
+
+<style scoped>
+/* Reduce sidebar paddings, font sizes, and icon sizes for compactness */
+
+aside {
+    min-height: 100vh !important;
+    height: 100vh !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 30 !important;
+    padding: 0.75rem !important;
+}
+nav {
+    gap: 0.5rem !important;
+}
+nav > div {
+    margin-bottom: 0.1rem !important;
+}
+nav .flex.items-center {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    min-height: 2.25rem !important;
+}
+nav .w-10.h-10 {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+}
+nav svg {
+    width: 1rem !important;
+    height: 1rem !important;
+}
+nav span {
+    font-size: 0.95rem !important;
+}
+.text-xl {
+    font-size: 1.1rem !important;
+}
+.text-xs {
+    font-size: 0.65rem !important;
+}
+.mt-auto.pt-3 {
+    padding-top: 0.5rem !important;
+}
+.w-8.h-8 {
+    width: 2rem !important;
+    height: 2rem !important;
+}
+.mb-2 {
+    margin-bottom: 0.3rem !important;
+}
+
+/* Ensure dropdowns in sidebar always appear above all other content */
+.group .absolute,
+.group .z-10,
+nav .absolute,
+nav .z-10 {
+    z-index: 9999 !important;
+}
+</style>

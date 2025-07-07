@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id('supplier_id');
             $table->string('supplier_name');
-            $table->unsignedBigInteger('phone_number');
+            $table->string('phone_number'); // changed from unsignedBigInteger to string
             $table->timestamps();
         });
     }

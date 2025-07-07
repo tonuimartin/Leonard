@@ -1,3 +1,206 @@
+<script setup>
+import { ref, watch, computed } from "vue";
+import Swal from "sweetalert2";
+import { router } from "@inertiajs/vue3";
+
+const props = defineProps({
+    showModal: {
+        type: Boolean,
+        default: false,
+    },
+    suppliers: {
+        type: Array,
+        default: () => [],
+    },
+});
+
+const emit = defineEmits(["close", "created", "error"]);
+
+const formData = ref({
+    supplier_id: "",
+    lorry_units: 0,
+    tractor_units: 0,
+    lorry_money: 0,
+    tractor_money: 0,
+    confirmed_cubic_meters: 0,
+    extra_cubic: 0,
+    less_cubic: 0,
+});
+
+const lorryCalculationType = ref("money");
+const tractorCalculationType = ref("money");
+const loading = ref(false);
+
+// Pricing constants
+const LORRY_BUYING_PRICE = 2000;
+const LORRY_SELLING_PRICE = 2200;
+const TRACTOR_BUYING_PRICE = 2200;
+const TRACTOR_SELLING_PRICE = 2400;
+const PROFIT_PER_CUBIC = 200;
+
+// Computed properties for actual units
+const actualLorryUnits = computed(() => {
+    return lorryCalculationType.value === "units"
+        ? formData.value.lorry_units
+        : formData.value.lorry_money / LORRY_BUYING_PRICE;
+});
+
+const actualTractorUnits = computed(() => {
+    return tractorCalculationType.value === "units"
+        ? formData.value.tractor_units
+        : formData.value.tractor_money / TRACTOR_BUYING_PRICE;
+});
+
+// Computed properties for profits
+const calculatedLorryProfit = computed(() => {
+    return actualLorryUnits.value * PROFIT_PER_CUBIC;
+});
+
+const calculatedTractorProfit = computed(() => {
+    return actualTractorUnits.value * PROFIT_PER_CUBIC;
+});
+
+const calculatedTotalProfit = computed(() => {
+    return calculatedLorryProfit.value + calculatedTractorProfit.value;
+});
+
+// Currency formatting function
+const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-KE", {
+        style: "currency",
+        currency: "KES",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(amount || 0);
+};
+
+// Calculation methods
+const calculateFromMoney = (vehicleType) => {
+    if (vehicleType === "lorry") {
+        formData.value.lorry_units =
+            formData.value.lorry_money / LORRY_BUYING_PRICE;
+    } else if (vehicleType === "tractor") {
+        formData.value.tractor_units =
+            formData.value.tractor_money / TRACTOR_BUYING_PRICE;
+    }
+};
+
+const calculateProfits = () => {
+    // This method can be used for any additional calculations if needed
+    // The computed properties handle most of the work automatically
+};
+
+// Reset form when modal closes
+watch(
+    () => props.showModal,
+    (newVal) => {
+        if (!newVal) {
+            resetForm();
+            loading.value = false;
+        }
+    }
+);
+
+const resetForm = () => {
+    formData.value = {
+        supplier_id: "",
+        lorry_units: 0,
+        tractor_units: 0,
+        lorry_money: 0,
+        tractor_money: 0,
+        confirmed_cubic_meters: 0,
+        extra_cubic: 0,
+        less_cubic: 0,
+    };
+    lorryCalculationType.value = "money";
+    tractorCalculationType.value = "money";
+};
+
+const handleSubmit = async () => {
+    loading.value = true;
+    const submitData = {
+        ...formData.value,
+        lorry_units: actualLorryUnits.value,
+        tractor_units: actualTractorUnits.value,
+        expected_profit_lorry: calculatedLorryProfit.value,
+        expected_profit_tractor: calculatedTractorProfit.value,
+        total_expected_profit: calculatedTotalProfit.value,
+    };
+    try {
+        const response = await fetch("/records", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(submitData),
+        });
+        if (response.ok) {
+            const newRecord = await response.json();
+            emit("created", newRecord);
+            emit("close");
+            Swal.fire({
+                icon: "success",
+                title: "Record Created!",
+                text: "The record was created successfully.",
+                background: "#fff",
+                color: "#7f1d1d",
+                confirmButtonColor: "#b91c1c",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
+            resetForm();
+        } else {
+            const errorData = await response.json();
+            emit("error", errorData);
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text:
+                    errorData.message || "An error occurred. Please try again.",
+                background: "#fff",
+                color: "#7f1d1d",
+                confirmButtonColor: "#b91c1c",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
+        }
+    } catch (error) {
+        emit("error", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: error.message || "An error occurred. Please try again.",
+            background: "#fff",
+            color: "#7f1d1d",
+            confirmButtonColor: "#b91c1c",
+            customClass: {
+                popup: "rounded-2xl shadow-2xl border border-red-100",
+                title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                confirmButton: "rounded-xl px-6 py-2 font-semibold",
+            },
+            buttonsStyling: false,
+        });
+    } finally {
+        loading.value = false;
+    }
+};
+
+const handleCancel = () => {
+    emit("close");
+};
+</script>
+
 <template>
     <!-- Create Record Modal -->
     <div
@@ -325,14 +528,22 @@
                     <div class="flex gap-4 pt-6">
                         <button
                             type="submit"
-                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center justify-center"
+                            :disabled="loading"
                         >
-                            Create Record
+                            <span
+                                v-if="loading"
+                                class="animate-spin mr-2 h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+                            ></span>
+                            <span>{{
+                                loading ? "Creating..." : "Create Record"
+                            }}</span>
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
                             class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            :disabled="loading"
                         >
                             Cancel
                         </button>
@@ -343,162 +554,6 @@
     </div>
 </template>
 
-<script setup>
-import { ref, watch, computed } from "vue";
-import { router } from "@inertiajs/vue3";
-
-const props = defineProps({
-    showModal: {
-        type: Boolean,
-        default: false,
-    },
-    suppliers: {
-        type: Array,
-        default: () => [],
-    },
-});
-
-const emit = defineEmits(["close", "created"]);
-
-const formData = ref({
-    supplier_id: "",
-    lorry_units: 0,
-    tractor_units: 0,
-    lorry_money: 0,
-    tractor_money: 0,
-    confirmed_cubic_meters: 0,
-    extra_cubic: 0,
-    less_cubic: 0,
-});
-
-const lorryCalculationType = ref("money");
-const tractorCalculationType = ref("money");
-
-// Pricing constants
-const LORRY_BUYING_PRICE = 2000;
-const LORRY_SELLING_PRICE = 2200;
-const TRACTOR_BUYING_PRICE = 2200;
-const TRACTOR_SELLING_PRICE = 2400;
-const PROFIT_PER_CUBIC = 200;
-
-// Computed properties for actual units
-const actualLorryUnits = computed(() => {
-    return lorryCalculationType.value === "units"
-        ? formData.value.lorry_units
-        : formData.value.lorry_money / LORRY_BUYING_PRICE;
-});
-
-const actualTractorUnits = computed(() => {
-    return tractorCalculationType.value === "units"
-        ? formData.value.tractor_units
-        : formData.value.tractor_money / TRACTOR_BUYING_PRICE;
-});
-
-// Computed properties for profits
-const calculatedLorryProfit = computed(() => {
-    return actualLorryUnits.value * PROFIT_PER_CUBIC;
-});
-
-const calculatedTractorProfit = computed(() => {
-    return actualTractorUnits.value * PROFIT_PER_CUBIC;
-});
-
-const calculatedTotalProfit = computed(() => {
-    return calculatedLorryProfit.value + calculatedTractorProfit.value;
-});
-
-// Currency formatting function
-const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-KE", {
-        style: "currency",
-        currency: "KES",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    }).format(amount || 0);
-};
-
-// Calculation methods
-const calculateFromMoney = (vehicleType) => {
-    if (vehicleType === "lorry") {
-        formData.value.lorry_units =
-            formData.value.lorry_money / LORRY_BUYING_PRICE;
-    } else if (vehicleType === "tractor") {
-        formData.value.tractor_units =
-            formData.value.tractor_money / TRACTOR_BUYING_PRICE;
-    }
-};
-
-const calculateProfits = () => {
-    // This method can be used for any additional calculations if needed
-    // The computed properties handle most of the work automatically
-};
-
-// Reset form when modal closes
-watch(
-    () => props.showModal,
-    (newVal) => {
-        if (!newVal) {
-            resetForm();
-        }
-    }
-);
-
-const resetForm = () => {
-    formData.value = {
-        supplier_id: "",
-        lorry_units: 0,
-        tractor_units: 0,
-        lorry_money: 0,
-        tractor_money: 0,
-        confirmed_cubic_meters: 0,
-        extra_cubic: 0,
-        less_cubic: 0,
-    };
-    lorryCalculationType.value = "money";
-    tractorCalculationType.value = "money";
-};
-
-const handleSubmit = async () => {
-    // Prepare data with actual units for submission
-    const submitData = {
-        ...formData.value,
-        lorry_units: actualLorryUnits.value,
-        tractor_units: actualTractorUnits.value,
-        expected_profit_lorry: calculatedLorryProfit.value,
-        expected_profit_tractor: calculatedTractorProfit.value,
-        total_expected_profit: calculatedTotalProfit.value,
-    };
-
-    try {
-        const response = await fetch("/records", {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(submitData),
-        });
-
-        if (response.ok) {
-            emit("created");
-            emit("close");
-            router.reload();
-        } else {
-            const errorData = await response.json();
-            alert(
-                "Error creating record: " +
-                    (errorData.message || "Unknown error")
-            );
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Error creating record");
-    }
-};
-
-const handleCancel = () => {
-    emit("close");
-};
-</script>
+<style scoped>
+/* Add any additional custom styles here */
+</style>

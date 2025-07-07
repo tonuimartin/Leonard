@@ -96,6 +96,7 @@
             :showModal="showCreateModal"
             @close="showCreateModal = false"
             @created="handleStaffCreated"
+            @error="handleStaffError"
         />
 
         <!-- Edit Staff Modal Component -->
@@ -104,6 +105,7 @@
             :staffData="selectedStaff"
             @close="showEditModal = false"
             @updated="handleStaffUpdated"
+            @error="handleStaffError"
         />
     </AuthenticatedLayout>
 </template>
@@ -145,6 +147,8 @@ import AdminCreateStaffModal from "./Components/AdminCreateStaffModal.vue";
 import AdminEditStaffModal from "./Components/AdminEditStaffModal.vue";
 import { AgGridVue } from "ag-grid-vue3";
 import { ModuleRegistry, AllCommunityModule } from "ag-grid-community";
+import Swal from "sweetalert2";
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -223,8 +227,26 @@ window.editStaff = (id) => {
 };
 
 window.deleteStaff = async (id) => {
+    let deleteLoadingSwal;
     if (confirm("Are you sure you want to delete this staff member?")) {
         try {
+            deleteLoadingSwal = Swal.fire({
+                title: "Deleting...",
+                text: "Please wait while the staff member is being deleted.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                background: "#fff",
+                color: "#7f1d1d",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
             const response = await fetch(`/staff/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -236,25 +258,123 @@ window.deleteStaff = async (id) => {
             });
 
             if (response.ok) {
-                // Refresh the page to show updated data
-                router.reload();
+                // Remove the staff from the table without reload and keep sorted
+                rowData.value = rowData.value
+                    .filter((s) => s.id !== id)
+                    .sort((a, b) => a.id - b.id);
+                Swal.fire({
+                    icon: "success",
+                    title: "Staff Deleted!",
+                    text: "The staff member was deleted successfully.",
+                    background: "#fff",
+                    color: "#7f1d1d",
+                    confirmButtonColor: "#b91c1c",
+                    customClass: {
+                        popup: "rounded-2xl shadow-2xl border border-red-100",
+                        title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                        confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                    },
+                    buttonsStyling: false,
+                });
             } else {
-                alert("Error deleting staff member");
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    text: "Error deleting staff member.",
+                    background: "#fff",
+                    color: "#7f1d1d",
+                    confirmButtonColor: "#b91c1c",
+                    customClass: {
+                        popup: "rounded-2xl shadow-2xl border border-red-100",
+                        title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                        confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                    },
+                    buttonsStyling: false,
+                });
             }
         } catch (error) {
-            console.error("Error:", error);
-            alert("Error deleting staff member");
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: "Error deleting staff member.",
+                background: "#fff",
+                color: "#7f1d1d",
+                confirmButtonColor: "#b91c1c",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
         }
     }
 };
 
-const handleStaffCreated = () => {
-    console.log("Staff member created successfully!");
+const handleStaffCreated = (newStaff) => {
+    // Add the new staff to the table without reload
+    if (newStaff && newStaff.id) {
+        // Add new staff and sort by id ascending
+        rowData.value = [
+            ...rowData.value.filter((s) => s.id !== newStaff.id),
+            newStaff,
+        ].sort((a, b) => a.id - b.id);
+    }
+    Swal.fire({
+        icon: "success",
+        title: "Staff Created!",
+        text: "The staff member was created successfully.",
+        background: "#fff",
+        color: "#7f1d1d",
+        confirmButtonColor: "#b91c1c",
+        customClass: {
+            popup: "rounded-2xl shadow-2xl border border-red-100",
+            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            confirmButton: "rounded-xl px-6 py-2 font-semibold",
+        },
+        buttonsStyling: false,
+    });
 };
 
-const handleStaffUpdated = () => {
-    console.log("Staff member updated successfully!");
+const handleStaffUpdated = (updatedStaff) => {
+    // Update the staff in the table without reload
+    if (updatedStaff && updatedStaff.id) {
+        rowData.value = rowData.value
+            .map((s) => (s.id === updatedStaff.id ? updatedStaff : s))
+            .sort((a, b) => a.id - b.id); // Always keep sorted by id ascending
+    }
+    Swal.fire({
+        icon: "success",
+        title: "Staff Updated!",
+        text: "The staff member was updated successfully.",
+        background: "#fff",
+        color: "#7f1d1d",
+        confirmButtonColor: "#b91c1c",
+        customClass: {
+            popup: "rounded-2xl shadow-2xl border border-red-100",
+            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            confirmButton: "rounded-xl px-6 py-2 font-semibold",
+        },
+        buttonsStyling: false,
+    });
     selectedStaff.value = {}; // Clear selected staff
+};
+
+const handleStaffError = (error) => {
+    Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: error?.message || "An error occurred. Please try again.",
+        background: "#fff",
+        color: "#7f1d1d",
+        confirmButtonColor: "#b91c1c",
+        customClass: {
+            popup: "rounded-2xl shadow-2xl border border-red-100",
+            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            confirmButton: "rounded-xl px-6 py-2 font-semibold",
+        },
+        buttonsStyling: false,
+    });
 };
 
 console.log("Staff data received as prop:", props.staff);

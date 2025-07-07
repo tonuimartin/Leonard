@@ -71,14 +71,22 @@
                     <div class="flex gap-4 pt-4">
                         <button
                             type="submit"
-                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center justify-center"
+                            :disabled="loading"
                         >
-                            Create Staff
+                            <span
+                                v-if="loading"
+                                class="animate-spin mr-2 h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+                            ></span>
+                            <span>{{
+                                loading ? "Creating..." : "Create Staff"
+                            }}</span>
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
                             class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            :disabled="loading"
                         >
                             Cancel
                         </button>
@@ -100,7 +108,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(["close", "created"]);
+const emit = defineEmits(["close", "created", "error"]);
 
 const formData = ref({
     name: "",
@@ -109,12 +117,15 @@ const formData = ref({
     password: "",
 });
 
+const loading = ref(false);
+
 // Reset form when modal closes
 watch(
     () => props.showModal,
     (newVal) => {
         if (!newVal) {
             resetForm();
+            loading.value = false;
         }
     }
 );
@@ -129,6 +140,7 @@ const resetForm = () => {
 };
 
 const handleSubmit = async () => {
+    loading.value = true;
     // Ensure phone_number is always a string
     const submitData = {
         name: formData.value.name,
@@ -139,30 +151,33 @@ const handleSubmit = async () => {
         password: formData.value.password,
     };
 
-    console.log("Submitting staff data:", submitData);
-
     try {
-        // Use Inertia.js router instead of fetch
         router.post("/staff", submitData, {
-            onSuccess: () => {
-                console.log("Staff created successfully");
-                emit("created");
+            onSuccess: (page) => {
+                // Find the created staff from the response if available
+                let newStaff = null;
+                if (page && page.props && page.props.staff) {
+                    // Find the staff with the highest id (assuming auto-increment)
+                    newStaff = Array.isArray(page.props.staff)
+                        ? page.props.staff.reduce(
+                              (a, b) => (a.id > b.id ? a : b),
+                              { id: 0 }
+                          )
+                        : null;
+                }
+                emit("created", newStaff);
                 emit("close");
                 resetForm();
+                loading.value = false;
             },
             onError: (errors) => {
-                console.error("Error creating staff member:", errors);
-                alert(
-                    "Error creating staff member: " +
-                        (errors.message ||
-                            Object.values(errors)[0] ||
-                            "Unknown error")
-                );
+                emit("error", errors);
+                loading.value = false;
             },
         });
     } catch (error) {
-        console.error("Error:", error);
-        alert("Error creating staff member");
+        emit("error", error);
+        loading.value = false;
     }
 };
 

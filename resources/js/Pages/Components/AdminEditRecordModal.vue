@@ -333,14 +333,22 @@
                     <div class="flex gap-4 pt-6">
                         <button
                             type="submit"
-                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            class="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center justify-center"
+                            :disabled="loading"
                         >
-                            Update Record
+                            <span
+                                v-if="loading"
+                                class="animate-spin mr-2 h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+                            ></span>
+                            <span>{{
+                                loading ? "Updating..." : "Update Record"
+                            }}</span>
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
                             class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            :disabled="loading"
                         >
                             Cancel
                         </button>
@@ -353,6 +361,7 @@
 
 <script setup>
 import { ref, watch, computed } from "vue";
+import Swal from "sweetalert2";
 import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
@@ -370,7 +379,7 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(["close", "updated"]);
+const emit = defineEmits(["close", "updated", "error"]);
 
 const formData = ref({
     supplier_id: "",
@@ -385,6 +394,7 @@ const formData = ref({
 
 const lorryCalculationType = ref("money");
 const tractorCalculationType = ref("money");
+const loading = ref(false);
 
 // Pricing constants
 const LORRY_BUYING_PRICE = 2000;
@@ -508,6 +518,7 @@ watch(
     (newVal) => {
         if (!newVal) {
             resetForm();
+            loading.value = false;
         }
     }
 );
@@ -529,11 +540,23 @@ const resetForm = () => {
 
 const handleSubmit = async () => {
     if (!props.recordData.id) {
-        alert("Error: No record ID provided");
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "No record ID provided.",
+            background: "#fff",
+            color: "#7f1d1d",
+            confirmButtonColor: "#b91c1c",
+            customClass: {
+                popup: "rounded-2xl shadow-2xl border border-red-100",
+                title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                confirmButton: "rounded-xl px-6 py-2 font-semibold",
+            },
+            buttonsStyling: false,
+        });
         return;
     }
-
-    // Prepare data with actual units for submission
+    loading.value = true;
     const submitData = {
         ...formData.value,
         lorry_units: actualLorryUnits.value,
@@ -541,12 +564,11 @@ const handleSubmit = async () => {
         expected_profit_lorry: calculatedLorryProfit.value,
         expected_profit_tractor: calculatedTractorProfit.value,
         total_expected_profit: calculatedTotalProfit.value,
-        _method: "PUT", // Laravel method spoofing
+        _method: "PUT",
     };
-
     try {
         const response = await fetch(`/records/${props.recordData.id}`, {
-            method: "POST", // Use POST with method spoofing
+            method: "POST",
             headers: {
                 "X-CSRF-TOKEN": document
                     .querySelector('meta[name="csrf-token"]')
@@ -555,21 +577,62 @@ const handleSubmit = async () => {
             },
             body: JSON.stringify(submitData),
         });
-
         if (response.ok) {
-            emit("updated");
+            const updatedRecord = await response.json();
+            emit("updated", updatedRecord);
             emit("close");
-            router.reload();
+            Swal.fire({
+                icon: "success",
+                title: "Record Updated!",
+                text: "The record was updated successfully.",
+                background: "#fff",
+                color: "#7f1d1d",
+                confirmButtonColor: "#b91c1c",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
+            resetForm();
         } else {
             const errorData = await response.json();
-            alert(
-                "Error updating record: " +
-                    (errorData.message || "Unknown error")
-            );
+            emit("error", errorData);
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text:
+                    errorData.message || "An error occurred. Please try again.",
+                background: "#fff",
+                color: "#7f1d1d",
+                confirmButtonColor: "#b91c1c",
+                customClass: {
+                    popup: "rounded-2xl shadow-2xl border border-red-100",
+                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    confirmButton: "rounded-xl px-6 py-2 font-semibold",
+                },
+                buttonsStyling: false,
+            });
         }
     } catch (error) {
-        console.error("Error:", error);
-        alert("Error updating record");
+        emit("error", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: error.message || "An error occurred. Please try again.",
+            background: "#fff",
+            color: "#7f1d1d",
+            confirmButtonColor: "#b91c1c",
+            customClass: {
+                popup: "rounded-2xl shadow-2xl border border-red-100",
+                title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                confirmButton: "rounded-xl px-6 py-2 font-semibold",
+            },
+            buttonsStyling: false,
+        });
+    } finally {
+        loading.value = false;
     }
 };
 
@@ -577,3 +640,7 @@ const handleCancel = () => {
     emit("close");
 };
 </script>
+
+<style scoped>
+/* Add any component-specific styles here */
+</style>

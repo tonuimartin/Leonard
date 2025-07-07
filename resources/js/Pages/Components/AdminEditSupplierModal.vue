@@ -2,50 +2,63 @@
     <!-- Edit Supplier Modal -->
     <div
         v-if="showModal"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50 backdrop-blur-sm"
     >
         <div
-            class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+            class="relative top-20 mx-auto p-8 border w-full max-w-md shadow-2xl rounded-3xl bg-white/95 backdrop-blur-lg border-red-200"
         >
             <div class="mt-3">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">
-                    Edit Supplier
-                </h3>
-                <form @submit.prevent="handleSubmit">
-                    <div class="mb-4">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-red-900 mb-2">
+                        Edit Supplier
+                    </h3>
+                    <p class="text-red-600">Update supplier information</p>
+                </div>
+                <form @submit.prevent="handleSubmit" class="space-y-6">
+                    <div>
                         <label
-                            class="block text-gray-700 text-sm font-bold mb-2"
+                            class="block text-red-900 text-sm font-semibold mb-3"
                             >Name</label
                         >
                         <input
                             v-model="formData.name"
                             type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                            placeholder="Enter supplier name"
                             required
                         />
                     </div>
-                    <div class="mb-4">
+                    <div>
                         <label
-                            class="block text-gray-700 text-sm font-bold mb-2"
+                            class="block text-red-900 text-sm font-semibold mb-3"
                             >Phone Number</label
                         >
                         <input
                             v-model="formData.phone_number"
                             type="text"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            class="w-full py-3 px-4 rounded-xl border border-red-200 bg-white/90 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent shadow-lg transition-all duration-200"
+                            placeholder="Enter phone number"
                         />
                     </div>
-                    <div class="flex items-center justify-between">
+                    <div class="flex gap-4 pt-4">
                         <button
                             type="submit"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center"
+                            :disabled="loading"
                         >
-                            Update Supplier
+                            <span
+                                v-if="loading"
+                                class="animate-spin mr-2 h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+                            ></span>
+                            <span>{{
+                                loading ? "Updating..." : "Update Supplier"
+                            }}</span>
                         </button>
                         <button
                             type="button"
                             @click="handleCancel"
-                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            class="flex-1 bg-white border border-red-200 hover:bg-red-50 text-red-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                            :disabled="loading"
                         >
                             Cancel
                         </button>
@@ -71,12 +84,14 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(["close", "updated"]);
+const emit = defineEmits(["close", "updated", "error"]);
 
 const formData = ref({
     name: "",
     phone_number: "",
 });
+
+const loading = ref(false);
 
 // Watch for changes in supplierData prop and populate form
 watch(
@@ -113,10 +128,10 @@ const resetForm = () => {
 
 const handleSubmit = async () => {
     if (!props.supplierData.id) {
-        alert("Error: No supplier ID provided");
+        emit("error", { message: "No supplier ID provided" });
         return;
     }
-
+    loading.value = true;
     // Ensure phone_number is always a string
     const submitData = {
         supplier_name: formData.value.name,
@@ -134,25 +149,35 @@ const handleSubmit = async () => {
                     .querySelector('meta[name="csrf-token"]')
                     .getAttribute("content"),
                 "Content-Type": "application/json",
+                Accept: "application/json",
             },
             body: JSON.stringify(submitData),
         });
 
         if (response.ok) {
-            emit("updated");
+            let updatedSupplier = null;
+            try {
+                updatedSupplier = await response.json();
+            } catch (e) {
+                updatedSupplier = null;
+            }
+            if (!updatedSupplier || !updatedSupplier.id) {
+                updatedSupplier = {
+                    ...formData.value,
+                    id: props.supplierData.id,
+                };
+            }
+            emit("updated", updatedSupplier);
             emit("close");
-            // Refresh the page to show updated data
-            router.reload();
+            loading.value = false;
         } else {
             const errorData = await response.json();
-            alert(
-                "Error updating supplier: " +
-                    (errorData.message || "Unknown error")
-            );
+            emit("error", errorData);
+            loading.value = false;
         }
     } catch (error) {
-        console.error("Error:", error);
-        alert("Error updating supplier");
+        emit("error", error);
+        loading.value = false;
     }
 };
 
@@ -160,3 +185,7 @@ const handleCancel = () => {
     emit("close");
 };
 </script>
+
+<style scoped>
+/* Add any additional custom styles here */
+</style>
