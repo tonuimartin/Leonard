@@ -121,7 +121,7 @@ const handleSubmit = async () => {
     console.log("[Supplier Modal] Submitting:", submitData);
 
     try {
-        const response = await fetch("/supplier", {
+        const response = await fetch("/suppliers", {
             method: "POST",
             headers: {
                 "X-CSRF-TOKEN": document

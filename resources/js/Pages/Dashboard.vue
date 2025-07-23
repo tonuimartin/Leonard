@@ -1,6 +1,40 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
+import { ref } from "vue";
+
+// Example: these would come from the backend controller
+const props = defineProps({
+    totalRecords: Number,
+    activeSuppliers: Number,
+    staffMembers: Number,
+    monthlyRevenue: Number,
+    recentActivity: {
+        type: Array,
+        default: () => [],
+    },
+});
+
+// Modal state (if you use modals for create actions)
+const showCreateRecordModal = ref(false);
+const showCreateSupplierModal = ref(false);
+const showGenerateReportModal = ref(false);
+const showManageStaffModal = ref(false);
+
+function openCreateRecord() {
+    // If you use a modal, set showCreateRecordModal.value = true
+    // Otherwise, navigate to the records page
+    router.visit("/records");
+}
+function openCreateSupplier() {
+    router.visit("/suppliers");
+}
+function openGenerateReport() {
+    router.visit("/reports");
+}
+function openManageStaff() {
+    router.visit("/staff");
+}
 </script>
 
 <template>
@@ -63,7 +97,8 @@ import { Head } from "@inertiajs/vue3";
                 >
                     <!-- Total Records Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        @click="openCreateRecord"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -73,10 +108,10 @@ import { Head } from "@inertiajs/vue3";
                                     Total Records
                                 </p>
                                 <p class="text-3xl font-bold text-red-900 mt-1">
-                                    1,247
+                                    {{ totalRecords ?? "—" }}
                                 </p>
                                 <p class="text-red-500 text-sm mt-1">
-                                    +12% from last month
+                                    Click to view records
                                 </p>
                             </div>
                             <div
@@ -101,7 +136,8 @@ import { Head } from "@inertiajs/vue3";
 
                     <!-- Active Suppliers Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        @click="openCreateSupplier"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -111,10 +147,10 @@ import { Head } from "@inertiajs/vue3";
                                     Active Suppliers
                                 </p>
                                 <p class="text-3xl font-bold text-red-900 mt-1">
-                                    89
+                                    {{ activeSuppliers ?? "—" }}
                                 </p>
                                 <p class="text-red-500 text-sm mt-1">
-                                    +3 new this week
+                                    Click to view suppliers
                                 </p>
                             </div>
                             <div
@@ -139,7 +175,8 @@ import { Head } from "@inertiajs/vue3";
 
                     <!-- Staff Members Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        @click="openManageStaff"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -149,10 +186,10 @@ import { Head } from "@inertiajs/vue3";
                                     Staff Members
                                 </p>
                                 <p class="text-3xl font-bold text-red-900 mt-1">
-                                    24
+                                    {{ staffMembers ?? "—" }}
                                 </p>
                                 <p class="text-red-500 text-sm mt-1">
-                                    All active
+                                    Click to manage staff
                                 </p>
                             </div>
                             <div
@@ -177,7 +214,8 @@ import { Head } from "@inertiajs/vue3";
 
                     <!-- Monthly Revenue Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        @click="openGenerateReport"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -187,10 +225,18 @@ import { Head } from "@inertiajs/vue3";
                                     Monthly Revenue
                                 </p>
                                 <p class="text-3xl font-bold text-red-900 mt-1">
-                                    KSh 2.4M
+                                    KSh
+                                    {{
+                                        monthlyRevenue
+                                            ? monthlyRevenue.toLocaleString(
+                                                  "en-KE",
+                                                  { minimumFractionDigits: 0 }
+                                              )
+                                            : "—"
+                                    }}
                                 </p>
                                 <p class="text-red-500 text-sm mt-1">
-                                    +8% from last month
+                                    Click to view reports
                                 </p>
                             </div>
                             <div
@@ -227,114 +273,104 @@ import { Head } from "@inertiajs/vue3";
                                 </h2>
                                 <button
                                     class="text-red-600 hover:text-red-800 font-medium text-sm transition-colors duration-200"
+                                    @click="openCreateRecord"
                                 >
                                     View All
                                 </button>
                             </div>
                             <div class="space-y-4">
-                                <!-- Activity Item -->
-                                <div
-                                    class="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 border border-red-100"
-                                >
+                                <template v-if="props.recentActivity.length">
                                     <div
-                                        class="w-8 h-8 rounded-lg bg-red-200 flex items-center justify-center flex-shrink-0"
+                                        v-for="(
+                                            activity, idx
+                                        ) in props.recentActivity"
+                                        :key="idx"
+                                        class="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 border border-red-100"
                                     >
-                                        <svg
-                                            class="w-4 h-4 text-red-700"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-red-200 flex items-center justify-center flex-shrink-0"
                                         >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                            />
-                                        </svg>
+                                            <svg
+                                                v-if="activity.icon === 'plus'"
+                                                class="w-4 h-4 text-red-700"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                                />
+                                            </svg>
+                                            <svg
+                                                v-else-if="
+                                                    activity.icon === 'edit'
+                                                "
+                                                class="w-4 h-4 text-red-700"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                />
+                                            </svg>
+                                            <svg
+                                                v-else-if="
+                                                    activity.icon === 'check'
+                                                "
+                                                class="w-4 h-4 text-red-700"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                />
+                                            </svg>
+                                            <svg
+                                                v-else
+                                                class="w-4 h-4 text-red-700"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <circle
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke-width="2"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-red-900 font-medium">
+                                                {{ activity.title }}
+                                            </p>
+                                            <p class="text-red-600 text-sm">
+                                                {{ activity.description }}
+                                            </p>
+                                            <p
+                                                class="text-red-500 text-xs mt-1"
+                                            >
+                                                {{ activity.timeAgo }}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-red-900 font-medium">
-                                            New record created
-                                        </p>
-                                        <p class="text-red-600 text-sm">
-                                            Record #1248 was added for Supplier
-                                            ABC Ltd.
-                                        </p>
-                                        <p class="text-red-500 text-xs mt-1">
-                                            2 minutes ago
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Activity Item -->
+                                </template>
                                 <div
-                                    class="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 border border-red-100"
+                                    v-else
+                                    class="text-red-400 text-center py-8"
                                 >
-                                    <div
-                                        class="w-8 h-8 rounded-lg bg-red-200 flex items-center justify-center flex-shrink-0"
-                                    >
-                                        <svg
-                                            class="w-4 h-4 text-red-700"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-red-900 font-medium">
-                                            Supplier updated
-                                        </p>
-                                        <p class="text-red-600 text-sm">
-                                            XYZ Suppliers contact information
-                                            was modified.
-                                        </p>
-                                        <p class="text-red-500 text-xs mt-1">
-                                            15 minutes ago
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Activity Item -->
-                                <div
-                                    class="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 border border-red-100"
-                                >
-                                    <div
-                                        class="w-8 h-8 rounded-lg bg-red-200 flex items-center justify-center flex-shrink-0"
-                                    >
-                                        <svg
-                                            class="w-4 h-4 text-red-700"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-red-900 font-medium">
-                                            Report generated
-                                        </p>
-                                        <p class="text-red-600 text-sm">
-                                            Monthly report for December 2024 is
-                                            ready.
-                                        </p>
-                                        <p class="text-red-500 text-xs mt-1">
-                                            1 hour ago
-                                        </p>
-                                    </div>
+                                    No recent activity found.
                                 </div>
                             </div>
                         </div>
@@ -351,6 +387,7 @@ import { Head } from "@inertiajs/vue3";
                             <div class="space-y-3">
                                 <button
                                     class="w-full text-left p-4 rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                                    @click="openCreateRecord"
                                 >
                                     <div class="flex items-center gap-3">
                                         <svg
@@ -374,6 +411,7 @@ import { Head } from "@inertiajs/vue3";
 
                                 <button
                                     class="w-full text-left p-4 rounded-xl bg-white border-2 border-red-200 text-red-700 hover:bg-red-50 transition-all duration-300 transform hover:scale-[1.02]"
+                                    @click="openCreateSupplier"
                                 >
                                     <div class="flex items-center gap-3">
                                         <svg
@@ -397,6 +435,7 @@ import { Head } from "@inertiajs/vue3";
 
                                 <button
                                     class="w-full text-left p-4 rounded-xl bg-white border-2 border-red-200 text-red-700 hover:bg-red-50 transition-all duration-300 transform hover:scale-[1.02]"
+                                    @click="openGenerateReport"
                                 >
                                     <div class="flex items-center gap-3">
                                         <svg
@@ -420,6 +459,7 @@ import { Head } from "@inertiajs/vue3";
 
                                 <button
                                     class="w-full text-left p-4 rounded-xl bg-white border-2 border-red-200 text-red-700 hover:bg-red-50 transition-all duration-300 transform hover:scale-[1.02]"
+                                    @click="openManageStaff"
                                 >
                                     <div class="flex items-center gap-3">
                                         <svg

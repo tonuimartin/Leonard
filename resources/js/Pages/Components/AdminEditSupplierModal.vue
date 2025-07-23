@@ -142,7 +142,7 @@ const handleSubmit = async () => {
     };
 
     try {
-        const response = await fetch(`/supplier/${props.supplierData.id}`, {
+        const response = await fetch(`/suppliers/${props.supplierData.id}`, {
             method: "POST", // Use POST with method spoofing
             headers: {
                 "X-CSRF-TOKEN": document

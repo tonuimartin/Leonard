@@ -218,7 +218,7 @@ window.deleteSupplier = async (id) => {
                 },
                 buttonsStyling: false,
             });
-            const response = await fetch(`/supplier/${id}`, {
+            const response = await fetch(`/suppliers/${id}`, {
                 method: "DELETE",
                 headers: {
                     "X-CSRF-TOKEN": document

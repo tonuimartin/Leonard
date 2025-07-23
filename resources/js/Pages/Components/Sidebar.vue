@@ -314,7 +314,7 @@ function goToStaff() {
     router.visit("/staff");
 }
 function goToSupplier() {
-    router.visit("/supplier");
+    router.visit("/suppliers");
 }
 function goToRecords() {
     router.visit("/records");

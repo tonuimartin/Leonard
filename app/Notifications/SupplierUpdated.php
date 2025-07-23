@@ -54,7 +54,7 @@ class SupplierUpdated extends Notification
             }
         }
 
-        $mailMessage->action('View Supplier', url('/supplier'))
+        $mailMessage->action('View Supplier', url('/suppliers'))
             ->line('Thank you for using our application!');
 
         return $mailMessage;

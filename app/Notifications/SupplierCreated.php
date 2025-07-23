@@ -47,7 +47,7 @@ class SupplierCreated extends Notification
             ->line('**Supplier Details:**')
             ->line('Name: ' . $this->supplier->supplier_name)
             ->line('Phone: ' . $this->supplier->phone_number)
-            ->action('View Supplier', url('/supplier'))
+            ->action('View Supplier', url('/suppliers'))
             ->line('Thank you for using our application!');
     }
 

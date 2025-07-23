@@ -17,9 +17,10 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'fully.verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'fully.verified'])->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth', 'fully.verified'])->name('dashboard');
 
 // Admin approval routes (accessible without full authentication)
 Route::get('/admin/approve-user', [\App\Http\Controllers\AdminApprovalController::class, 'showApprovalPage'])
@@ -33,9 +34,9 @@ Route::middleware(['auth', 'fully.verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Supplier routes (all users can view, but only admins can delete)
-    Route::get('/supplier', [\App\Http\Controllers\SupplierController::class, 'showSupplierView'])->name('supplier.view');
-    Route::post('/supplier', [\App\Http\Controllers\SupplierController::class, 'store'])->name('supplier.store');
-    Route::put('/supplier/{id}', [\App\Http\Controllers\SupplierController::class, 'update'])->name('supplier.update');
+    Route::get('/suppliers', [\App\Http\Controllers\SupplierController::class, 'showSupplierView'])->name('supplier.view');
+    Route::post('/suppliers', [\App\Http\Controllers\SupplierController::class, 'store'])->name('supplier.store');
+    Route::put('/suppliers/{id}', [\App\Http\Controllers\SupplierController::class, 'update'])->name('supplier.update');
 
     // Record routes (all users can view/create/edit, but only admins can delete)
     Route::get('/records', [\App\Http\Controllers\RecordController::class, 'showRecordsView'])->name('records.view');
@@ -56,7 +57,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/approve-user/{userId}', [\App\Http\Controllers\AdminApprovalController::class, 'approveFromDashboard'])->name('admin.approve-from-dashboard');
 
     // Supplier delete route (admin only)
-    Route::delete('/supplier/{id}', [\App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.destroy');
+    Route::delete('/suppliers/{id}', [\App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.destroy');
 
     // Record delete route (admin only)
     Route::delete('/records/{id}', [\App\Http\Controllers\RecordController::class, 'destroy'])->name('records.destroy');
