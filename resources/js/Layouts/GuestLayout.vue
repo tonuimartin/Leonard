@@ -1,6 +1,11 @@
 <script setup>
+console.log('🏠 GuestLayout component script setup starting...');
+
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+
+console.log('📦 GuestLayout imports loaded successfully');
+console.log('✅ GuestLayout component script setup completed');
 </script>
 
 <template>

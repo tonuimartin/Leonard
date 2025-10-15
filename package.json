@@ -23,6 +23,7 @@
     "dependencies": {
         "ag-grid-community": "^33.3.2",
         "ag-grid-vue3": "^33.3.2",
-        "sweetalert2": "^11.22.2"
+        "sweetalert2": "^11.22.2",
+        "ziggy-js": "^2.6.0"
     }
 }

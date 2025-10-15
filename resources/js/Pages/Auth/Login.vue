@@ -1,4 +1,6 @@
 <script setup>
+console.log('🔐 Login component script setup starting...');
+
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -6,8 +8,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 
-defineProps({
+console.log('📦 Login component imports loaded successfully');
+
+const props = defineProps({
     canResetPassword: {
         type: Boolean,
     },
@@ -16,17 +21,24 @@ defineProps({
     },
 });
 
+console.log('📋 Login component props:', props);
+
 const form = useForm({
     email: '',
     password: '',
     remember: false,
 });
 
+console.log('📝 Login form initialized:', form);
+
 const submit = () => {
+    console.log('🚀 Login form submission started');
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
     });
 };
+
+console.log('✅ Login component script setup completed');
 </script>
 
 <template>
