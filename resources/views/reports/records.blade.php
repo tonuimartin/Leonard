@@ -9,51 +9,52 @@
             margin: 15mm;
         }
         body {
-            font-family: 'DejaVu Sans', 'Segoe UI', Arial, sans-serif;
+            font-family: 'Inter', 'DejaVu Sans', 'Segoe UI', Arial, sans-serif;
             font-size: 10px;
             margin: 0;
             padding: 10px;
-            background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
-            color: #7f1d1d;
+            background: linear-gradient(135deg, #FAF4F2 0%, #fff 100%);
+            color: #1F2937;
         }
         .header {
             text-align: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid #b91c1c;
+            border-bottom: 2px solid #D4A373;
             padding-bottom: 15px;
             background: rgba(255,255,255,0.85);
             border-radius: 1.5rem 1.5rem 0 0;
-            box-shadow: 0 2px 8px 0 #fca5a5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         .title {
             font-size: 24px;
             font-weight: bold;
-            color: #b91c1c;
+            color: #D4A373;
+            font-family: 'Cormorant Garamond', Georgia, serif;
             margin-bottom: 8px;
             letter-spacing: 1px;
         }
         .filters {
             margin-bottom: 15px;
-            background: linear-gradient(90deg, #fef2f2 0%, #fff 100%);
+            background: linear-gradient(90deg, #FAF4F2 0%, #fff 100%);
             padding: 12px 18px;
             border-radius: 1rem;
             font-size: 10px;
-            border: 1px solid #fecaca;
-            color: #991b1b;
-            box-shadow: 0 1px 4px 0 #fca5a5;
+            border: 1px solid #D1D5DB;
+            color: #1F2937;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
         }
         .filter-item {
             margin-bottom: 3px;
         }
         .summary {
             margin-bottom: 15px;
-            background: #fee2e2;
+            background: rgba(212, 163, 115, 0.1);
             padding: 12px 18px;
             border-radius: 1rem;
             font-size: 10px;
-            color: #991b1b;
-            border: 1px solid #fecaca;
-            box-shadow: 0 1px 4px 0 #fca5a5;
+            color: #1F2937;
+            border: 1px solid #D4A373;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
         }
         table {
             width: 100%;
@@ -64,10 +65,10 @@
             background: #fff;
             border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 2px 8px 0 #fca5a5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         th, td {
-            border: 1px solid #fecaca;
+            border: 1px solid #D1D5DB;
             padding: 7px 4px;
             text-align: left;
             font-size: 10px;
@@ -75,30 +76,30 @@
             overflow-wrap: break-word;
         }
         th {
-            background: #fef2f2;
-            color: #7f1d1d;
+            background: #FAF4F2;
+            color: #1F2937;
             font-weight: bold;
             font-size: 10px;
         }
         tr:nth-child(even) td {
-            background: #fff7f7;
+            background: rgba(212, 163, 115, 0.03);
         }
         tr:hover td {
-            background: #fee2e2;
+            background: rgba(212, 163, 115, 0.1);
         }
         .text-right {
             text-align: right;
         }
         .bold-numbers {
             font-weight: bold;
-            color: #b91c1c;
+            color: #D4A373;
         }
         .footer {
             margin-top: 20px;
             text-align: center;
             font-size: 10px;
-            color: #991b1b;
-            border-top: 1px solid #fecaca;
+            color: #6B7280;
+            border-top: 1px solid #D1D5DB;
             padding-top: 8px;
             background: rgba(255,255,255,0.85);
             border-radius: 0 0 1.5rem 1.5rem;
@@ -106,7 +107,7 @@
         .currency {
             font-family: monospace;
             font-size: 10px;
-            color: #991b1b;
+            color: #1F2937;
         }
         /* Column widths to fit all data */
         .col-id { width: 4%; }
@@ -193,7 +194,7 @@
                 @endforeach
             </tbody>
             <tfoot>
-                <tr style="background-color: #87CEEB; font-weight: bold; border: 2px solid #333;">
+                <tr style="background-color: rgba(212, 163, 115, 0.2); font-weight: bold; border: 2px solid #D4A373;">
                     <td colspan="3" class="text-right bold-numbers" style="font-size: 9px; font-weight: bold;">TOTALS:</td>
                     <td class="text-right currency col-amount bold-numbers">{{ number_format(collect($records)->sum('lorry_amount'), 0) }}</td>
                     <td class="text-right col-units bold-numbers">{{ number_format(collect($records)->sum('lorry_units'), 1) }}</td>
@@ -209,8 +210,8 @@
             </tfoot>
         </table>
     @else
-        <div style="text-align: center; padding: 40px; color: #666;">
-            <h3>No records found for the selected filters.</h3>
+        <div style="text-align: center; padding: 40px; color: #6B7280; background: rgba(212, 163, 115, 0.05); border-radius: 1rem;">
+            <h3 style="font-family: 'Cormorant Garamond', Georgia, serif; color: #1F2937;">No records found for the selected filters.</h3>
         </div>
     @endif
 
