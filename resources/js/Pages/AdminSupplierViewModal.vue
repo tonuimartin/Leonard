@@ -2,31 +2,31 @@
     <Head title="Suppliers" />
     <AuthenticatedLayout>
         <div
-            class="p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-red-50 via-white to-red-50 min-h-screen"
+            class="p-3 sm:p-4 lg:p-5 bg-primary min-h-screen"
         >
             <div class="mx-auto max-w-7xl">
                 <!-- Page Header (copied from Staff page for consistency) -->
-                <div class="mb-8">
+                <div class="mb-3">
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <h1
-                                    class="text-3xl font-bold text-red-900 mb-2"
+                                    class="text-xl font-display font-bold text-[#1F2937] mb-1"
                                 >
                                     Supplier Management
                                 </h1>
-                                <p class="text-red-600 font-medium">
+                                <p class="text-accent text-sm font-medium font-body">
                                     Manage your suppliers and their contact
                                     information
                                 </p>
                             </div>
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
                                 <!-- Create Supplier Button -->
                                 <button
                                     @click="showCreateModal = true"
-                                    class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent-dark text-white font-semibold py-2 px-4 text-sm rounded-lg transition-all duration-200 transform hover:scale-[1.01] shadow-md hover:shadow-lg font-body"
                                 >
                                     <svg
                                         class="w-5 h-5"
@@ -49,13 +49,13 @@
                 </div>
                 <!-- AG Grid -->
                 <div
-                    class="rounded-xl overflow-hidden border border-red-200/50 shadow-sm bg-white/70 backdrop-blur-sm p-6"
+                    class="rounded-xl overflow-hidden border border-accent/20 shadow-sm bg-white/70 backdrop-blur-sm p-3"
                 >
-                    <div class="mb-6">
-                        <h2 class="text-xl font-bold text-red-900 mb-2">
+                    <div class="mb-3">
+                        <h2 class="text-base font-display font-bold text-[#1F2937] mb-1">
                             Suppliers
                         </h2>
-                        <p class="text-red-600">
+                        <p class="text-accent text-sm">
                             View and manage all suppliers
                         </p>
                     </div>
@@ -141,7 +141,7 @@ const columnDefs = computed(() => [
         cellRenderer: (params) => {
             const editButton = `<button onclick="editSupplier(${params.data.id})" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg mr-2">Edit</button>`;
             const deleteButton = isAdmin.value
-                ? `<button onclick="deleteSupplier(${params.data.id})" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg">Delete</button>`
+                ? `<button onclick="deleteSupplier(${params.data.id})" class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] hover:from-[#B91C1C] hover:to-[#991B1B] text-white font-semibold py-1.5 px-3 rounded-lg text-xs transition-all duration-200 shadow-sm hover:shadow-md">Delete</button>`
                 : "";
             return `<div class='flex gap-2'>${editButton}${deleteButton}</div>`;
         },
@@ -189,8 +189,8 @@ window.deleteSupplier = async (id) => {
             color: "#7f1d1d",
             confirmButtonColor: "#b91c1c",
             customClass: {
-                popup: "rounded-2xl shadow-2xl border border-red-100",
-                title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                popup: "rounded-2xl shadow-2xl border border-accent/20",
+                title: "font-bold text-2xl text-accent",
                 confirmButton: "rounded-xl px-6 py-2 font-semibold",
             },
             buttonsStyling: false,

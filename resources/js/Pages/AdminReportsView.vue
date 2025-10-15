@@ -2,24 +2,24 @@
     <Head title="Reports" />
     <AuthenticatedLayout>
         <div
-            class="p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-gray-50 to-red-50 min-h-screen"
+            class="p-3 sm:p-4 lg:p-5 bg-primary min-h-screen"
         >
             <div class="mx-auto max-w-7xl">
                 <div
-                    class="overflow-hidden bg-white/90 backdrop-blur-lg shadow-2xl sm:rounded-2xl border border-red-100"
+                    class="overflow-hidden bg-white/90 backdrop-blur-lg shadow-xl sm:rounded-xl border border-accent/20"
                 >
-                    <div class="p-6 text-gray-900">
+                    <div class="p-4 text-gray-900">
                         <h2
-                            class="text-3xl font-bold mb-6 text-red-900 bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent"
+                            class="text-xl font-display font-bold mb-3 text-[#1F2937]"
                         >
                             Records Reports
                         </h2>
 
                         <!-- Filters Section -->
                         <div
-                            class="reports-filters mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
+                            class="reports-filters mb-3 p-3 bg-gradient-to-r from-primary to-white rounded-lg border border-accent/20 shadow-sm"
                         >
-                            <h3 class="text-xl font-semibold mb-4 text-red-800">
+                            <h3 class="text-base font-display font-semibold mb-2 text-[#1F2937]">
                                 Filters
                             </h3>
                             <div class="grid grid-cols-1 gap-4">
@@ -34,13 +34,13 @@
                                         <!-- Search input with tags inside -->
                                         <div class="relative">
                                             <div
-                                                class="w-full min-h-[42px] border border-red-200 rounded-xl px-3 py-2 pr-8 focus-within:ring-2 focus-within:ring-red-500 focus-within:border-red-500 flex flex-wrap items-center gap-1 bg-white shadow-lg"
+                                                class="w-full min-h-[40px] border border-[#D1D5DB] rounded-lg px-3 py-1.5 pr-8 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent flex flex-wrap items-center gap-1 bg-white shadow-sm"
                                             >
                                                 <!-- Selected suppliers tags inside input -->
                                                 <span
                                                     v-for="supplier in selectedSuppliers"
                                                     :key="supplier.id"
-                                                    class="inline-flex items-center px-3 py-1 text-sm bg-red-100 text-red-800 rounded-full shadow-sm"
+                                                    class="inline-flex items-center px-3 py-1 text-sm bg-accent/10 text-accent-hover rounded-full shadow-sm"
                                                 >
                                                     {{ supplier.name }}
                                                     <button
@@ -49,7 +49,7 @@
                                                                 supplier.id
                                                             )
                                                         "
-                                                        class="ml-2 text-red-600 hover:text-red-800 text-lg font-bold"
+                                                        class="ml-2 text-accent hover:text-accent-hover text-lg font-bold"
                                                         type="button"
                                                     >
                                                         ×
@@ -81,7 +81,7 @@
                                                     selectedSuppliers.length > 0
                                                 "
                                                 @click="clearAllSuppliers"
-                                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 text-xl"
+                                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-accent/60 hover:text-accent-hover text-xl"
                                                 type="button"
                                             >
                                                 ×
@@ -93,7 +93,7 @@
                                                     showSupplierDropdown &&
                                                     filteredSuppliers.length > 0
                                                 "
-                                                class="absolute z-10 w-full mt-1 bg-white border border-red-200 rounded-xl shadow-2xl max-h-40 overflow-y-auto backdrop-blur-lg"
+                                                class="absolute z-10 w-full mt-1 bg-white border border-accent/20 rounded-xl shadow-2xl max-h-40 overflow-y-auto backdrop-blur-lg"
                                                 style="top: 100%"
                                             >
                                                 <div
@@ -102,7 +102,7 @@
                                                     @mousedown="
                                                         selectSupplier(supplier)
                                                     "
-                                                    class="px-3 py-2 cursor-pointer hover:bg-red-50 flex items-center justify-between rounded-lg mx-1 transition duration-200"
+                                                    class="px-3 py-2 cursor-pointer hover:bg-accent/10 flex items-center justify-between rounded-lg mx-1 transition duration-200"
                                                 >
                                                     <span>{{
                                                         supplier.name
@@ -312,7 +312,7 @@
 
                         <!-- Records Table -->
                         <div
-                            class="rounded-xl overflow-hidden border border-red-200/50 shadow-sm"
+                            class="rounded-xl overflow-hidden border border-accent/20 shadow-sm"
                         >
                             <ag-grid-vue
                                 class="ag-theme-alpine modern-grid"

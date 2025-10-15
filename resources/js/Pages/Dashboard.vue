@@ -265,7 +265,7 @@ function openManageStaff() {
                     <!-- Recent Activity -->
                     <div class="lg:col-span-2">
                         <div
-                            class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                            class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-accent/20 p-4"
                         >
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-xl font-display font-bold text-[#1F2937]">
@@ -379,7 +379,7 @@ function openManageStaff() {
                     <!-- Quick Actions -->
                     <div class="lg:col-span-1">
                         <div
-                            class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                            class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-accent/20 p-4"
                         >
                             <h2 class="text-xl font-display font-bold text-[#1F2937] mb-6">
                                 Quick Actions
