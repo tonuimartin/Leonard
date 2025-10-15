@@ -41,23 +41,23 @@ function openManageStaff() {
     <Head title="Dashboard" />
     <AuthenticatedLayout>
         <div
-            class="p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-red-50 via-white to-red-50 min-h-screen"
+            class="p-6 sm:p-8 lg:p-10 bg-primary min-h-screen"
         >
             <div class="mx-auto max-w-7xl">
                 <!-- Welcome Header -->
                 <div class="mb-8">
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-8"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-8"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <h1
-                                    class="text-3xl font-bold text-red-900 mb-2"
+                                    class="text-3xl font-display font-bold text-[#1F2937] mb-2"
                                 >
                                     Welcome back,
                                     {{ $page.props.auth?.user?.name }}!
                                 </h1>
-                                <p class="text-red-600 text-lg font-medium">
+                                <p class="text-accent text-lg font-medium font-body">
                                     {{
                                         new Date().toLocaleDateString("en-US", {
                                             weekday: "long",
@@ -70,7 +70,7 @@ function openManageStaff() {
                             </div>
                             <div class="hidden md:block">
                                 <div
-                                    class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-red-600 to-red-500 flex items-center justify-center shadow-lg"
+                                    class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-accent to-accent-hover flex items-center justify-center shadow-lg"
                                 >
                                     <svg
                                         class="w-10 h-10 text-white"
@@ -97,28 +97,28 @@ function openManageStaff() {
                 >
                     <!-- Total Records Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                         @click="openCreateRecord"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-red-600 text-sm font-semibold uppercase tracking-wide"
+                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
                                 >
                                     Total Records
                                 </p>
-                                <p class="text-3xl font-bold text-red-900 mt-1">
+                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
                                     {{ totalRecords ?? "—" }}
                                 </p>
-                                <p class="text-red-500 text-sm mt-1">
+                                <p class="text-[#6B7280] text-sm mt-1 font-body">
                                     Click to view records
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center"
+                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-red-600"
+                                    class="w-6 h-6 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -136,28 +136,28 @@ function openManageStaff() {
 
                     <!-- Active Suppliers Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                         @click="openCreateSupplier"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-red-600 text-sm font-semibold uppercase tracking-wide"
+                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
                                 >
                                     Active Suppliers
                                 </p>
-                                <p class="text-3xl font-bold text-red-900 mt-1">
+                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
                                     {{ activeSuppliers ?? "—" }}
                                 </p>
-                                <p class="text-red-500 text-sm mt-1">
+                                <p class="text-[#6B7280] text-sm mt-1 font-body">
                                     Click to view suppliers
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center"
+                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-red-600"
+                                    class="w-6 h-6 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -175,28 +175,28 @@ function openManageStaff() {
 
                     <!-- Staff Members Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                         @click="openManageStaff"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-red-600 text-sm font-semibold uppercase tracking-wide"
+                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
                                 >
                                     Staff Members
                                 </p>
-                                <p class="text-3xl font-bold text-red-900 mt-1">
+                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
                                     {{ staffMembers ?? "—" }}
                                 </p>
-                                <p class="text-red-500 text-sm mt-1">
+                                <p class="text-[#6B7280] text-sm mt-1 font-body">
                                     Click to manage staff
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center"
+                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-red-600"
+                                    class="w-6 h-6 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -214,17 +214,17 @@ function openManageStaff() {
 
                     <!-- Monthly Revenue Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
                         @click="openGenerateReport"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-red-600 text-sm font-semibold uppercase tracking-wide"
+                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
                                 >
                                     Monthly Revenue
                                 </p>
-                                <p class="text-3xl font-bold text-red-900 mt-1">
+                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
                                     KSh
                                     {{
                                         monthlyRevenue
@@ -235,15 +235,15 @@ function openManageStaff() {
                                             : "—"
                                     }}
                                 </p>
-                                <p class="text-red-500 text-sm mt-1">
+                                <p class="text-[#6B7280] text-sm mt-1 font-body">
                                     Click to view reports
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center"
+                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-red-600"
+                                    class="w-6 h-6 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -268,11 +268,11 @@ function openManageStaff() {
                             class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
                         >
                             <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-xl font-bold text-red-900">
+                                <h2 class="text-xl font-display font-bold text-[#1F2937]">
                                     Recent Activity
                                 </h2>
                                 <button
-                                    class="text-red-600 hover:text-red-800 font-medium text-sm transition-colors duration-200"
+                                    class="text-accent hover:text-accent-hover font-medium text-sm transition-colors duration-200 font-body"
                                     @click="openCreateRecord"
                                 >
                                     View All
@@ -285,14 +285,14 @@ function openManageStaff() {
                                             activity, idx
                                         ) in props.recentActivity"
                                         :key="idx"
-                                        class="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 border border-red-100"
+                                        class="flex items-start gap-4 p-4 rounded-xl bg-accent/5 border border-accent/10"
                                     >
                                         <div
-                                            class="w-8 h-8 rounded-lg bg-red-200 flex items-center justify-center flex-shrink-0"
+                                            class="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0"
                                         >
                                             <svg
                                                 v-if="activity.icon === 'plus'"
-                                                class="w-4 h-4 text-red-700"
+                                                class="w-4 h-4 text-accent"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -308,7 +308,7 @@ function openManageStaff() {
                                                 v-else-if="
                                                     activity.icon === 'edit'
                                                 "
-                                                class="w-4 h-4 text-red-700"
+                                                class="w-4 h-4 text-accent"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -324,7 +324,7 @@ function openManageStaff() {
                                                 v-else-if="
                                                     activity.icon === 'check'
                                                 "
-                                                class="w-4 h-4 text-red-700"
+                                                class="w-4 h-4 text-accent"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -338,7 +338,7 @@ function openManageStaff() {
                                             </svg>
                                             <svg
                                                 v-else
-                                                class="w-4 h-4 text-red-700"
+                                                class="w-4 h-4 text-accent"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -352,14 +352,14 @@ function openManageStaff() {
                                             </svg>
                                         </div>
                                         <div class="flex-1">
-                                            <p class="text-red-900 font-medium">
+                                            <p class="text-[#1F2937] font-medium font-body">
                                                 {{ activity.title }}
                                             </p>
-                                            <p class="text-red-600 text-sm">
+                                            <p class="text-accent text-sm font-body">
                                                 {{ activity.description }}
                                             </p>
                                             <p
-                                                class="text-red-500 text-xs mt-1"
+                                                class="text-[#6B7280] text-xs mt-1 font-body"
                                             >
                                                 {{ activity.timeAgo }}
                                             </p>
@@ -368,7 +368,7 @@ function openManageStaff() {
                                 </template>
                                 <div
                                     v-else
-                                    class="text-red-400 text-center py-8"
+                                    class="text-[#9CA3AF] text-center py-8 font-body"
                                 >
                                     No recent activity found.
                                 </div>
@@ -381,12 +381,12 @@ function openManageStaff() {
                         <div
                             class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
                         >
-                            <h2 class="text-xl font-bold text-red-900 mb-6">
+                            <h2 class="text-xl font-display font-bold text-[#1F2937] mb-6">
                                 Quick Actions
                             </h2>
                             <div class="space-y-3">
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                                    class="w-full text-left p-4 rounded-xl bg-gradient-to-r from-accent to-accent-hover text-white hover:from-accent-hover hover:to-accent-dark transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
                                     @click="openCreateRecord"
                                 >
                                     <div class="flex items-center gap-3">
@@ -403,14 +403,14 @@ function openManageStaff() {
                                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                                             />
                                         </svg>
-                                        <span class="font-medium"
+                                        <span class="font-medium font-body"
                                             >Add New Record</span
                                         >
                                     </div>
                                 </button>
 
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-red-200 text-red-700 hover:bg-red-50 transition-all duration-300 transform hover:scale-[1.02]"
+                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
                                     @click="openCreateSupplier"
                                 >
                                     <div class="flex items-center gap-3">
@@ -427,14 +427,14 @@ function openManageStaff() {
                                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                                             />
                                         </svg>
-                                        <span class="font-medium"
+                                        <span class="font-medium font-body"
                                             >Create Supplier</span
                                         >
                                     </div>
                                 </button>
 
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-red-200 text-red-700 hover:bg-red-50 transition-all duration-300 transform hover:scale-[1.02]"
+                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
                                     @click="openGenerateReport"
                                 >
                                     <div class="flex items-center gap-3">
@@ -451,14 +451,14 @@ function openManageStaff() {
                                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                                             />
                                         </svg>
-                                        <span class="font-medium"
+                                        <span class="font-medium font-body"
                                             >Generate Report</span
                                         >
                                     </div>
                                 </button>
 
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-red-200 text-red-700 hover:bg-red-50 transition-all duration-300 transform hover:scale-[1.02]"
+                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
                                     @click="openManageStaff"
                                 >
                                     <div class="flex items-center gap-3">
@@ -475,7 +475,7 @@ function openManageStaff() {
                                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
                                             />
                                         </svg>
-                                        <span class="font-medium"
+                                        <span class="font-medium font-body"
                                             >Manage Staff</span
                                         >
                                     </div>

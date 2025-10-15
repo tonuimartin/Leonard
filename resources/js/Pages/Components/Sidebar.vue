@@ -1,18 +1,18 @@
 <template>
     <aside
         :class="[
-            'min-h-screen h-full bg-gradient-to-b from-red-900 via-red-800 to-red-900 border-r border-red-700/30 p-3 flex flex-col gap-3 shadow-2xl sticky top-0 backdrop-blur-sm transition-all duration-300',
+            'min-h-screen h-full bg-gradient-to-b from-[#1F2937] via-[#1a202c] to-[#1F2937] border-r border-[#D1D5DB]/20 p-3 flex flex-col gap-3 shadow-2xl sticky top-0 backdrop-blur-sm transition-all duration-300',
             collapsed ? 'w-16 rounded-r-2xl' : 'w-56 rounded-r-2xl',
         ]"
         style="
             display: flex !important;
             background: linear-gradient(
                 to bottom,
-                #7f1d1d,
-                #991b1b,
-                #7f1d1d
+                #1F2937,
+                #1a202c,
+                #1F2937
             ) !important;
-            border-right: 1px solid rgba(185, 28, 28, 0.3) !important;
+            border-right: 1px solid rgba(209, 213, 219, 0.2) !important;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
         "
     >
@@ -20,7 +20,7 @@
         <div class="relative flex justify-end mb-1">
             <button
                 @click="collapsed = !collapsed"
-                class="bg-white/90 hover:bg-red-100 text-red-800 border border-red-200 shadow-lg rounded-full w-7 h-7 flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-400"
+                class="bg-white/90 hover:bg-primary text-[#1F2937] border border-[#D1D5DB] shadow-lg rounded-full w-7 h-7 flex items-center justify-center transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent"
                 :title="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
                 style="
                     position: static;
@@ -62,18 +62,18 @@
         <!-- Logo/Brand Section -->
         <div
             v-if="!collapsed"
-            class="text-center py-2 border-b border-red-700/30 mb-3"
+            class="text-center py-2 border-b border-white/10 mb-3"
         >
-            <div class="text-xl font-bold text-white mb-1 tracking-wide">
+            <div class="text-xl font-display font-bold text-white mb-1 tracking-wide">
                 Leonard
             </div>
-            <div class="text-red-200 text-xs font-medium">
+            <div class="text-white/70 text-xs font-medium font-body">
                 Management System
             </div>
         </div>
         <div
             v-else
-            class="flex flex-col items-center py-2 border-b border-red-700/30 mb-3"
+            class="flex flex-col items-center py-2 border-b border-white/10 mb-3"
         >
             <!-- App Logo (replace src with your logo path if available) -->
             <img
@@ -86,7 +86,7 @@
         <nav class="flex flex-col gap-2 mt-2">
             <div
                 v-if="!collapsed"
-                class="text-red-200 text-[10px] uppercase tracking-widest font-semibold mb-2 px-2"
+                class="text-white/70 text-[10px] uppercase tracking-widest font-semibold mb-2 px-2 font-body"
             >
                 Main Menu
             </div>
@@ -97,15 +97,15 @@
             >
                 <div
                     :class="[
-                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-accent/20 hover:to-accent-hover/20 border border-white/10 hover:border-accent/30 transition-all duration-300 backdrop-blur-sm',
                         collapsed ? 'justify-center px-2' : 'px-4',
                     ]"
                 >
                     <div
-                        class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
+                        class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors duration-300"
                     >
                         <svg
-                            class="w-5 h-5 text-white"
+                            class="w-5 h-5 text-accent"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -120,7 +120,7 @@
                     </div>
                     <span
                         v-if="!collapsed"
-                        class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
+                        class="text-white font-medium font-body group-hover:text-accent transition-colors duration-300"
                         >Home</span
                     >
                 </div>
@@ -133,15 +133,15 @@
             >
                 <div
                     :class="[
-                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-accent/20 hover:to-accent-hover/20 border border-white/10 hover:border-accent/30 transition-all duration-300 backdrop-blur-sm',
                         collapsed ? 'justify-center px-2' : 'px-4',
                     ]"
                 >
                     <div
-                        class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
+                        class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors duration-300"
                     >
                         <svg
-                            class="w-5 h-5 text-white"
+                            class="w-5 h-5 text-accent"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -156,7 +156,7 @@
                     </div>
                     <span
                         v-if="!collapsed"
-                        class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
+                        class="text-white font-medium font-body group-hover:text-accent transition-colors duration-300"
                         >Staff</span
                     >
                 </div>
@@ -168,15 +168,15 @@
             >
                 <div
                     :class="[
-                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-accent/20 hover:to-accent-hover/20 border border-white/10 hover:border-accent/30 transition-all duration-300 backdrop-blur-sm',
                         collapsed ? 'justify-center px-2' : 'px-4',
                     ]"
                 >
                     <div
-                        class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
+                        class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors duration-300"
                     >
                         <svg
-                            class="w-5 h-5 text-white"
+                            class="w-5 h-5 text-accent"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -191,7 +191,7 @@
                     </div>
                     <span
                         v-if="!collapsed"
-                        class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
+                        class="text-white font-medium font-body group-hover:text-accent transition-colors duration-300"
                         >Suppliers</span
                     >
                 </div>
@@ -203,15 +203,15 @@
             >
                 <div
                     :class="[
-                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-accent/20 hover:to-accent-hover/20 border border-white/10 hover:border-accent/30 transition-all duration-300 backdrop-blur-sm',
                         collapsed ? 'justify-center px-2' : 'px-4',
                     ]"
                 >
                     <div
-                        class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
+                        class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors duration-300"
                     >
                         <svg
-                            class="w-5 h-5 text-white"
+                            class="w-5 h-5 text-accent"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -226,7 +226,7 @@
                     </div>
                     <span
                         v-if="!collapsed"
-                        class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
+                        class="text-white font-medium font-body group-hover:text-accent transition-colors duration-300"
                         >Records</span
                     >
                 </div>
@@ -239,15 +239,15 @@
             >
                 <div
                     :class="[
-                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm',
+                        'flex items-center gap-4 py-3 rounded-xl bg-white/5 hover:bg-gradient-to-r hover:from-accent/20 hover:to-accent-hover/20 border border-white/10 hover:border-accent/30 transition-all duration-300 backdrop-blur-sm',
                         collapsed ? 'justify-center px-2' : 'px-4',
                     ]"
                 >
                     <div
-                        class="w-10 h-10 rounded-lg bg-red-700/50 flex items-center justify-center group-hover:bg-red-600/60 transition-colors duration-300"
+                        class="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors duration-300"
                     >
                         <svg
-                            class="w-5 h-5 text-white"
+                            class="w-5 h-5 text-accent"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -262,17 +262,17 @@
                     </div>
                     <span
                         v-if="!collapsed"
-                        class="text-white font-medium group-hover:text-red-100 transition-colors duration-300"
+                        class="text-white font-medium font-body group-hover:text-accent transition-colors duration-300"
                         >Reports</span
                     >
                 </div>
             </div>
         </nav>
         <!-- Bottom Decorative Element -->
-        <div class="mt-auto pt-3 border-t border-red-700/30">
+        <div class="mt-auto pt-3 border-t border-white/10">
             <div class="text-center">
                 <div
-                    class="w-8 h-8 mx-auto rounded-full bg-gradient-to-tr from-red-600 to-red-500 flex items-center justify-center mb-2 shadow-lg"
+                    class="w-8 h-8 mx-auto rounded-full bg-gradient-to-tr from-accent to-accent-hover flex items-center justify-center mb-2 shadow-lg"
                 >
                     <svg
                         class="w-4 h-4 text-white"
@@ -290,7 +290,7 @@
                 </div>
                 <div
                     v-if="!collapsed"
-                    class="text-red-200 text-[10px] font-medium"
+                    class="text-white/70 text-[10px] font-medium font-body"
                 >
                     Powered by Leonard
                 </div>

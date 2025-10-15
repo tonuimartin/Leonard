@@ -14,7 +14,7 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div>
         <div
-            class="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 flex"
+            class="min-h-screen bg-primary flex"
             style="display: flex !important; min-height: 100vh !important"
         >
             <!-- Sidebar -->
@@ -23,7 +23,7 @@ const showingNavigationDropdown = ref(false);
             <!-- Main Content Area -->
             <div class="flex-1" style="flex: 1 !important">
                 <nav
-                    class="border-b border-red-200/50 bg-white/80 backdrop-blur-sm shadow-sm"
+                    class="border-b border-[#D1D5DB]/50 bg-white/80 backdrop-blur-sm shadow-sm"
                 >
                     <!-- Primary Navigation Menu -->
                     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -33,7 +33,7 @@ const showingNavigationDropdown = ref(false);
                                 <div class="flex shrink-0 items-center">
                                     <Link :href="route('dashboard')">
                                         <ApplicationLogo
-                                            class="block h-9 w-auto fill-current text-red-800"
+                                            class="block h-9 w-auto fill-current text-accent"
                                         />
                                     </Link>
                                 </div>
@@ -48,8 +48,8 @@ const showingNavigationDropdown = ref(false);
                                         class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none"
                                         :class="
                                             route().current('dashboard')
-                                                ? 'border-red-500 text-red-800 focus:border-red-700'
-                                                : 'border-transparent text-red-600 hover:text-red-800 hover:border-red-300 focus:text-red-800 focus:border-red-300'
+                                                ? 'border-accent text-[#1F2937] focus:border-accent-hover font-display'
+                                                : 'border-transparent text-accent hover:text-accent-hover hover:border-accent/30 focus:text-accent-hover focus:border-accent/30 font-body'
                                         "
                                     >
                                         Dashboard
@@ -67,7 +67,7 @@ const showingNavigationDropdown = ref(false);
                                             >
                                                 <button
                                                     type="button"
-                                                    class="inline-flex items-center rounded-xl border border-red-200 bg-white/90 px-4 py-2 text-sm font-medium leading-4 text-red-700 transition duration-150 ease-in-out hover:text-red-800 hover:bg-red-50 focus:outline-none shadow-sm backdrop-blur-sm"
+                                                    class="inline-flex items-center rounded-xl border border-accent/20 bg-white/90 px-4 py-2 text-sm font-medium leading-4 text-accent transition duration-150 ease-in-out hover:text-accent-hover hover:bg-accent/5 focus:outline-none shadow-sm backdrop-blur-sm font-body"
                                                 >
                                                     {{
                                                         $page.props.auth?.user
@@ -93,7 +93,7 @@ const showingNavigationDropdown = ref(false);
                                         <template #content>
                                             <DropdownLink
                                                 :href="route('profile.edit')"
-                                                class="rounded-lg mx-1 my-1 text-red-700 hover:bg-red-50"
+                                                class="rounded-lg mx-1 my-1 text-accent hover:bg-accent/5 font-body"
                                             >
                                                 Profile
                                             </DropdownLink>
@@ -101,7 +101,7 @@ const showingNavigationDropdown = ref(false);
                                                 :href="route('logout')"
                                                 method="post"
                                                 as="button"
-                                                class="rounded-lg mx-1 my-1 text-red-700 hover:bg-red-50"
+                                                class="rounded-lg mx-1 my-1 text-accent hover:bg-accent/5 font-body"
                                             >
                                                 Log Out
                                             </DropdownLink>
