@@ -23,18 +23,18 @@ defineProps({
 <template>
     <Head title="Welcome" />
     <div
-        class="bg-gradient-to-br from-[#fff7f0] via-[#ffe5e0] to-[#ffe5f0] min-h-screen text-black"
+        class="bg-gradient-to-br from-primary via-white to-primary-200 min-h-screen text-[#1F2937]"
     >
         <div
-            class="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white"
+            class="relative flex min-h-screen flex-col items-center justify-center selection:bg-accent selection:text-white"
         >
-            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
+            <div class="relative w-full max-w-2xl px-4 lg:max-w-6xl">
                 <!-- HERO SECTION -->
                 <header
-                    class="flex flex-col items-center text-center py-16 gap-6"
+                    class="flex flex-col items-center text-center py-8 gap-4"
                 >
                     <svg
-                        class="h-16 w-16 text-[#FF2D20] mb-2 animate-bounce-slow"
+                        class="h-12 w-12 text-accent mb-1 animate-bounce-slow"
                         viewBox="0 0 62 65"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
@@ -45,22 +45,22 @@ defineProps({
                         />
                     </svg>
                     <h1
-                        class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-[#FF2D20] to-[#ff7e5f] bg-clip-text text-transparent drop-shadow-lg animate-fade-in"
+                        class="text-3xl sm:text-4xl font-display font-bold bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent drop-shadow-lg animate-fade-in"
                     >
                         Welcome to Leonard
                     </h1>
                     <p
-                        class="mt-4 text-lg sm:text-xl text-black/80 max-w-2xl animate-fade-in delay-100"
+                        class="mt-2 text-base sm:text-lg text-[#6B7280] max-w-2xl animate-fade-in delay-100 font-body"
                     >
                         Effortlessly manage your transportation records,
                         suppliers, and profits with a modern, intuitive
                         dashboard. <br />
-                        <span class="font-semibold text-[#FF2D20]"
+                        <span class="font-semibold text-accent"
                             >Fast. Reliable. Beautiful.</span
                         >
                     </p>
                     <div
-                        class="mt-6 flex flex-col sm:flex-row gap-4 animate-fade-in delay-200"
+                        class="mt-4 flex flex-col sm:flex-row gap-3 animate-fade-in delay-200"
                     >
                         <Link
                             :href="
@@ -70,7 +70,7 @@ defineProps({
                                         : 'login'
                                 )
                             "
-                            class="rounded-full px-8 py-3 bg-[#FF2D20] text-white font-bold text-lg shadow-lg transition hover:bg-[#e52a1c] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
+                            class="rounded-xl px-6 py-2.5 bg-gradient-to-r from-accent to-accent-hover text-white font-semibold text-base shadow-md transition hover:from-accent-hover hover:to-accent-dark hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent font-body"
                         >
                             {{
                                 $page.props.auth?.user
@@ -80,7 +80,7 @@ defineProps({
                         </Link>
                         <a
                             href="#features"
-                            class="rounded-full px-8 py-3 bg-white text-[#FF2D20] font-bold text-lg shadow-lg border border-[#FF2D20] transition hover:bg-[#FF2D20] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
+                            class="rounded-xl px-6 py-2.5 bg-white text-accent font-semibold text-base shadow-md border-2 border-accent transition hover:bg-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent font-body"
                         >
                             Learn More
                         </a>
@@ -88,15 +88,15 @@ defineProps({
                 </header>
 
                 <!-- FEATURES SECTION -->
-                <main id="features" class="mt-10 mb-16">
-                    <div class="w-full flex flex-col gap-8">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <main id="features" class="mt-6 mb-8">
+                    <div class="w-full flex flex-col gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <!-- Feature Card 1 -->
                             <div
-                                class="flex flex-col items-center bg-white/80 rounded-2xl shadow-xl p-8 border border-[#ff2d2022] hover:scale-105 transition-transform"
+                                class="flex flex-col items-center bg-white/80 rounded-xl shadow-md p-4 border border-accent/10 hover:shadow-lg hover:-translate-y-1 transition-all"
                             >
                                 <svg
-                                    class="h-10 w-10 text-[#FF2D20] mb-3"
+                                    class="h-8 w-8 text-accent mb-2"
                                     fill="none"
                                     stroke="currentColor"
                                     stroke-width="2"
@@ -108,10 +108,10 @@ defineProps({
                                         d="M9 17v-2a4 4 0 014-4h4m0 0V7a4 4 0 00-8 0v4m8 0a4 4 0 01-8 0"
                                     />
                                 </svg>
-                                <h2 class="text-xl font-bold mb-2">
+                                <h2 class="text-lg font-display font-semibold mb-1.5 text-[#1F2937]">
                                     Smart Record Management
                                 </h2>
-                                <p class="text-gray-700">
+                                <p class="text-sm text-[#6B7280] font-body text-center">
                                     Create, edit, and track all your
                                     transportation records in one place. Enjoy
                                     real-time updates and powerful filtering.
@@ -119,10 +119,10 @@ defineProps({
                             </div>
                             <!-- Feature Card 2 -->
                             <div
-                                class="flex flex-col items-center bg-white/80 rounded-2xl shadow-xl p-8 border border-[#ff2d2022] hover:scale-105 transition-transform"
+                                class="flex flex-col items-center bg-white/80 rounded-xl shadow-md p-4 border border-accent/10 hover:shadow-lg hover:-translate-y-1 transition-all"
                             >
                                 <svg
-                                    class="h-10 w-10 text-[#FF2D20] mb-3"
+                                    class="h-8 w-8 text-accent mb-2"
                                     fill="none"
                                     stroke="currentColor"
                                     stroke-width="2"
@@ -134,10 +134,10 @@ defineProps({
                                         d="M17 9V7a5 5 0 00-10 0v2a2 2 0 00-2 2v7a2 2 0 002 2h12a2 2 0 002-2v-7a2 2 0 00-2-2z"
                                     />
                                 </svg>
-                                <h2 class="text-xl font-bold mb-2">
+                                <h2 class="text-lg font-display font-semibold mb-1.5 text-[#1F2937]">
                                     Supplier Insights
                                 </h2>
-                                <p class="text-gray-700">
+                                <p class="text-sm text-[#6B7280] font-body text-center">
                                     Manage suppliers with ease. View
                                     performance, add new partners, and keep your
                                     business relationships thriving.
@@ -145,10 +145,10 @@ defineProps({
                             </div>
                             <!-- Feature Card 3 -->
                             <div
-                                class="flex flex-col items-center bg-white/80 rounded-2xl shadow-xl p-8 border border-[#ff2d2022] hover:scale-105 transition-transform"
+                                class="flex flex-col items-center bg-white/80 rounded-xl shadow-md p-4 border border-accent/10 hover:shadow-lg hover:-translate-y-1 transition-all"
                             >
                                 <svg
-                                    class="h-10 w-10 text-[#FF2D20] mb-3"
+                                    class="h-8 w-8 text-accent mb-2"
                                     fill="none"
                                     stroke="currentColor"
                                     stroke-width="2"
@@ -160,10 +160,10 @@ defineProps({
                                         d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-1.79-8-4V7a4 4 0 014-4h8a4 4 0 014 4v7c0 2.21-3.582 4-8 4z"
                                     />
                                 </svg>
-                                <h2 class="text-xl font-bold mb-2">
+                                <h2 class="text-lg font-display font-semibold mb-1.5 text-[#1F2937]">
                                     Profit Analytics
                                 </h2>
-                                <p class="text-gray-700">
+                                <p class="text-sm text-[#6B7280] font-body text-center">
                                     Visualize your profits and trends. Instantly
                                     see total and average profits, and make
                                     data-driven decisions for your business.
@@ -171,15 +171,15 @@ defineProps({
                             </div>
                         </div>
                         <!-- Call to Action -->
-                        <div class="flex flex-col items-center mt-12">
-                            <h3 class="text-2xl font-bold mb-2 text-[#FF2D20]">
+                        <div class="flex flex-col items-center mt-6">
+                            <h3 class="text-xl font-display font-semibold mb-1.5 text-accent">
                                 Ready to get started?
                             </h3>
-                            <p class="text-gray-700 mb-4">
+                            <p class="text-sm text-[#6B7280] mb-3 font-body">
                                 Sign up or log in to experience the next
                                 generation of transportation management.
                             </p>
-                            <div class="flex gap-4">
+                            <div class="flex gap-3">
                                 <Link
                                     :href="
                                         route(
@@ -188,7 +188,7 @@ defineProps({
                                                 : 'register'
                                         )
                                     "
-                                    class="rounded-full px-8 py-3 bg-[#FF2D20] text-white font-bold text-lg shadow-lg transition hover:bg-[#e52a1c] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
+                                    class="rounded-xl px-6 py-2.5 bg-gradient-to-r from-accent to-accent-hover text-white font-semibold text-base shadow-md transition hover:from-accent-hover hover:to-accent-dark hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent font-body"
                                 >
                                     {{
                                         $page.props.auth?.user
@@ -199,7 +199,7 @@ defineProps({
                                 <Link
                                     v-if="!$page.props.auth?.user"
                                     :href="route('login')"
-                                    class="rounded-full px-8 py-3 bg-white text-[#FF2D20] font-bold text-lg shadow-lg border border-[#FF2D20] transition hover:bg-[#FF2D20] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2D20]"
+                                    class="rounded-xl px-6 py-2.5 bg-white text-accent font-semibold text-base shadow-md border-2 border-accent transition hover:bg-accent hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-accent font-body"
                                 >
                                     Log In
                                 </Link>
@@ -208,7 +208,7 @@ defineProps({
                     </div>
                 </main>
 
-                <footer class="py-16 text-center text-sm text-black/60 mt-10">
+                <footer class="py-6 text-center text-xs text-[#9CA3AF] mt-6 font-body">
                     &copy; {{ new Date().getFullYear() }} Leonard. Built with
                     Laravel v{{ laravelVersion }} & PHP v{{ phpVersion }}.
                 </footer>

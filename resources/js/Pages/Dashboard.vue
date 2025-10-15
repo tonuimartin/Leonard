@@ -41,23 +41,23 @@ function openManageStaff() {
     <Head title="Dashboard" />
     <AuthenticatedLayout>
         <div
-            class="p-6 sm:p-8 lg:p-10 bg-primary min-h-screen"
+            class="p-3 sm:p-4 lg:p-5 bg-primary min-h-screen"
         >
             <div class="mx-auto max-w-7xl">
                 <!-- Welcome Header -->
-                <div class="mb-8">
+                <div class="mb-4">
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-8"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-4"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <h1
-                                    class="text-3xl font-display font-bold text-[#1F2937] mb-2"
+                                    class="text-2xl font-display font-bold text-[#1F2937] mb-1"
                                 >
                                     Welcome back,
                                     {{ $page.props.auth?.user?.name }}!
                                 </h1>
-                                <p class="text-accent text-lg font-medium font-body">
+                                <p class="text-accent text-sm font-medium font-body">
                                     {{
                                         new Date().toLocaleDateString("en-US", {
                                             weekday: "long",
@@ -70,10 +70,10 @@ function openManageStaff() {
                             </div>
                             <div class="hidden md:block">
                                 <div
-                                    class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-accent to-accent-hover flex items-center justify-center shadow-lg"
+                                    class="w-14 h-14 rounded-xl bg-gradient-to-tr from-accent to-accent-hover flex items-center justify-center shadow-md"
                                 >
                                     <svg
-                                        class="w-10 h-10 text-white"
+                                        class="w-7 h-7 text-white"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -93,32 +93,32 @@ function openManageStaff() {
 
                 <!-- Quick Stats Cards -->
                 <div
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4"
                 >
                     <!-- Total Records Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openCreateRecord"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
+                                    class="text-accent text-xs font-semibold uppercase tracking-wide font-body"
                                 >
                                     Total Records
                                 </p>
-                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
+                                <p class="text-2xl font-display font-bold text-[#1F2937] mt-0.5">
                                     {{ totalRecords ?? "—" }}
                                 </p>
-                                <p class="text-[#6B7280] text-sm mt-1 font-body">
+                                <p class="text-[#6B7280] text-xs mt-0.5 font-body">
                                     Click to view records
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
+                                class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-accent"
+                                    class="w-5 h-5 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -136,28 +136,28 @@ function openManageStaff() {
 
                     <!-- Active Suppliers Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openCreateSupplier"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
+                                    class="text-accent text-xs font-semibold uppercase tracking-wide font-body"
                                 >
                                     Active Suppliers
                                 </p>
-                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
+                                <p class="text-2xl font-display font-bold text-[#1F2937] mt-0.5">
                                     {{ activeSuppliers ?? "—" }}
                                 </p>
-                                <p class="text-[#6B7280] text-sm mt-1 font-body">
+                                <p class="text-[#6B7280] text-xs mt-0.5 font-body">
                                     Click to view suppliers
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
+                                class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-accent"
+                                    class="w-5 h-5 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -175,28 +175,28 @@ function openManageStaff() {
 
                     <!-- Staff Members Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openManageStaff"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
+                                    class="text-accent text-xs font-semibold uppercase tracking-wide font-body"
                                 >
                                     Staff Members
                                 </p>
-                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
+                                <p class="text-2xl font-display font-bold text-[#1F2937] mt-0.5">
                                     {{ staffMembers ?? "—" }}
                                 </p>
-                                <p class="text-[#6B7280] text-sm mt-1 font-body">
+                                <p class="text-[#6B7280] text-xs mt-0.5 font-body">
                                     Click to manage staff
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
+                                class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-accent"
+                                    class="w-5 h-5 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -214,17 +214,17 @@ function openManageStaff() {
 
                     <!-- Monthly Revenue Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-[#D1D5DB]/50 p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openGenerateReport"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <p
-                                    class="text-accent text-sm font-semibold uppercase tracking-wide font-body"
+                                    class="text-accent text-xs font-semibold uppercase tracking-wide font-body"
                                 >
                                     Monthly Revenue
                                 </p>
-                                <p class="text-3xl font-display font-bold text-[#1F2937] mt-1">
+                                <p class="text-2xl font-display font-bold text-[#1F2937] mt-0.5">
                                     KSh
                                     {{
                                         monthlyRevenue
@@ -235,15 +235,15 @@ function openManageStaff() {
                                             : "—"
                                     }}
                                 </p>
-                                <p class="text-[#6B7280] text-sm mt-1 font-body">
+                                <p class="text-[#6B7280] text-xs mt-0.5 font-body">
                                     Click to view reports
                                 </p>
                             </div>
                             <div
-                                class="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center"
+                                class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center"
                             >
                                 <svg
-                                    class="w-6 h-6 text-accent"
+                                    class="w-5 h-5 text-accent"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"

@@ -2,34 +2,34 @@
     <Head title="Records" />
     <AuthenticatedLayout>
         <div
-            class="p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-red-50 via-white to-red-50 min-h-screen"
+            class="p-3 sm:p-4 lg:p-5 bg-primary min-h-screen"
         >
             <div class="mx-auto max-w-7xl">
                 <!-- Page Header -->
-                <div class="mb-8">
+                <div class="mb-3">
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3"
                     >
                         <div class="flex items-center justify-between">
                             <div>
                                 <h1
-                                    class="text-3xl font-bold text-red-900 mb-2"
+                                    class="text-xl font-display font-bold text-[#1F2937] mb-1"
                                 >
                                     Records Management
                                 </h1>
-                                <p class="text-red-600 font-medium">
+                                <p class="text-accent text-sm font-medium font-body">
                                     Manage all transportation records and
                                     transactions
                                 </p>
                             </div>
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
                                 <!-- Create Record Button -->
                                 <button
                                     @click="showCreateModal = true"
-                                    class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent-dark text-white font-semibold py-2 px-4 text-sm rounded-lg transition-all duration-200 transform hover:scale-[1.01] shadow-md hover:shadow-lg font-body"
                                 >
                                     <svg
-                                        class="w-5 h-5"
+                                        class="w-4 h-4"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -49,23 +49,23 @@
                 </div>
 
                 <div
-                    class="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-red-200/50 p-6"
+                    class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3"
                 >
                     <div class="text-gray-900">
                         <!-- Filters Section -->
                         <div
-                            class="records-filters mb-6 p-6 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100 shadow-lg"
+                            class="records-filters mb-3 p-3 bg-gradient-to-r from-primary to-white rounded-lg border border-accent/20 shadow-sm"
                         >
-                            <h3 class="text-xl font-semibold mb-4 text-red-800">
+                            <h3 class="text-base font-display font-semibold mb-2 text-[#1F2937]">
                                 Filters
                             </h3>
                             <div
-                                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2"
                             >
                                 <!-- Date Range Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium mb-2"
+                                        class="block text-xs font-medium mb-1 font-body"
                                         >Date From</label
                                     >
                                     <input
@@ -77,7 +77,7 @@
                                 </div>
                                 <div>
                                     <label
-                                        class="block text-sm font-medium mb-2"
+                                        class="block text-xs font-medium mb-1 font-body"
                                         >Date To</label
                                     >
                                     <input
@@ -91,20 +91,20 @@
                                 <!-- Supplier Filter -->
                                 <div>
                                     <label
-                                        class="block text-sm font-medium mb-2"
+                                        class="block text-xs font-medium mb-1 font-body"
                                         >Suppliers</label
                                     >
                                     <div class="relative">
                                         <!-- Search input with tags inside -->
                                         <div class="relative">
                                             <div
-                                                class="w-full min-h-[48px] border border-red-200 rounded-xl px-4 py-2 pr-8 focus-within:ring-2 focus-within:ring-red-500 focus-within:border-red-500 flex flex-wrap items-center gap-1 bg-white shadow-lg"
+                                                class="w-full min-h-[40px] border border-[#D1D5DB] rounded-lg px-3 py-1.5 pr-8 focus-within:ring-2 focus-within:ring-accent focus-within:border-accent flex flex-wrap items-center gap-1 bg-white shadow-sm"
                                             >
                                                 <!-- Selected suppliers tags inside input -->
                                                 <span
                                                     v-for="supplier in selectedSuppliers"
                                                     :key="supplier.id"
-                                                    class="inline-flex items-center px-3 py-1 text-sm bg-red-100 text-red-800 rounded-full shadow-sm"
+                                                    class="inline-flex items-center px-3 py-1 text-sm bg-accent/10 text-accent-hover rounded-full shadow-sm"
                                                 >
                                                     {{ supplier.name }}
                                                     <button
@@ -113,7 +113,7 @@
                                                                 supplier.id
                                                             )
                                                         "
-                                                        class="ml-2 text-red-600 hover:text-red-800 text-lg font-bold"
+                                                        class="ml-2 text-accent hover:text-accent-hover text-lg font-bold"
                                                         type="button"
                                                     >
                                                         ×
@@ -145,7 +145,7 @@
                                                     selectedSuppliers.length > 0
                                                 "
                                                 @click="clearAllSuppliers"
-                                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-400 hover:text-red-600 text-xl"
+                                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-accent/60 hover:text-accent-hover text-xl"
                                                 type="button"
                                             >
                                                 ×
@@ -157,7 +157,7 @@
                                                     showSupplierDropdown &&
                                                     filteredSuppliers.length > 0
                                                 "
-                                                class="absolute z-10 w-full mt-1 bg-white border border-red-200 rounded-xl shadow-2xl max-h-40 overflow-y-auto backdrop-blur-lg"
+                                                class="absolute z-10 w-full mt-1 bg-white border border-accent/20 rounded-xl shadow-2xl max-h-40 overflow-y-auto backdrop-blur-lg"
                                                 style="top: 100%"
                                             >
                                                 <div
@@ -166,7 +166,7 @@
                                                     @mousedown="
                                                         selectSupplier(supplier)
                                                     "
-                                                    class="px-4 py-3 cursor-pointer hover:bg-red-50 flex items-center justify-between transition-colors duration-200"
+                                                    class="px-4 py-3 cursor-pointer hover:bg-accent/10 flex items-center justify-between transition-colors duration-200"
                                                 >
                                                     <span
                                                         class="text-gray-900"
@@ -180,7 +180,7 @@
                                                                 supplier.id
                                                             )
                                                         "
-                                                        class="text-red-600 font-bold"
+                                                        class="text-accent-hover font-bold"
                                                         >✓</span
                                                     >
                                                 </div>
@@ -206,7 +206,7 @@
                             >
                                 <div>
                                     <label
-                                        class="block text-sm font-medium mb-2"
+                                        class="block text-xs font-medium mb-1 font-body"
                                         >Min Amount (KES)</label
                                     >
                                     <input
@@ -219,7 +219,7 @@
                                 </div>
                                 <div>
                                     <label
-                                        class="block text-sm font-medium mb-2"
+                                        class="block text-xs font-medium mb-1 font-body"
                                         >Max Amount (KES)</label
                                     >
                                     <input
@@ -239,36 +239,21 @@
                             </div>
                         </div>
 
-                        <!-- Create Record Button -->
-                        <div class="mb-6">
-                            <button
-                                @click="showCreateModal = true"
-                                class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                            >
-                                Create Record
-                            </button>
-                        </div>
 
                         <!-- AG Grid with Modern Styling -->
                         <div
-                            class="rounded-xl overflow-hidden border border-red-200/50 shadow-sm"
+                            class="rounded-xl overflow-hidden border border-accent/20 shadow-sm"
                         >
                             <ag-grid-vue
                                 class="ag-theme-alpine modern-grid"
                                 style="
                                     width: 100%;
                                     --ag-grid-size: 8px;
-                                    --ag-border-color: rgb(254 202 202);
-                                    --ag-header-background-color: rgb(
-                                        254 242 242
-                                    );
-                                    --ag-header-foreground-color: rgb(
-                                        127 29 29
-                                    );
-                                    --ag-odd-row-background-color: rgb(
-                                        255 255 255
-                                    );
-                                    --ag-row-hover-color: rgb(254 242 242);
+                                    --ag-border-color: #D1D5DB;
+                                    --ag-header-background-color: #FAF4F2;
+                                    --ag-header-foreground-color: #1F2937;
+                                    --ag-odd-row-background-color: #ffffff;
+                                    --ag-row-hover-color: rgba(212, 163, 115, 0.1);
                                 "
                                 :domLayout="'autoHeight'"
                                 :columnDefs="columnDefs"
@@ -312,16 +297,16 @@
             class="fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50 backdrop-blur-sm"
         >
             <div
-                class="relative top-20 mx-auto p-8 border w-11/12 md:w-3/4 lg:w-1/2 shadow-2xl rounded-3xl bg-white/95 backdrop-blur-lg border-red-200"
+                class="relative top-20 mx-auto p-4 border w-11/12 md:w-3/4 lg:w-1/2 shadow-2xl rounded-2xl bg-white/95 backdrop-blur-lg border-accent/20"
             >
-                <div class="mt-3">
+                <div class="mt-2">
                     <!-- Modal Header -->
-                    <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center justify-between mb-3">
                         <div>
-                            <h3 class="text-2xl font-bold text-red-900 mb-2">
+                            <h3 class="text-xl font-display font-bold text-[#1F2937] mb-1">
                                 Record Details
                             </h3>
-                            <p class="text-red-600">
+                            <p class="text-accent text-sm">
                                 View complete record information
                             </p>
                         </div>
@@ -346,9 +331,9 @@
                     </div>
 
                     <!-- Record Details Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <!-- Basic Info -->
-                        <div class="space-y-4">
+                        <div class="space-y-2">
                             <div>
                                 <label class="view-modal-label"
                                     >Record ID</label
@@ -374,7 +359,7 @@
                         </div>
 
                         <!-- Transport Details -->
-                        <div class="space-y-4">
+                        <div class="space-y-2">
                             <div>
                                 <label class="view-modal-label"
                                     >Lorry Amount</label
@@ -408,7 +393,7 @@
                         </div>
 
                         <!-- More Details -->
-                        <div class="space-y-4">
+                        <div class="space-y-2">
                             <div>
                                 <label class="view-modal-label"
                                     >Tractor Units</label
@@ -436,7 +421,7 @@
                         </div>
 
                         <!-- Profit Details -->
-                        <div class="space-y-4">
+                        <div class="space-y-2">
                             <div>
                                 <label class="view-modal-label"
                                     >Less Cubic</label
@@ -485,12 +470,12 @@
                     </div>
 
                     <!-- Total Profit - Full Width -->
-                    <div class="mt-4">
-                        <label class="block text-sm font-medium text-gray-700"
+                    <div class="mt-3">
+                        <label class="block text-sm font-medium text-gray-700 font-body"
                             >Total Expected Profit</label
                         >
                         <div
-                            class="mt-1 text-lg font-bold text-green-600 bg-green-50 px-3 py-2 rounded"
+                            class="mt-1 text-base font-bold text-green-600 bg-green-50 px-3 py-2 rounded-lg"
                         >
                             {{
                                 formatCurrency(viewRecord.total_expected_profit)
@@ -499,10 +484,10 @@
                     </div>
 
                     <!-- Modal Footer -->
-                    <div class="flex justify-end mt-6">
+                    <div class="flex justify-end mt-4">
                         <button
                             @click="showViewModal = false"
-                            class="view-modal-close py-2 px-6"
+                            class="view-modal-close py-2 px-5"
                         >
                             Close
                         </button>
@@ -615,16 +600,16 @@ const columnDefs = computed(() => [
         cellRenderer: (params) => {
             const isUserAdmin = page.props.auth?.user?.is_admin || false;
 
-            const viewButton = `<button onclick="viewRecord(${params.data.id})" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-2 px-3 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg" style="min-width: 45px; font-size: 10px;">
+            const viewButton = `<button onclick="viewRecord(${params.data.id})" class="bg-gradient-to-r from-[#6B7280] to-[#4B5563] hover:from-[#4B5563] hover:to-[#374151] text-white font-semibold py-1.5 px-2.5 rounded-lg text-xs transition-all duration-200 shadow-sm hover:shadow-md" style="min-width: 45px; font-size: 10px;">
                 View
             </button>`;
 
-            const editButton = `<button onclick="editRecord(${params.data.id})" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-3 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg" style="min-width: 40px; font-size: 10px;">
+            const editButton = `<button onclick="editRecord(${params.data.id})" class="bg-gradient-to-r from-[#D4A373] to-[#C89363] hover:from-[#C89363] hover:to-[#B88353] text-white font-semibold py-1.5 px-2.5 rounded-lg text-xs transition-all duration-200 shadow-sm hover:shadow-md" style="min-width: 40px; font-size: 10px;">
                 Edit
             </button>`;
 
             const deleteButton = isUserAdmin
-                ? `<button onclick="deleteRecord(${params.data.id})" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2 px-3 rounded-xl text-xs transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg" style="min-width: 45px; font-size: 10px;">
+                ? `<button onclick="deleteRecord(${params.data.id})" class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] hover:from-[#B91C1C] hover:to-[#991B1B] text-white font-semibold py-1.5 px-2.5 rounded-lg text-xs transition-all duration-200 shadow-sm hover:shadow-md" style="min-width: 45px; font-size: 10px;">
                     Delete
                 </button>`
                 : "";
@@ -743,11 +728,11 @@ const handleRecordCreated = (newRecord) => {
         title: "Record Created!",
         text: "The record was created successfully.",
         background: "#fff",
-        color: "#7f1d1d",
-        confirmButtonColor: "#b91c1c",
+        color: "#1F2937",
+        confirmButtonColor: "#D4A373",
         customClass: {
-            popup: "rounded-2xl shadow-2xl border border-red-100",
-            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            popup: "rounded-2xl shadow-2xl border border-accent/20",
+            title: "font-bold text-2xl text-accent",
             confirmButton: "rounded-xl px-6 py-2 font-semibold",
         },
         buttonsStyling: false,
@@ -780,11 +765,11 @@ const handleRecordUpdated = (updatedRecord) => {
         title: "Record Updated!",
         text: "The record was updated successfully.",
         background: "#fff",
-        color: "#7f1d1d",
-        confirmButtonColor: "#b91c1c",
+        color: "#1F2937",
+        confirmButtonColor: "#D4A373",
         customClass: {
-            popup: "rounded-2xl shadow-2xl border border-red-100",
-            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            popup: "rounded-2xl shadow-2xl border border-accent/20",
+            title: "font-bold text-2xl text-accent",
             confirmButton: "rounded-xl px-6 py-2 font-semibold",
         },
         buttonsStyling: false,
@@ -799,11 +784,11 @@ window.deleteRecord = async (id) => {
             title: "Permission Denied",
             text: "You don't have permission to delete records.",
             background: "#fff",
-            color: "#7f1d1d",
-            confirmButtonColor: "#b91c1c",
+            color: "#1F2937",
+            confirmButtonColor: "#D4A373",
             customClass: {
-                popup: "rounded-2xl shadow-2xl border border-red-100",
-                title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                popup: "rounded-2xl shadow-2xl border border-accent/20",
+                title: "font-bold text-2xl text-accent",
                 confirmButton: "rounded-xl px-6 py-2 font-semibold",
             },
             buttonsStyling: false,
@@ -815,14 +800,14 @@ window.deleteRecord = async (id) => {
         text: "This will permanently delete the record.",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#b91c1c",
+        confirmButtonColor: "#DC2626",
         cancelButtonColor: "#d1d5db",
         confirmButtonText: "Yes, delete it!",
         background: "#fff",
-        color: "#7f1d1d",
+        color: "#1F2937",
         customClass: {
-            popup: "rounded-2xl shadow-2xl border border-red-100",
-            title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+            popup: "rounded-2xl shadow-2xl border border-accent/20",
+            title: "font-bold text-2xl text-[#1F2937]",
             confirmButton: "rounded-xl px-6 py-2 font-semibold",
         },
         buttonsStyling: false,
@@ -839,10 +824,10 @@ window.deleteRecord = async (id) => {
                     Swal.showLoading();
                 },
                 background: "#fff",
-                color: "#7f1d1d",
+                color: "#1F2937",
                 customClass: {
-                    popup: "rounded-2xl shadow-2xl border border-red-100",
-                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    popup: "rounded-2xl shadow-2xl border border-accent/20",
+                    title: "font-bold text-2xl text-accent",
                     confirmButton: "rounded-xl px-6 py-2 font-semibold",
                 },
                 buttonsStyling: false,
@@ -864,11 +849,11 @@ window.deleteRecord = async (id) => {
                     title: "Record Deleted!",
                     text: "The record was deleted successfully.",
                     background: "#fff",
-                    color: "#7f1d1d",
-                    confirmButtonColor: "#b91c1c",
+                    color: "#1F2937",
+                    confirmButtonColor: "#D4A373",
                     customClass: {
-                        popup: "rounded-2xl shadow-2xl border border-red-100",
-                        title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                        popup: "rounded-2xl shadow-2xl border border-accent/20",
+                        title: "font-bold text-2xl text-accent",
                         confirmButton: "rounded-xl px-6 py-2 font-semibold",
                     },
                     buttonsStyling: false,
@@ -879,11 +864,11 @@ window.deleteRecord = async (id) => {
                     title: "Error!",
                     text: "Error deleting record.",
                     background: "#fff",
-                    color: "#7f1d1d",
-                    confirmButtonColor: "#b91c1c",
+                    color: "#1F2937",
+                    confirmButtonColor: "#D4A373",
                     customClass: {
-                        popup: "rounded-2xl shadow-2xl border border-red-100",
-                        title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                        popup: "rounded-2xl shadow-2xl border border-accent/20",
+                        title: "font-bold text-2xl text-accent",
                         confirmButton: "rounded-xl px-6 py-2 font-semibold",
                     },
                     buttonsStyling: false,
@@ -895,11 +880,11 @@ window.deleteRecord = async (id) => {
                 title: "Error!",
                 text: "Error deleting record.",
                 background: "#fff",
-                color: "#7f1d1d",
-                confirmButtonColor: "#b91c1c",
+                color: "#1F2937",
+                confirmButtonColor: "#D4A373",
                 customClass: {
-                    popup: "rounded-2xl shadow-2xl border border-red-100",
-                    title: "font-bold text-2xl bg-gradient-to-r from-red-900 to-red-700 bg-clip-text text-transparent",
+                    popup: "rounded-2xl shadow-2xl border border-accent/20",
+                    title: "font-bold text-2xl text-accent",
                     confirmButton: "rounded-xl px-6 py-2 font-semibold",
                 },
                 buttonsStyling: false,
@@ -1096,13 +1081,13 @@ function formatCurrency(value) {
 
 .modern-grid .ag-row {
     border: none;
-    border-bottom: 1px solid rgb(254 202 202);
+    border-bottom: 1px solid #D1D5DB;
     background: transparent;
     transition: background 0.2s;
 }
 
 .modern-grid .ag-row:hover {
-    background: rgb(254 242 242);
+    background: rgba(212, 163, 115, 0.1);
 }
 
 .modern-grid .ag-root-wrapper {
@@ -1111,8 +1096,8 @@ function formatCurrency(value) {
 }
 
 .modern-grid .ag-paging-panel {
-    border-top: 1px solid rgb(254 202 202);
-    background-color: rgb(254 242 242);
+    border-top: 1px solid #D1D5DB;
+    background-color: #FAF4F2;
     padding: 16px;
 }
 
@@ -1120,34 +1105,34 @@ function formatCurrency(value) {
 .records-filters .ag-input,
 .records-filters input[type="date"],
 .records-filters input[type="number"] {
-    border-radius: 0.75rem;
-    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    border: 1px solid #D1D5DB;
     background: #fff;
-    box-shadow: 0 2px 8px 0 #fca5a5, 0 1.5px 4px 0 #fca5a5;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
     transition: border 0.2s, box-shadow 0.2s;
 }
 .records-filters input:focus {
-    border-color: #b91c1c;
-    box-shadow: 0 0 0 2px #fecaca;
+    border-color: #D4A373;
+    box-shadow: 0 0 0 2px rgba(212, 163, 115, 0.2);
 }
 .records-filters label {
-    color: #7f1d1d;
+    color: #1F2937;
     font-weight: 600;
 }
 .records-filters .modern-btn {
-    background: linear-gradient(to right, #dc2626, #b91c1c);
+    background: linear-gradient(to right, #D4A373, #C89363);
     color: #fff;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     font-weight: 600;
-    box-shadow: 0 2px 8px 0 #fca5a5;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .records-filters .modern-btn:hover {
-    background: linear-gradient(to right, #b91c1c, #7f1d1d);
-    box-shadow: 0 4px 16px 0 #fca5a5;
-    transform: scale(1.03);
+    background: linear-gradient(to right, #C89363, #B88353);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+    transform: scale(1.01);
 }
 
 /* Responsive and modern improvements for records section */
@@ -1182,36 +1167,36 @@ function formatCurrency(value) {
 
 /* Modern modal button for view modal */
 .view-modal-close {
-    background: linear-gradient(to right, #dc2626, #b91c1c);
+    background: linear-gradient(to right, #D4A373, #C89363);
     color: #fff;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     font-weight: 600;
-    box-shadow: 0 2px 8px 0 #fca5a5;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .view-modal-close:hover {
-    background: linear-gradient(to right, #b91c1c, #7f1d1d);
-    box-shadow: 0 4px 16px 0 #fca5a5;
-    transform: scale(1.03);
+    background: linear-gradient(to right, #C89363, #B88353);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+    transform: scale(1.01);
 }
 
 /* Modern modal field styles */
 .view-modal-label {
-    color: #7f1d1d;
+    color: #1F2937;
     font-weight: 600;
 }
 .view-modal-value {
-    background: #fef2f2;
-    color: #7f1d1d;
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    box-shadow: 0 1px 4px 0 #fca5a5;
+    background: #FAF4F2;
+    color: #1F2937;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     margin-top: 0.25rem;
 }
 .view-modal-value-bold {
-    background: #fee2e2;
-    color: #991b1b;
+    background: rgba(212, 163, 115, 0.1);
+    color: #D4A373;
     font-weight: bold;
 }
 </style>
