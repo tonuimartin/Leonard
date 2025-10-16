@@ -40,14 +40,12 @@ function openManageStaff() {
 <template>
     <Head title="Dashboard" />
     <AuthenticatedLayout>
-        <div
-            class="p-3 sm:p-4 lg:p-5 bg-primary min-h-screen"
-        >
-            <div class="mx-auto max-w-7xl">
+        <div class="bg-primary min-h-screen">
+            <div class="mx-auto max-w-6xl">
                 <!-- Welcome Header -->
                 <div class="mb-4">
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-4"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 px-3 py-1"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -97,7 +95,7 @@ function openManageStaff() {
                 >
                     <!-- Total Records Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 px-2 py-1 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openCreateRecord"
                     >
                         <div class="flex items-center justify-between">
@@ -136,7 +134,7 @@ function openManageStaff() {
 
                     <!-- Active Suppliers Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 px-2 py-1 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openCreateSupplier"
                     >
                         <div class="flex items-center justify-between">
@@ -175,7 +173,7 @@ function openManageStaff() {
 
                     <!-- Staff Members Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 px-2 py-1 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openManageStaff"
                     >
                         <div class="flex items-center justify-between">
@@ -214,7 +212,7 @@ function openManageStaff() {
 
                     <!-- Monthly Revenue Card -->
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 px-2 py-1 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                         @click="openGenerateReport"
                     >
                         <div class="flex items-center justify-between">
@@ -265,7 +263,7 @@ function openManageStaff() {
                     <!-- Recent Activity -->
                     <div class="lg:col-span-2">
                         <div
-                            class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-accent/20 p-4"
+                            class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-accent/20 px-3 py-2"
                         >
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-xl font-display font-bold text-[#1F2937]">
@@ -379,14 +377,14 @@ function openManageStaff() {
                     <!-- Quick Actions -->
                     <div class="lg:col-span-1">
                         <div
-                            class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-accent/20 p-4"
+                            class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-accent/20 px-3 py-2"
                         >
                             <h2 class="text-xl font-display font-bold text-[#1F2937] mb-6">
                                 Quick Actions
                             </h2>
                             <div class="space-y-3">
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-gradient-to-r from-accent to-accent-hover text-white hover:from-accent-hover hover:to-accent-dark transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                                    class="w-full text-left px-2 py-1 rounded-xl bg-gradient-to-r from-accent to-accent-hover text-white hover:from-accent-hover hover:to-accent-dark transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
                                     @click="openCreateRecord"
                                 >
                                     <div class="flex items-center gap-3">
@@ -410,7 +408,7 @@ function openManageStaff() {
                                 </button>
 
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
+                                    class="w-full text-left px-2 py-1 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
                                     @click="openCreateSupplier"
                                 >
                                     <div class="flex items-center gap-3">
@@ -434,7 +432,7 @@ function openManageStaff() {
                                 </button>
 
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
+                                    class="w-full text-left px-2 py-1 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
                                     @click="openGenerateReport"
                                 >
                                     <div class="flex items-center gap-3">
@@ -458,7 +456,7 @@ function openManageStaff() {
                                 </button>
 
                                 <button
-                                    class="w-full text-left p-4 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
+                                    class="w-full text-left px-2 py-1 rounded-xl bg-white border-2 border-accent/20 text-accent hover:bg-accent/5 transition-all duration-300 transform hover:scale-[1.02]"
                                     @click="openManageStaff"
                                 >
                                     <div class="flex items-center gap-3">

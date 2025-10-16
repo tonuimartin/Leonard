@@ -1,14 +1,12 @@
 <template>
     <Head title="Records" />
     <AuthenticatedLayout>
-        <div
-            class="p-3 sm:p-4 lg:p-5 bg-primary min-h-screen"
-        >
-            <div class="mx-auto max-w-7xl">
+        <div class="bg-primary min-h-screen">
+            <div class="mx-auto max-w-6xl">
                 <!-- Page Header -->
                 <div class="mb-3">
                     <div
-                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 p-3"
+                        class="bg-white/70 backdrop-blur-sm rounded-xl shadow-md border border-[#D1D5DB]/50 px-3 py-1"
                     >
                         <div class="flex items-center justify-between">
                             <div>
@@ -26,7 +24,7 @@
                                 <!-- Create Record Button -->
                                 <button
                                     @click="showCreateModal = true"
-                                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent-dark text-white font-semibold py-2 px-4 text-sm rounded-lg transition-all duration-200 transform hover:scale-[1.01] shadow-md hover:shadow-lg font-body"
+                                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-accent to-accent-hover hover:from-accent-hover hover:to-accent-dark text-white font-semibold py-0.5 px-1.5 text-sm rounded-lg transition-all duration-200 transform hover:scale-[1.01] shadow-md hover:shadow-lg font-body"
                                 >
                                     <svg
                                         class="w-4 h-4"

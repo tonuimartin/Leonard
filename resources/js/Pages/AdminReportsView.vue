@@ -1,10 +1,8 @@
 <template>
     <Head title="Reports" />
     <AuthenticatedLayout>
-        <div
-            class="p-3 sm:p-4 lg:p-5 bg-primary min-h-screen"
-        >
-            <div class="mx-auto max-w-7xl">
+        <div class="bg-primary min-h-screen">
+            <div class="mx-auto max-w-6xl">
                 <div
                     class="overflow-hidden bg-white/90 backdrop-blur-lg shadow-xl sm:rounded-xl border border-accent/20"
                 >

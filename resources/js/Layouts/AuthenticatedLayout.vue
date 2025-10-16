@@ -68,7 +68,7 @@ const showingNavigationDropdown = ref(false);
                                             >
                                                 <button
                                                     type="button"
-                                                    class="inline-flex items-center rounded-xl border border-accent/20 bg-white/90 px-4 py-2 text-sm font-medium leading-4 text-accent transition duration-150 ease-in-out hover:text-accent-hover hover:bg-accent/5 focus:outline-none shadow-sm backdrop-blur-sm font-body"
+                                                    class="inline-flex items-center rounded-xl border border-accent/20 bg-white/90 px-2 py-1 text-sm font-medium leading-4 text-accent transition duration-150 ease-in-out hover:text-accent-hover hover:bg-accent/5 focus:outline-none shadow-sm backdrop-blur-sm font-body"
                                                 >
                                                     {{
                                                         $page.props.auth?.user
@@ -210,7 +210,7 @@ const showingNavigationDropdown = ref(false);
                 </header>
 
                 <!-- Page Content -->
-                <main>
+                <main class="px-4 py-6">
                     <slot />
                 </main>
             </div>

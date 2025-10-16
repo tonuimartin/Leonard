@@ -1,8 +1,8 @@
 <template>
     <Head title="Records" />
     <AuthenticatedLayout>
-        <div class="p-4 sm:p-6 lg:p-8 bg-gray-100 min-h-screen">
-            <div class="mx-auto max-w-7xl">
+        <div class="bg-primary min-h-screen">
+            <div class="mx-auto max-w-6xl">
                 <!-- Summary Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-white rounded-lg shadow p-6">

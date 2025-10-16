@@ -1,0 +1,48 @@
+<script setup>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue';
+import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue';
+import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm.vue';
+import { Head } from '@inertiajs/vue3';
+
+defineProps({
+    mustVerifyEmail: {
+        type: Boolean,
+    },
+    status: {
+        type: String,
+    },
+});
+</script>
+
+<template>
+    <Head title="Profile" />
+
+    <AuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-lg text-gray-800 leading-tight py-2">
+                Profile
+            </h2>
+        </template>
+
+        <div class="py-3">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-2">
+                <div class="px-2 py-1 bg-white shadow sm:rounded-lg">
+                    <UpdateProfileInformationForm
+                        :must-verify-email="mustVerifyEmail"
+                        :status="status"
+                        class="max-w-xl"
+                    />
+                </div>
+
+                <div class="px-2 py-1 bg-white shadow sm:rounded-lg">
+                    <UpdatePasswordForm class="max-w-xl" />
+                </div>
+
+                <div class="px-2 py-1 bg-white shadow sm:rounded-lg">
+                    <DeleteUserForm class="max-w-xl" />
+                </div>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>

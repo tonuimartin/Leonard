@@ -1,8 +1,8 @@
 <template>
     <Head title="Records" />
     <AuthenticatedLayout>
-        <div class="p-4 sm:p-6 lg:p-8 bg-gray-100 min-h-screen">
-            <div class="mx-auto max-w-7xl">
+        <div class="bg-primary min-h-screen">
+            <div class="mx-auto max-w-6xl">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <!-- Create Record Button -->
